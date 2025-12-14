@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purple Apps - AI-Powered Tools for iOS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #0d0b22;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(135deg, #0d0b22 0%, #1a1540 100%);
+        }
+        .hero h1 {
+            font-size: 3.5em;
+            color: #cfcfff;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.3em;
+            color: #89b4ff;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .beta-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #6b4ce6 0%, #8b5cf6 100%);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+        .beta-cta:hover {
+            transform: scale(1.05);
+        }
+        .beta-note {
+            font-size: 0.9em;
+            color: #cfcfff;
+            margin-top: 10px;
+        }
+        .apps-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #cfcfff;
+            margin-bottom: 50px;
+        }
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .app-card {
+            background: #1a1540;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+        .app-card:hover {
+            transform: translateY(-5px);
+            border-color: #6b4ce6;
+            box-shadow: 0 10px 30px rgba(107, 76, 230, 0.3);
+        }
+        .app-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        .app-card h2 {
+            color: #cfcfff;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        .app-card p {
+            color: #89b4ff;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .app-link {
+            display: inline-block;
+            background: #6b4ce6;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .app-link:hover {
+            background: #8b5cf6;
+        }
+        .coming-soon {
+            background: #2d2560;
+            color: #cfcfff;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #89b4ff;
+            border-top: 1px solid #1a1540;
+        }
+        footer a {
+            color: #89b4ff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #cfcfff;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Purple Apps</h1>
+        <p>AI-powered tools built for creators, thinkers, and makers</p>
+        <a href="https://testflight.apple.com/join/YOUR_TESTFLIGHT_LINK" class="beta-cta">🚀 Join Chat LLM Beta - Free</a>
+        <div class="beta-note">Try Chat LLM free while in beta • $9.99 when it launches</div>
+    </div>
+
+    <div class="apps-section">
+        <h2 class="section-title">Our Apps</h2>
+        
+        <div class="apps-grid">
+            <div class="app-card">
+                <div class="app-icon">⚡</div>
+                <h2>Flash Image</h2>
+                <p>Lightning-fast AI image generation and editing. Create stunning visuals in seconds.</p>
+                <p><strong>$10/month • 250 generations</strong></p>
+                <a href="flash-image.html" class="app-link">Learn More</a>
+            </div>
+
+            <div class="app-card">
+                <div class="app-icon">🎨</div>
+                <h2>VisuAlly</h2>
+                <p>Professional AI image and video creation with 100+ models and advanced controls.</p>
+                <p><strong>3 tiers available</strong></p>
+                <a href="visually.html" class="app-link">Learn More</a>
+            </div>
+
+            <div class="app-card">
+                <div class="app-icon">💬</div>
+                <h2>Chat LLM</h2>
+                <p>Access 500+ AI models in one app. Bring your own API key, keep your data private.</p>
+                <p><strong>Coming Soon • Join Beta</strong></p>
+                <a href="chat-llm.html" class="app-link coming-soon">Join Beta</a>
+            </div>
+
+            <div class="app-card">
+                <div class="app-icon">🔬</div>
+                <h2>AI Microscope</h2>
+                <p>Compare AI model responses side-by-side. Perfect for testing prompts and models.</p>
+                <p><strong>Free Forever</strong></p>
+                <a href="ai-microscope.html" class="app-link">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Built by David Picknell • All apps available on iOS</p>
+        <p style="margin-top: 10px;">
+            <a href="mailto:ferrraridave@icloud.com">Contact Support</a>
+        </p>
+    </footer>
+</body>
+</html>
