@@ -34,15 +34,29 @@
             color: #89b4ff;
             margin-bottom: 30px;
         }
-        .coming-soon-badge {
+        .download-btn {
             display: inline-block;
             background: linear-gradient(135deg, #6b4ce6 0%, #8b5cf6 100%);
             color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 18px 40px;
+            border-radius: 30px;
+            text-decoration: none;
             font-size: 1.2em;
             font-weight: 600;
             margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+        .live-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
         .section {
             margin: 50px 0;
@@ -121,9 +135,10 @@
     <div class="container">
         <div class="header">
             <div class="app-icon">⚡</div>
+            <div class="live-badge">NOW AVAILABLE ON APP STORE</div>
             <h1>Flash Image</h1>
             <p class="tagline">Lightning-fast AI image generation and editing</p>
-            <div class="coming-soon-badge">Coming Soon to App Store</div>
+            <a href="https://apps.apple.com/us/app/flash-image/id6756514492" class="download-btn">Download on App Store</a>
         </div>
 
         <div class="section">
@@ -134,7 +149,7 @@
         <div class="features">
             <h2>Powerful Features</h2>
             <ul>
-                <li>Generate images from text in aroun 3 seconds</li>
+                <li>Generate images from text in around 3 seconds</li>
                 <li>Edit existing photos with AI precision</li>
                 <li>Style transfer and artistic effects</li>
                 <li>Multiple angle variations</li>
@@ -146,6 +161,7 @@
 
         <div class="pricing">
             <h2>Simple Pricing</h2>
+            <p style="margin-bottom: 30px;">7-day free trial for new users (ends after 7 days OR 250 images, whichever comes first)</p>
             <div class="pricing-tier">
                 <h3>Pro Plan</h3>
                 <div class="price">£9.99<span style="font-size: 0.4em;">/month</span></div>
