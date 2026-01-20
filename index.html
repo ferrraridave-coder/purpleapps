@@ -31,11 +31,19 @@
             font-size: 1.3em;
             color: #89b4ff;
             margin-bottom: 40px;
-            max-width: 600px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
-        .beta-cta {
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
             display: inline-block;
             background: linear-gradient(135deg, #6b4ce6 0%, #8b5cf6 100%);
             color: white;
@@ -44,17 +52,37 @@
             text-decoration: none;
             font-size: 1.2em;
             font-weight: 600;
-            margin-bottom: 15px;
             transition: transform 0.2s;
         }
-        .beta-cta:hover {
+        .cta-primary:hover {
             transform: scale(1.05);
         }
-        .beta-note {
-            font-size: 0.9em;
+
+        .cta-secondary {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.06);
             color: #cfcfff;
-            margin-top: 10px;
+            padding: 18px 34px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: 2px solid #6b4ce6;
+            transition: all 0.2s;
         }
+        .cta-secondary:hover {
+            background: #6b4ce6;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .hero-note {
+            font-size: 0.95em;
+            color: #cfcfff;
+            margin-top: 14px;
+            opacity: 0.95;
+        }
+
         .about-section {
             text-align: center;
             padding: 40px 20px;
@@ -78,6 +106,7 @@
             color: white;
             transform: translateY(-2px);
         }
+
         .apps-section {
             max-width: 1200px;
             margin: 60px auto;
@@ -87,8 +116,15 @@
             text-align: center;
             font-size: 2.5em;
             color: #cfcfff;
-            margin-bottom: 50px;
+            margin-bottom: 12px;
         }
+        .section-subtitle {
+            text-align: center;
+            color: #89b4ff;
+            margin-bottom: 50px;
+            font-size: 1.05em;
+        }
+
         .apps-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -119,9 +155,21 @@
         }
         .app-card p {
             color: #89b4ff;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             line-height: 1.5;
         }
+
+        .pill {
+            display: inline-block;
+            font-size: 0.9em;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(107, 76, 230, 0.18);
+            color: #cfcfff;
+            border: 1px solid rgba(107, 76, 230, 0.5);
+            margin-bottom: 14px;
+        }
+
         .app-link {
             display: inline-block;
             background: #6b4ce6;
@@ -135,10 +183,7 @@
         .app-link:hover {
             background: #8b5cf6;
         }
-        .coming-soon {
-            background: #2d2560;
-            color: #cfcfff;
-        }
+
         footer {
             text-align: center;
             padding: 40px 20px;
@@ -157,24 +202,45 @@
 <body>
     <div class="hero">
         <h1>Purple Apps</h1>
-        <p>AI-powered tools built for creators, thinkers, and makers</p>
-        <a href="https://testflight.apple.com/join/1nGfYYRm" class="beta-cta">Join Chat LLM Beta</a>
-        <div class="beta-note">Private AI chat with built-in local model • Free forever, no ads</div>
-    </div>
+        <p>AI-powered tools built for creators, thinkers, and makers — fast, privacy-focused, and designed for iPhone & iPad.</p>
 
-    <div class="about-section">
-        <a href="about.html" class="about-link">📖 Read My Story</a>
+        <div class="hero-actions">
+            <!-- Replace # with your main App Store link or a hub page -->
+            <a href="#" class="cta-primary">View Apps on the App Store</a>
+            <a href="about.html" class="cta-secondary">Read My Story</a>
+        </div>
+
+        <div class="hero-note">All apps are live on iOS • No ads • Built by an indie developer in the UK</div>
     </div>
 
     <div class="apps-section">
         <h2 class="section-title">My Apps</h2>
-        
+        <div class="section-subtitle">Pick a tool, pick a vibe — chat, images, video, or model exploration.</div>
+
         <div class="apps-grid">
             <div class="app-card">
+                <div class="app-icon">💬</div>
+                <h2>Chat LLM</h2>
+                <div class="pill">Live on the App Store</div>
+                <p>Privacy-focused AI chat with optional local AI, fast cloud chat, and advanced bring-your-own-key support.</p>
+                <p><strong>Includes real-time voice chat and model customisation</strong></p>
+                <a href="chat-llm.html" class="app-link">Learn More</a>
+            </div>
+
+            <div class="app-card">
                 <div class="app-icon">⚡</div>
+                <h2>LLM Pro</h2>
+                <div class="pill">Chat + Images (Pro)</div>
+                <p>Premium AI chat with curated high-performance cloud models, web search on supported models, and built-in AI image generation.</p>
+                <p><strong>Includes up to 100 images per month</strong></p>
+                <a href="llm-pro.html" class="app-link">Learn More</a>
+            </div>
+
+            <div class="app-card">
+                <div class="app-icon">🖼️</div>
                 <h2>Flash Image</h2>
-                <p>Lightning-fast AI image generation and editing. Create stunning visuals in seconds.</p>
-                <p><strong>Live on App Store</strong></p>
+                <div class="pill">Live on the App Store</div>
+                <p>Lightning-fast AI image generation and editing. Create and refine images in seconds.</p>
                 <p><strong>Pro: £9.99/month • Elite: £14.99/month</strong></p>
                 <a href="flash-image.html" class="app-link">Learn More</a>
             </div>
@@ -182,23 +248,17 @@
             <div class="app-card">
                 <div class="app-icon">🎨</div>
                 <h2>VisuAIly</h2>
-                <p>Professional AI image and video creation with 100+ models and advanced controls.</p>
-                <p><strong>3 tiers available</strong></p>
+                <div class="pill">Live on the App Store</div>
+                <p>Professional AI image and video creation with multiple models and advanced controls.</p>
+                <p><strong>Multiple tiers available</strong></p>
                 <a href="visuaily.html" class="app-link">Learn More</a>
-            </div>
-
-            <div class="app-card">
-                <div class="app-icon">💬</div>
-                <h2>Chat LLM</h2>
-                <p>Private AI chat with built-in local model. Works offline with complete privacy. Optionally access 500+ cloud models.</p>
-                <p><strong>Beta Available • Free Forever</strong></p>
-                <a href="chat-llm.html" class="app-link">Learn More</a>
             </div>
 
             <div class="app-card">
                 <div class="app-icon">🔬</div>
                 <h2>Microscope AI</h2>
-                <p>AI model's summaries, traits, quirks and biases side-by-side.</p>
+                <div class="pill">Free</div>
+                <p>Explore AI model traits, quirks, and behaviour side-by-side — designed for testing and comparison.</p>
                 <p><strong>100% Free • No Ads</strong></p>
                 <a href="microscope-ai.html" class="app-link">Learn More</a>
             </div>
