@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat LLM - Private AI Chat with Built-in Local Model</title>
+    <title>Chat LLM - Private AI Chat for iPhone & iPad</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
@@ -34,7 +34,7 @@
             color: #89b4ff;
             margin-bottom: 30px;
         }
-        .beta-badge {
+        .live-badge {
             display: inline-block;
             background: linear-gradient(135deg, #6b4ce6 0%, #8b5cf6 100%);
             color: white;
@@ -58,18 +58,18 @@
         .download-btn:hover {
             transform: scale(1.05);
         }
-        .beta-note {
+        .note {
             background: #1a1540;
             border-radius: 15px;
             padding: 25px;
             margin: 30px 0;
             border-left: 4px solid #6b4ce6;
         }
-        .beta-note h3 {
+        .note h3 {
             color: #cfcfff;
             margin-bottom: 10px;
         }
-        .beta-note p {
+        .note p {
             color: #89b4ff;
             margin: 0;
         }
@@ -144,63 +144,62 @@
     <div class="container">
         <div class="header">
             <div class="app-icon">💬</div>
-            <div class="beta-badge">PUBLIC BETA NOW AVAILABLE</div>
+            <div class="live-badge">LIVE ON THE APP STORE</div>
             <h1>Chat LLM</h1>
-            <p class="tagline">Private AI chat with built-in local model</p>
-            <a href="https://testflight.apple.com/join/1nGfYYRm" class="download-btn">Join Beta - Completely Free</a>
+            <p class="tagline">Private AI chat with optional local AI and advanced BYOK support</p>
+            <a href="https://apps.apple.com/si/app/chat-llm/id6754822728" class="download-btn" target="_blank" rel="noopener">Download on the App Store</a>
         </div>
 
-        <div class="beta-note">
-            <h3>Try Chat LLM Free Today</h3>
-            <p>Chat LLM is currently in public beta via TestFlight. The app includes a built-in local AI model that works offline with complete privacy. Join now to test all features. When it launches on the App Store, it will remain completely free—no ads, no subscriptions, forever.</p>
+        <div class="note">
+            <h3>Private by Design</h3>
+            <p>Chat LLM is built for privacy-conscious users. Use optional on-device AI for offline chat, or connect your own API keys for powerful cloud models — without creating an account.</p>
         </div>
 
         <div class="section">
-            <h2>Private AI That Works Offline</h2>
-            <p>Chat LLM includes a built-in local AI model (Llama 3.2 1B) that runs entirely on your device. Start chatting instantly—no account, no API key, no internet connection required. Your conversations never leave your device.</p>
-            <p>For power users, optionally connect your own OpenRouter or OpenAI API keys to access 500+ additional cloud models—all while keeping your keys and data completely private.</p>
+            <h2>AI That Can Work Offline</h2>
+            <p>Chat LLM supports an optional on-device AI model for offline chat. When using local AI, conversations stay on your device and do not require an internet connection.</p>
+            <p>Prefer cloud models? You can use free cloud chat, or connect your own OpenRouter, OpenAI, or xAI API keys for access to a wide range of external models, including vision-capable and reasoning models where supported.</p>
         </div>
 
         <div class="features">
-            <h2>Powerful Features</h2>
+            <h2>Key Features</h2>
             <ul>
-                <li>Built-in local AI model - works completely offline</li>
-                <li>No account or setup required - start chatting instantly</li>
-                <li>Complete privacy - local conversations never leave your device</li>
-                <li>Optional: Access 500+ cloud AI models via OpenRouter (50+ free, 500+ paid)</li>
-                <li>Optional: Direct OpenAI model access</li>
-                <li>Bring your own API key (BYOK) - you control your data and costs</li>
-                <li>RAG document support - persistent context across conversations (cloud models)</li>
-                <li>Image uploads and multi-modal support (cloud models)</li>
-                <li>In-app camera support for quick captures (cloud models)</li>
-                <li>Advanced generation settings: temperature, top-p, frequency/presence penalty</li>
-                <li>System prompts and custom output filters</li>
-                <li>CloudKit sync across all your devices</li>
-                <li>Long-press messages to copy to clipboard</li>
-                <li>Dark mode interface optimized for readability</li>
+                <li>Optional local AI for offline chat (no internet required)</li>
+                <li>Free cloud chat available (no account required)</li>
+                <li>Bring your own API key (BYOK) support for OpenRouter, OpenAI, and xAI</li>
+                <li>Access a wide range of third-party models via BYOK (availability depends on provider)</li>
+                <li>Vision support: upload images for analysis on supported models</li>
+                <li>Document uploads (PDF, Word, and text) on supported models</li>
+                <li>Real-time voice chat (optional, requires a compatible API key)</li>
+                <li>Advanced generation controls: temperature and sampling settings</li>
+                <li>Custom system prompts and output filtering options</li>
+                <li>Conversation history with model identification</li>
+                <li>CloudKit sync across devices (where enabled)</li>
+                <li>Long-press messages to copy and share</li>
+                <li>Dark mode interface optimised for readability</li>
             </ul>
         </div>
 
         <div class="section">
             <h2>Built for Privacy-Conscious Users</h2>
-            <p>The built-in local model gives you AI chat without compromising privacy. No data collection, no analytics, no cloud processing—just you and your device.</p>
-            <p>When using optional cloud models, your API keys are stored securely on your device using iOS Keychain. We never see your keys, your conversations, or your data. Everything syncs via CloudKit under your Apple ID.</p>
-            <p><strong>Your data belongs to you.</strong></p>
+            <p>Chat LLM does not require user accounts. Optional API keys are stored securely on your device using iOS Keychain.</p>
+            <p>When using third-party providers via your own API keys, content is sent directly to those providers to generate responses. Provider capabilities and retention policies may vary.</p>
+            <p><strong>Your data remains under your control.</strong></p>
         </div>
 
         <div class="pricing">
-            <h2>Completely Free. Forever.</h2>
-            <div class="price">£0<span style="font-size: 0.3em;"> always</span></div>
-            <p>No ads. No subscriptions. No catch.</p>
-            <p style="margin-top: 20px; font-size: 0.9em;">Built as a tool for the community, funded by Purple Apps' other products.</p>
+            <h2>Free to Download</h2>
+            <div class="price">£0<span style="font-size: 0.3em;"> to start</span></div>
+            <p>No ads. No forced subscriptions.</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">Optional BYOK features may incur costs charged by your chosen provider.</p>
         </div>
 
         <div class="section">
             <h2>Perfect For</h2>
-            <p><strong>Privacy-conscious users</strong> who want AI without cloud dependency.</p>
-            <p><strong>Power users & developers</strong> who want complete control over model selection and parameters.</p>
-            <p><strong>Researchers & writers</strong> who need persistent document context and advanced features.</p>
-            <p><strong>AI enthusiasts</strong> who want to experiment with 500+ models without platform lock-in.</p>
+            <p><strong>Privacy-focused users</strong> who want AI chat without compulsory accounts.</p>
+            <p><strong>Power users & developers</strong> who want control over model choice and parameters.</p>
+            <p><strong>Creators & researchers</strong> who use image/document context with supported models.</p>
+            <p><strong>AI enthusiasts</strong> who want flexibility across providers without lock-in.</p>
         </div>
 
         <div class="section">
