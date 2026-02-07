@@ -4,230 +4,128 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat LLM - Private AI Chat for iPhone & iPad</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #0d0b22;
-            color: #ffffff;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
-        .header {
-            text-align: center;
-            padding: 60px 20px 40px;
-        }
-        .app-icon {
-            font-size: 5em;
-            margin-bottom: 20px;
-        }
-        h1 {
-            font-size: 3em;
-            color: #cfcfff;
-            margin-bottom: 15px;
-        }
-        .tagline {
-            font-size: 1.3em;
-            color: #89b4ff;
-            margin-bottom: 30px;
-        }
-        .live-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #6b4ce6 0%, #8b5cf6 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        .download-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #6b4ce6 0%, #8b5cf6 100%);
-            color: white;
-            padding: 18px 40px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 1.2em;
-            font-weight: 600;
-            margin: 20px 0;
-            transition: transform 0.2s;
-        }
-        .download-btn:hover {
-            transform: scale(1.05);
-        }
-        .note {
-            background: #1a1540;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 30px 0;
-            border-left: 4px solid #6b4ce6;
-        }
-        .note h3 {
-            color: #cfcfff;
-            margin-bottom: 10px;
-        }
-        .note p {
-            color: #89b4ff;
-            margin: 0;
-        }
-        .section {
-            margin: 50px 0;
-        }
-        h2 {
-            color: #cfcfff;
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        p {
-            color: #89b4ff;
-            margin-bottom: 15px;
-        }
-        .features {
-            background: #1a1540;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-        }
-        .features ul {
-            list-style: none;
-            padding: 0;
-        }
-        .features li {
-            color: #89b4ff;
-            padding: 10px 0;
-            padding-left: 30px;
-            position: relative;
-        }
-        .features li:before {
-            content: "💬";
-            position: absolute;
-            left: 0;
-        }
-        .pricing {
-            background: linear-gradient(135deg, #1a1540 0%, #2d2560 100%);
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            margin: 30px 0;
-        }
-        .pricing .price {
-            font-size: 3em;
-            color: #8b5cf6;
-            font-weight: 700;
-            margin: 20px 0;
-        }
-        .back-link {
-            display: inline-block;
-            color: #89b4ff;
-            text-decoration: none;
-            margin-top: 40px;
-            font-size: 1.1em;
-        }
-        .back-link:hover {
-            color: #cfcfff;
-        }
-        a {
-            color: #89b4ff;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="app-icon">💬</div>
-            <div class="live-badge">LIVE ON THE APP STORE</div>
-            <h1>Chat LLM</h1>
-            <p class="tagline">Private AI chat with optional local AI and advanced BYOK support</p>
-            <a href="https://apps.apple.com/si/app/chat-llm/id6754822728"
-               class="download-btn"
-               target="_blank"
-               rel="noopener">
-                Download on the App Store
-            </a>
-        </div>
 
-        <div class="note">
-            <h3>Private by Design</h3>
-            <p>
-                Chat LLM is built for privacy-conscious users. Use optional on-device AI for offline chat,
-                or connect your own API keys for powerful cloud models — without creating an account.
-            </p>
-        </div>
+<div class="ambient-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
 
-        <div class="section">
-            <h2>AI That Can Work Offline</h2>
-            <p>
-                Chat LLM supports an optional on-device AI model for offline chat. When using local AI,
-                conversations stay on your device and do not require an internet connection.
-            </p>
-            <p>
-                Prefer cloud models? Use free cloud chat, or connect your own OpenRouter, OpenAI, or xAI
-                API keys for access to a wide range of external models, including vision-capable and
-                reasoning models where supported.
-            </p>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html" class="navbar-brand"><span class="brand-dot"></span> Purple Apps</a>
+        <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+        <div class="navbar-links">
+            <a href="index.html">Apps</a>
+            <a href="about.html">My Story</a>
+            <a href="https://apps.apple.com/si/developer/david-picknell/id1844054411" target="_blank" rel="noopener">App Store</a>
         </div>
-
-        <div class="features">
-            <h2>Key Features</h2>
-            <ul>
-                <li>Optional local AI for offline chat (no internet required)</li>
-                <li>Free cloud chat available (no account required)</li>
-                <li>Bring your own API key (BYOK) for OpenRouter, OpenAI, and xAI</li>
-                <li>Access to a wide range of third-party models (provider-dependent)</li>
-                <li>Vision support: upload images for analysis on supported models</li>
-                <li>Document uploads (PDF, Word, and text) on supported models</li>
-                <li>Real-time voice chat (optional, requires compatible API key)</li>
-                <li>Advanced generation controls</li>
-                <li>Custom system prompts and output filtering</li>
-                <li>Conversation history with model identification</li>
-                <li>CloudKit sync across devices (where enabled)</li>
-                <li>Long-press messages to copy and share</li>
-                <li>Dark mode interface optimised for readability</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Built for Privacy-Conscious Users</h2>
-            <p>
-                Chat LLM does not require user accounts. Optional API keys are stored securely on your
-                device using iOS Keychain.
-            </p>
-            <p>
-                When using third-party providers via your own API keys, content is sent directly to those
-                providers to generate responses. Provider capabilities and retention policies may vary.
-            </p>
-            <p><strong>Your data remains under your control.</strong></p>
-        </div>
-
-        <div class="pricing">
-            <h2>Free to Download</h2>
-            <div class="price">£0<span style="font-size: 0.3em;"> to start</span></div>
-            <p>No ads. No forced subscriptions.</p>
-            <p style="margin-top: 20px; font-size: 0.9em;">
-                Optional BYOK features may incur costs charged by your chosen provider.
-            </p>
-        </div>
-
-        <div class="section">
-            <h2>Perfect For</h2>
-            <p><strong>Privacy-focused users</strong> who want AI chat without compulsory accounts.</p>
-            <p><strong>Power users & developers</strong> who want full control over models and parameters.</p>
-            <p><strong>Creators & researchers</strong> using image and document context.</p>
-            <p><strong>AI enthusiasts</strong> who want flexibility without lock-in.</p>
-        </div>
-
-        <div class="section">
-            <p>
-                <a href="support/chat-llm/index.html">Support</a> •
-                <a href="support/chat-llm/privacy-policy.html">Privacy Policy</a> •
-                <a href="support/chat-llm/terms.html">Terms of Use</a>
-            </p>
-        </div>
-
-        <a href="index.html" class="back-link">← Back to all apps</a>
     </div>
+</nav>
+
+<header class="detail-hero">
+    <div class="icon-wrap">&#x1F4AC;</div>
+    <div class="badge badge-live">LIVE ON THE APP STORE</div>
+    <h1>Chat LLM</h1>
+    <p class="tagline">Private AI chat with optional local AI and advanced BYOK support</p>
+    <div class="download-btn">
+        <a href="https://apps.apple.com/si/app/chat-llm/id6754822728" class="btn-primary" target="_blank" rel="noopener">Download on the App Store</a>
+    </div>
+</header>
+
+<div class="detail-content">
+
+    <div class="callout reveal">
+        <h3>Private by Design</h3>
+        <p>Chat LLM is built for privacy-conscious users. Use optional on-device AI for offline chat,
+        or connect your own API keys for powerful cloud models &mdash; without creating an account.</p>
+    </div>
+
+    <div class="section-block reveal">
+        <h2>AI That Can Work Offline</h2>
+        <p>Chat LLM supports an optional on-device AI model for offline chat. When using local AI,
+        conversations stay on your device and do not require an internet connection.</p>
+        <p>Prefer cloud models? Use free cloud chat, or connect your own OpenRouter, OpenAI, or xAI
+        API keys for access to a wide range of external models, including vision-capable and
+        reasoning models where supported.</p>
+    </div>
+
+    <div class="feature-list reveal">
+        <h2>Key Features</h2>
+        <ul>
+            <li>Optional local AI for offline chat (no internet required)</li>
+            <li>Free cloud chat available (no account required)</li>
+            <li>Bring your own API key (BYOK) for OpenRouter, OpenAI, and xAI</li>
+            <li>Access to a wide range of third-party models (provider-dependent)</li>
+            <li>Vision support: upload images for analysis on supported models</li>
+            <li>Document uploads (PDF, Word, and text) on supported models</li>
+            <li>Real-time voice chat (optional, requires compatible API key)</li>
+            <li>Advanced generation controls</li>
+            <li>Custom system prompts and output filtering</li>
+            <li>Conversation history with model identification</li>
+            <li>CloudKit sync across devices (where enabled)</li>
+            <li>Long-press messages to copy and share</li>
+            <li>Dark mode interface optimised for readability</li>
+        </ul>
+    </div>
+
+    <div class="section-block reveal">
+        <h2>Built for Privacy-Conscious Users</h2>
+        <p>Chat LLM does not require user accounts. Optional API keys are stored securely on your
+        device using iOS Keychain.</p>
+        <p>When using third-party providers via your own API keys, content is sent directly to those
+        providers to generate responses. Provider capabilities and retention policies may vary.</p>
+        <p><strong>Your data remains under your control.</strong></p>
+    </div>
+
+    <div class="pricing-card reveal">
+        <h2>Free to Download</h2>
+        <div class="price">&pound;0 <span>to start</span></div>
+        <p>No ads. No forced subscriptions.</p>
+        <p>Optional BYOK features may incur costs charged by your chosen provider.</p>
+    </div>
+
+    <div class="perfect-for reveal">
+        <h2>Perfect For</h2>
+        <div class="perfect-for-grid">
+            <div class="perfect-for-item">
+                <strong>Privacy-focused users</strong>
+                <span>AI chat without compulsory accounts.</span>
+            </div>
+            <div class="perfect-for-item">
+                <strong>Power users &amp; developers</strong>
+                <span>Full control over models and parameters.</span>
+            </div>
+            <div class="perfect-for-item">
+                <strong>Creators &amp; researchers</strong>
+                <span>Image and document context.</span>
+            </div>
+            <div class="perfect-for-item">
+                <strong>AI enthusiasts</strong>
+                <span>Flexibility without lock-in.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="support-links reveal">
+        <a href="support/chat-llm/index.html">Support</a>
+        <span class="sep">&bull;</span>
+        <a href="support/chat-llm/privacy-policy.html">Privacy Policy</a>
+        <span class="sep">&bull;</span>
+        <a href="support/chat-llm/terms.html">Terms of Use</a>
+    </div>
+
+    <a href="index.html" class="back-link">&larr; Back to all apps</a>
+</div>
+
+<footer class="site-footer">
+    <p>Built by David Picknell &bull; All apps available on iOS</p>
+    <p><a href="mailto:ferrraridave@icloud.com">Contact Support</a></p>
+</footer>
+
+<script src="main.js"></script>
 </body>
 </html>

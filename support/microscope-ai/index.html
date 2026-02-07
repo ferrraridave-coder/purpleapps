@@ -3,73 +3,80 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Microscope AI — Support</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #0d0b22;
-            color: #ffffff;
-            padding: 20px;
-            line-height: 1.6;
-            max-width: 700px;
-            margin: auto;
-        }
-        h1, h2, h3 {
-            color: #cfcfff;
-        }
-        a {
-            color: #89b4ff;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 40px;
-            font-size: 1.1em;
-        }
-    </style>
+    <title>Microscope AI &mdash; Support</title>
+    <link rel="stylesheet" href="../../styles.css" />
 </head>
 <body>
-<h1>Microscope AI — Support</h1>
+
+<div class="ambient-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="../../index.html" class="navbar-brand"><span class="brand-dot"></span> Purple Apps</a>
+        <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+        <div class="navbar-links">
+            <a href="../../index.html">Apps</a>
+            <a href="../../about.html">My Story</a>
+            <a href="https://apps.apple.com/si/developer/david-picknell/id1844054411" target="_blank" rel="noopener">App Store</a>
+        </div>
+    </div>
+</nav>
+
+<div class="legal-container">
+
+<h1>Microscope AI &mdash; Support</h1>
+
 <p>
 If you need help with the Microscope AI app, model profiles, analysis results, or any other issue,
 you can contact support directly at:<br>
 <strong>Email:</strong> <a href="mailto:ferrraridave@icloud.com">ferrraridave@icloud.com</a>
 </p>
-<p>
-Useful links:<br>
-- <a href="privacy-policy.html">Privacy Policy</a><br>
-- <a href="terms.html">Terms of Use</a><br>
-- <a href="../../microscope-ai.html">Back to Microscope AI</a>
-</p>
-<h2>Frequently Asked Questions</h2>
-<h3>What is Microscope AI?</h3>
-<p>
+
+<div class="legal-nav">
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <a href="../../microscope-ai.html">Back to Microscope AI</a>
+</div>
+
+<h2 class="reveal">Frequently Asked Questions</h2>
+
+<h3 class="reveal">What is Microscope AI?</h3>
+<p class="reveal">
 Microscope AI is a tool for exploring and understanding AI models. It lets you browse model
 information, save your own model profiles, and view AI-generated analysis of traits, quirks,
 and potential biases. You can compare models side by side and estimate usage costs using the
 built-in cost calculator.
 </p>
-<h3>Do I need an account or API keys?</h3>
-<p>
+
+<h3 class="reveal">Do I need an account or API keys?</h3>
+<p class="reveal">
 Microscope AI does not require you to create an account and does not ask you to enter any API keys.
 The app uses a secure backend service to talk to providers such as Groq for analysis, using the
 developer's own credentials. Public model information is retrieved from the web (including sources
 such as OpenRouter) without needing user accounts or API keys.
 </p>
-<h3>Is there a subscription?</h3>
-<p>
+
+<h3 class="reveal">Is there a subscription?</h3>
+<p class="reveal">
 Microscope AI is a standalone app available on the App Store. There are no in-app subscriptions or
 usage-based charges from the app itself. Any prices shown in the app are estimates of third-party
 model costs and are for reference only &mdash; they are not charges made by Microscope AI.
 </p>
-<h3>What models are supported?</h3>
-<p>
+
+<h3 class="reveal">What models are supported?</h3>
+<p class="reveal">
 Microscope AI focuses on models that are publicly listed by providers such as OpenRouter and other
 documented model catalogues. You can create and save profiles for a wide range of language models,
 including general-purpose, "thinking"/long-context, and specialised models, as long as their details
 are publicly available.
 </p>
-<h3>Does Microscope AI send my data to AI providers?</h3>
-<p>
+
+<h3 class="reveal">Does Microscope AI send my data to AI providers?</h3>
+<p class="reveal">
 When you request an analysis for a model, relevant text (for example, the model name and any
 description used for context) is sent securely to the backend service, which then forwards it to
 providers such as Groq to generate the summary, traits, quirks, and bias information. Microscope AI
@@ -77,13 +84,23 @@ does not store your analyses on the device beyond the profiles you choose to sav
 store API keys. For details on how third-party providers handle data, please refer to their own
 privacy policies.
 </p>
-<h3>How do I report a bug or request a feature?</h3>
-<p>
+
+<h3 class="reveal">How do I report a bug or request a feature?</h3>
+<p class="reveal">
 Please email a description of the problem or feature request and, if possible, include screenshots
 or steps to reproduce it.<br>
 <strong>Email:</strong> <a href="mailto:ferrraridave@icloud.com">ferrraridave@icloud.com</a>
 </p>
 
-<a href="../../index.html" class="back-link">← Back to Purple Apps</a>
+<a href="../../index.html" class="back-link">&larr; Back to Purple Apps</a>
+
+</div>
+
+<footer class="site-footer">
+    <p>Built by David Picknell &bull; All apps available on iOS</p>
+    <p><a href="mailto:ferrraridave@icloud.com">Contact Support</a></p>
+</footer>
+
+<script src="../../main.js"></script>
 </body>
 </html>
