@@ -1,2 +1,0 @@
-# purpleapps
-Purple Apps website
