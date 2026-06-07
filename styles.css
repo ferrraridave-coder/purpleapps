@@ -1,8 +1,8 @@
 /* ============================================================================
-   Purple Apps ‚Äî "Soft Structuralism" redesign
+   Purple Apps - "Soft Structuralism" redesign
    Awwwards-tier: airy silver-white canvas, massive grotesk type,
    floating double-bezel cards, diffused ambient shadows, spring motion.
-   Pure vanilla CSS ‚Äî no build step. Shared by every page.
+   Pure vanilla CSS - no build step. Shared by every page.
    ============================================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -25,7 +25,7 @@
     --blue:       #0a84ff;
     --green:      #22c55e;
 
-    /* hairline ring ‚Äî never a flat 1px gray border */
+    /* hairline ring - never a flat 1px gray border */
     --ring:       rgba(13, 14, 18, 0.07);
     --ring-2:     rgba(13, 14, 18, 0.045);
     --highlight:  inset 0 1px 0 rgba(255, 255, 255, 0.85);
@@ -67,7 +67,7 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-/* Soft ambient light pooling ‚Äî fixed, GPU-cheap, behind everything */
+/* Soft ambient light pooling - fixed, GPU-cheap, behind everything */
 body::before {
     content: "";
     position: fixed;
@@ -81,7 +81,7 @@ body::before {
     pointer-events: none;
 }
 
-/* Film-grain overlay ‚Äî fixed pseudo, pointer-events none (perf-safe) */
+/* Film-grain overlay - fixed pseudo, pointer-events none (perf-safe) */
 body::after {
     content: "";
     position: fixed;
@@ -307,7 +307,7 @@ h1 {
 }
 
 /* --------------------------------------------------------------------------
-   7. Buttons ‚Äî pills with nested "button-in-button" trailing chip
+   7. Buttons - pills with nested "button-in-button" trailing chip
    -------------------------------------------------------------------------- */
 .hero-actions,
 .download-btn {
@@ -402,7 +402,7 @@ h1 {
 .hero-showcase:hover .phone-frame.tilt-right { transform: rotate(3deg)  translateY(-6px); }
 
 /* --------------------------------------------------------------------------
-   9. App grid ‚Äî asymmetrical bento of double-bezel cards
+   9. App grid - asymmetrical bento of double-bezel cards
    -------------------------------------------------------------------------- */
 .apps-grid {
     display: grid;
@@ -449,7 +449,7 @@ h1 {
     box-shadow: var(--shadow-float), inset 0 0 0 1px var(--ring), var(--highlight);
 }
 
-/* feature card spans full width ‚Äî bento rhythm */
+/* feature card spans full width - bento rhythm */
 .app-card:nth-child(1) {
     grid-column: 1 / -1;
     grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
