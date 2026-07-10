@@ -584,6 +584,38 @@ h1 {
 
 .section-block { margin: clamp(48px, 8vw, 88px) 0; }
 
+.paper-showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+    gap: 56px;
+    align-items: center;
+}
+
+.paper-showcase .eyebrow {
+    margin-bottom: 16px;
+    color: var(--accent, var(--purple));
+    background: color-mix(in srgb, var(--accent, var(--purple)) 10%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent, var(--purple)) 22%, transparent);
+}
+
+.paper-showcase p {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.paper-showcase-media {
+    display: grid;
+    place-items: center;
+}
+
+.paper-showcase-media .phone-frame {
+    width: min(250px, 70vw);
+    aspect-ratio: 852 / 1846;
+    border-width: 7px;
+    border-radius: 32px;
+    transform: rotate(3deg);
+}
+
 .feature-list ul { margin: 0; padding-left: 22px; }
 .feature-list li { margin: 10px 0; color: var(--muted); }
 .feature-list li::marker { color: var(--purple); }
@@ -655,7 +687,8 @@ h1 {
     .product-media { min-height: 500px; }
     .apps-grid,
     .app-card,
-    .app-card:nth-child(1) { grid-template-columns: 1fr; }
+    .app-card:nth-child(1),
+    .paper-showcase { grid-template-columns: 1fr; }
     .app-card-media { min-height: 300px; }
     .quick-facts { grid-template-columns: 1fr; }
 }
