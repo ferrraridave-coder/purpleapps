@@ -1,4 +1,4 @@
-/* Purple Apps - Scroll Reveal & Mobile Nav (Soft Structuralism) */
+/* Purple Apps - Scroll Reveal & Mobile Nav (Gilded Ember) */
 
 document.addEventListener('DOMContentLoaded', () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (navInner) {
         const onScroll = () => {
             if (window.scrollY > 8) {
-                navInner.style.background = 'rgba(255, 255, 255, 0.82)';
+                navInner.style.background = 'rgba(31, 21, 11, 0.88)';
             } else {
                 navInner.style.background = '';
             }
