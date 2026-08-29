@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Peptide reconstitution calculator. Vial strength, water, target dose — units to draw. Educational tool only, not medical advice." />
+    <title>Reconstitution Calculator - Purple Apps</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="ember-field" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+</div>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html" class="navbar-brand"><span class="brand-dot"></span> Purple Apps</a>
+        <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+        <div class="navbar-links">
+            <a href="index.html">Apps</a>
+            <a href="https://apps.apple.com/si/developer/david-picknell/id1844054411" target="_blank" rel="noopener">App Store</a>
+        </div>
+    </div>
+</nav>
+
+<main class="reta-wrap reta-calc">
+    <span class="eyebrow">Educational tool</span>
+    <h1>Reconstitution Calculator</h1>
+    <p class="sub">Vial strength, water in, dose wanted — get exactly what to draw on a U-100 insulin syringe. 1 ml = 100 units.</p>
+
+    <div class="panel">
+        <div class="slider-row">
+            <label>Vial strength</label>
+            <input id="vial" type="range" min="1" max="60" step="0.25" value="12">
+            <div class="val" id="vialVal"></div>
+        </div>
+        <div class="slider-row">
+            <label>Water to add</label>
+            <input id="water" type="range" min="0.2" max="3" step="0.05" value="1">
+            <div class="val" id="waterVal"></div>
+        </div>
+        <div class="slider-row">
+            <label>Dose wanted</label>
+            <input id="dose" type="range" min="0.25" max="12" step="0.25" value="6">
+            <div class="val" id="doseVal"></div>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><div class="k">Draw this much</div><div class="v" id="unitsV"></div><div class="s" id="unitsS"></div></div>
+        <div class="stat"><div class="k">Concentration</div><div class="v" id="concV"></div><div class="s">mg per ml</div></div>
+        <div class="stat"><div class="k">Doses per vial</div><div class="v" id="countV"></div><div class="s" id="countS"></div></div>
+        <div class="stat"><div class="k">Leftover per vial</div><div class="v" id="leftV"></div><div class="s" id="leftS"></div></div>
+    </div>
+
+    <div class="legend">
+        <span><span class="dot" style="background:linear-gradient(90deg, var(--ember), var(--gold))"></span>your dose</span>
+        <span><span class="dot" style="background:var(--panel); box-shadow: inset 0 0 0 1px var(--ring);"></span>rest of the syringe</span>
+        <span>a U-100 syringe holds 100 units = 1 ml</span>
+    </div>
+
+    <div id="syringe"></div>
+
+    <div class="note">
+        Swirl gently, never shake. Cloudy solution means a problem with the product, not the maths.
+        Fridge life after mixing varies by peptide — some keep only about 5 days, some 2 weeks, some 3 to 4 weeks, some around 28 days. Check the guidance for the specific peptide you're using, and date the vial when you mix it.
+    </div>
+
+    <div class="panel" style="margin-top:22px">
+        <div style="font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px; color:var(--gold-2);">Disclaimer</div>
+        <div class="note" style="margin-top:0">
+            <p>This is an educational arithmetic tool only. It is <strong>not medical advice</strong>, and it is not a dosing guide or a recommendation to use any substance.</p>
+            <p>Always double-check measurements before drawing or injecting anything. If in doubt, have a second person verify your maths. Consult a qualified healthcare professional before using any medication.</p>
+            <p>No liability is accepted for any use of this tool or reliance on its output. If you are experiencing a medical issue, contact your GP or call NHS 111.</p>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-link">&larr; Back to all apps</a>
+</main>
+
+<footer class="site-footer">
+    <p>Built by David Picknell.</p>
+    <p><a href="mailto:ferrraridave@icloud.com">Contact Support</a></p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+function render() {
+  const vial = parseFloat($("vial").value);     // mg in the vial
+  const water = parseFloat($("water").value);   // ml of bac water added
+  const dose = parseFloat($("dose").value);     // mg wanted per jab
+
+  $("vialVal").textContent = vial + " mg";
+  $("waterVal").textContent = water.toFixed(2) + " ml";
+  $("doseVal").textContent = dose + " mg";
+
+  const conc = vial / water;                    // mg per ml
+  const drawMl = dose / conc;                   // ml to draw
+  const units = drawMl * 100;                   // U-100 units
+  const doses = vial / dose;                    // jabs per vial
+  const whole = Math.floor(doses + 1e-9);
+  const leftover = vial - whole * dose;         // mg left after whole doses
+
+  $("unitsV").textContent = units.toFixed(1) + " units";
+  $("unitsS").textContent = "= " + drawMl.toFixed(2) + " ml";
+  $("concV").textContent = conc.toFixed(2);
+  $("countV").textContent = whole + (leftover > 0.01 ? " +" : "");
+  $("countS").textContent = whole === 1 ? "full dose per vial" : "full doses per vial";
+  $("leftV").textContent = leftover > 0.005 ? leftover.toFixed(2) + " mg" : "0 mg";
+  $("leftS").textContent = leftover > 0.005 ? "left after the last full dose" : "nothing wasted";
+
+  // syringe: 0–100 units, gold fill to the draw point, overflow warning if >100
+  const over = units > 100;
+  const pct = Math.min(units, 100);
+  $("syringe").innerHTML = `
+    <div class="syr-track">
+      <div class="syr-fill ${over ? "over" : ""}" style="width:${pct}%"></div>
+      ${[0,10,20,30,40,50,60,70,80,90,100].map(u =>
+        `<div class="syr-tick" style="left:${u}%"><span>${u}</span></div>`).join("")}
+    </div>
+    <div class="syr-cap">${over
+      ? "over 100 units — that's more than one full syringe. add more water or split the dose."
+      : "units on a U-100 syringe"}</div>`;
+}
+
+["vial","water","dose"].forEach(id => $(id).addEventListener("input", render));
+render();
+</script>
+</body>
+</html>
