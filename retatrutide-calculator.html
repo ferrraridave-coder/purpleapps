@@ -272,13 +272,13 @@ function render() {
       <div class="bar-track">
         <div class="refline" style="left:${(weekDose/scaleMax)*100}%"></div>
         <div class="bar ${r.isDose ? "dose" : ""}" style="width:${pct}%">
-          <span class="mg">${r.avg.toFixed(1)}</span>
+          <span class="mg ${pct <= 70 ? "out" : ""}">${r.avg.toFixed(1)}</span>
         </div>
       </div>`;
     const info = document.createElement("div");
     info.className = "day-info";
     info.style.display = "none";
-    info.innerHTML = `<strong>Week ${Math.floor(r.day / 7) + 1}, Day ${(r.day % 7) + 1}</strong> — average ${r.avg.toFixed(2)} mg · high ${r.hi.toFixed(2)} · low ${r.lo.toFixed(2)} · ${r.resid > 0.05 ? `${r.resid.toFixed(2)} mg still active from previous weeks' jabs` : "all of this is from this week's jab"}${r.isDose ? ` · <strong>jabbed ${r.jabbed} mg today</strong>` : ""}`;
+    info.innerHTML = `<strong>Week ${Math.floor(r.day / 7) + 1}, Day ${(r.day % 7) + 1}</strong> — average ${r.avg.toFixed(2)} mg · high ${r.hi.toFixed(2)} · low ${r.lo.toFixed(2)} · ${r.resid > 0.05 ? `${r.resid.toFixed(2)} mg still active from earlier jabs` : "all of this is from the latest jab"}${r.isDose ? ` · <strong>jabbed ${r.jabbed} mg today</strong>` : ""}`;
     row.addEventListener("click", () => {
       const open = info.style.display !== "none";
       chart.querySelectorAll(".day-info").forEach(el => el.style.display = "none");
