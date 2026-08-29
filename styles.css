@@ -951,3 +951,286 @@ h1 {
 
     .btn-primary, .btn-secondary { width: 100%; justify-content: space-between; }
 }
+
+/* --------------------------------------------------------------------------
+   Retatrutide calculator (web tool)
+   -------------------------------------------------------------------------- */
+.app-card-media.reta-preview,
+.reta-preview {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 7px;
+    min-height: 280px;
+    padding: 28px 8px 8px 0;
+}
+.reta-preview-bar {
+    height: 14px;
+    border-radius: 5px;
+    background: var(--purple-2);
+    box-shadow: 0 0 18px rgba(123, 92, 201, 0.28);
+}
+.reta-preview-bar.dose {
+    background: linear-gradient(90deg, var(--ember), var(--gold));
+    box-shadow: 0 0 18px rgba(217, 168, 78, 0.35);
+}
+
+.reta-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(40px, 7vw, 88px) 24px 72px;
+}
+
+.reta-calc {
+    --reta-accent: var(--gold);
+    --reta-blue: var(--purple-2);
+    --reta-line: var(--ring);
+    color: var(--cream-soft);
+}
+
+.reta-calc h1 {
+    max-width: none;
+    font-size: clamp(2rem, 4.4vw, 3.2rem);
+    margin-bottom: 10px;
+}
+
+.reta-calc .sub {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 62ch;
+    margin-bottom: 28px;
+}
+
+.reta-calc .panel {
+    background: linear-gradient(160deg, var(--panel-2), var(--panel));
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-soft), inset 0 0 0 1px var(--ring), var(--highlight);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+}
+
+.reta-calc .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 10px 0;
+}
+.reta-calc .slider-row label {
+    flex: 0 0 190px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--cream);
+}
+.reta-calc .slider-row input[type=range] {
+    flex: 1;
+    accent-color: var(--gold);
+}
+.reta-calc .slider-row .val {
+    flex: 0 0 90px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--gold-2);
+}
+
+.reta-calc .stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+.reta-calc .stat {
+    flex: 1;
+    min-width: 130px;
+    background: linear-gradient(160deg, var(--panel-2), var(--panel));
+    border-radius: var(--radius-sm);
+    box-shadow: inset 0 0 0 1px var(--ring), var(--highlight);
+    padding: 12px 14px;
+}
+.reta-calc .stat .k {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--muted);
+    min-height: 14px;
+}
+.reta-calc .stat .v {
+    font-size: 20px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--cream);
+}
+.reta-calc .stat .s {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    min-height: 13px;
+    line-height: 1.3;
+}
+
+.reta-calc .day-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 3px 0;
+    cursor: pointer;
+}
+.reta-calc .day-label {
+    flex: 0 0 92px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+.reta-calc .bar-track {
+    position: relative;
+    flex: 1;
+    height: 22px;
+}
+.reta-calc .bar {
+    height: 100%;
+    border-radius: 5px;
+    background: var(--purple-2);
+    min-width: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+}
+.reta-calc .bar.dose { background: linear-gradient(90deg, var(--ember), var(--gold)); }
+.reta-calc .bar .mg { text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+.reta-calc .day-row.active .bar { outline: 2px solid var(--gold-2); outline-offset: 1px; }
+.reta-calc .refline {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 0;
+    border-left: 2px dashed rgba(240, 205, 130, 0.45);
+    pointer-events: none;
+}
+.reta-calc .legend {
+    display: flex;
+    gap: 18px;
+    font-size: 13px;
+    color: var(--muted);
+    margin: 10px 0 18px;
+    flex-wrap: wrap;
+}
+.reta-calc .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: -1px;
+}
+.reta-calc .note {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-top: 16px;
+}
+.reta-calc .note p { margin: 0 0 8px; color: var(--muted); }
+.reta-calc .note strong { color: var(--cream); }
+.reta-calc .day-info {
+    margin: 2px 0 6px 102px;
+    font-size: 12px;
+    color: var(--cream-soft);
+    background: var(--panel);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    border-radius: 8px;
+    padding: 7px 12px;
+    line-height: 1.5;
+}
+.reta-calc .day-info strong { color: var(--gold-2); }
+.reta-calc .week-head {
+    margin: 16px 0 6px 102px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--muted);
+}
+.reta-calc .week-head:first-of-type { margin-top: 4px; }
+.reta-calc .steady {
+    margin: 10px 0 10px 102px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #8fd9a8;
+    background: rgba(80, 190, 120, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(80, 190, 120, 0.24);
+    border-radius: 8px;
+}
+.reta-calc .numin {
+    width: 66px;
+    padding: 5px 8px;
+    font-size: 16px;
+    font-weight: 700;
+    border: 0;
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--cream);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    font-variant-numeric: tabular-nums;
+}
+.reta-calc #addStep {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 800;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    background: linear-gradient(150deg, var(--gold-2), var(--gold));
+    color: #231603;
+}
+.reta-calc .stepchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin: 2px 4px 2px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cream);
+}
+.reta-calc .stepchip button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 12px;
+    padding: 0;
+}
+
+.reta-calc .js-off {
+    background: rgba(180, 80, 60, 0.16);
+    box-shadow: inset 0 0 0 1px rgba(232, 146, 60, 0.35);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: var(--cream-soft);
+}
+
+@media (max-width: 640px) {
+    .reta-wrap { padding-left: 16px; padding-right: 16px; }
+    .reta-calc .slider-row label { flex: 0 0 108px; font-size: 12px; }
+    .reta-calc .slider-row .val { flex: 0 0 68px; font-size: 13px; }
+    .reta-calc .stat { min-width: 44%; padding: 8px 10px; }
+    .reta-calc .stat .v { font-size: 16px; }
+    .reta-calc .day-label { flex: 0 0 56px; font-size: 11px; }
+    .reta-calc .bar-track { height: 20px; }
+    .reta-calc .bar .mg { font-size: 10px; }
+    .reta-calc .day-info,
+    .reta-calc .week-head,
+    .reta-calc .steady { margin-left: 66px; }
+}
