@@ -1230,7 +1230,7 @@ h1 {
     .reta-calc .slider-row { gap: 8px; }
     .reta-calc .slider-row label { flex: 0 0 auto; font-size: 12px; max-width: 34%; }
     .reta-calc .slider-row input[type=range] { flex: 1; min-width: 0; }
-    .reta-calc .slider-row .val { flex: 0 0 auto; font-size: 13px; text-align: left; }
+    .reta-calc .slider-row .val { flex: 0 0 64px; font-size: 13px; text-align: left; font-variant-numeric: tabular-nums; }
     .reta-calc .stat { min-width: 44%; padding: 8px 10px; }
     .reta-calc .stat .v { font-size: 16px; }
     .reta-calc .day-label { flex: 0 0 56px; font-size: 11px; }
