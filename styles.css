@@ -1092,17 +1092,20 @@ h1 {
     border-radius: 5px;
     background: var(--purple-2);
     min-width: 2px;
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    padding-right: 6px;
     font-size: 11px;
     font-weight: 700;
-    color: #fff;
     white-space: nowrap;
 }
 .reta-calc .bar.dose { background: linear-gradient(90deg, var(--ember), var(--gold)); }
-.reta-calc .bar .mg { text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+.reta-calc .bar .mg {
+    position: absolute;
+    left: calc(100% + 6px);
+    color: var(--cream);
+    font-weight: 700;
+}
 .reta-calc .day-row.active .bar { outline: 2px solid var(--gold-2); outline-offset: 1px; }
 .reta-calc .refline {
     position: absolute;
@@ -1232,15 +1235,7 @@ h1 {
     .reta-calc .stat .v { font-size: 16px; }
     .reta-calc .day-label { flex: 0 0 56px; font-size: 11px; }
     .reta-calc .bar-track { height: 20px; }
-    /* narrow bars can't hold their number on a phone — float it just past the bar end */
-    .reta-calc .bar { position: relative; }
-    .reta-calc .bar .mg.out {
-        position: absolute;
-        left: calc(100% + 6px);
-        color: var(--cream);
-        text-shadow: none;
-        font-size: 10px;
-    }
+    .reta-calc .bar .mg { font-size: 10px; }
     /* cards full-width under the chart, with a gap below the bar */
     .reta-calc .day-info { margin: 6px 0 8px 0; }
     .reta-calc .week-head { margin-left: 66px; }

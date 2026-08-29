@@ -38,7 +38,7 @@
     <div class="panel">
         <div class="slider-row">
             <label>Dose per jab</label>
-            <input id="dose" type="range" min="1" max="12" step="0.25" value="4">
+            <input id="dose" type="range" min="0.5" max="12" step="0.25" value="4">
             <div class="val" id="doseVal"></div>
         </div>
         <div class="slider-row">
@@ -252,7 +252,7 @@ function render() {
     : weekly.toFixed(2) + " mg/wk";
   $("weeklyV").textContent = weeklyTxt;
 
-  const scaleMax = Math.max(maxAvg, D, steadyPeak, windowPeak) * 1.06;
+  const scaleMax = Math.max(maxAvg, D, steadyPeak, windowPeak) * 1.14; // headroom: numbers sit past the bar end
   const chart = $("chart");
   chart.innerHTML = "";
   rows.forEach(r => {
@@ -272,7 +272,7 @@ function render() {
       <div class="bar-track">
         <div class="refline" style="left:${(weekDose/scaleMax)*100}%"></div>
         <div class="bar ${r.isDose ? "dose" : ""}" style="width:${pct}%">
-          <span class="mg ${pct <= 70 ? "out" : ""}">${r.avg.toFixed(1)}</span>
+          <span class="mg">${r.avg.toFixed(1)}</span>
         </div>
       </div>`;
     const info = document.createElement("div");
