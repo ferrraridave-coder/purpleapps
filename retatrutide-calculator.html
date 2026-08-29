@@ -157,16 +157,30 @@ function render() {
   const doses = [];
   for (let t = 0; t < days; t += interval) doses.push({ t, d: doseAtTime(t) });
 
-  const dayHiLo = (d, ds) => {
-    const cands = [d, d + 23.99/24];
+  // derivative of the level — for finding a day's TRUE peak. with tails from earlier
+  // jabs decaying, the real max lands a bit after jab+Tmax, so we solve dL/dt = 0.
+  const dLevel = (t, ds) => {
+    let s = 0;
     for (const x of ds) {
-      const tp = x.t + tmax;
-      if (tp > d && tp < d + 1) cands.push(tp);
+      const dt = t - x.t;
+      if (dt <= 0) continue;
+      s += x.d * (ka/(ka-ke)) * (-ke*Math.exp(-ke*dt) + ka*Math.exp(-ka*dt));
     }
-    let hi = 0, lo = Infinity;
-    for (const c of cands) {
-      const v = levelAt(c, ds, ka, ke);
-      if (v > hi) hi = v; if (v < lo) lo = v;
+    return s;
+  };
+  const dayHiLo = (d, ds) => {
+    let hi = Math.max(levelAt(d, ds, ka, ke), levelAt(d + 23.99/24, ds, ka, ke));
+    let lo = Math.min(levelAt(d, ds, ka, ke), levelAt(d + 23.99/24, ds, ka, ke));
+    for (const x of ds) {
+      let lo_ = Math.max(d, x.t + 0.1), hi_ = Math.min(d + 1, x.t + 4);
+      if (lo_ >= hi_) continue;
+      if (dLevel(lo_, ds) <= 0 || dLevel(hi_, ds) >= 0) continue; // no interior peak today
+      for (let i = 0; i < 50; i++) {
+        const mid = (lo_ + hi_) / 2;
+        if (dLevel(mid, ds) > 0) lo_ = mid; else hi_ = mid;
+      }
+      const v = levelAt((lo_ + hi_) / 2, ds, ka, ke);
+      if (v > hi) hi = v;
     }
     return { hi, lo };
   };
@@ -211,13 +225,11 @@ function render() {
   for (let d = Math.floor(interval); d < SIM_END - 7; d++) {
     if (dayAvg(d) >= infAvg * 0.99) { steadyDay = d; break; }
   }
+  // quoted peak = the asymptotic ceiling (true daily peaks, derivative-solved)
   let steadyPeak = 0;
-  if (steadyDay >= 0) {
-    const wkStart = Math.floor(steadyDay / 7) * 7;
-    for (let d = wkStart; d < wkStart + 7; d++) {
-      const { hi } = dayHiLo(d, extDoses);
-      if (hi > steadyPeak) steadyPeak = hi;
-    }
+  for (let d = SIM_END - 7; d < SIM_END; d++) {
+    const { hi } = dayHiLo(d, extDoses);
+    if (hi > steadyPeak) steadyPeak = hi;
   }
 
   const steadyWeek = steadyDay >= 0 ? Math.floor(steadyDay/7) + 1 : null;
@@ -278,8 +290,7 @@ function render() {
     if (steadyDay === r.day) {
       const ss = document.createElement("div");
       ss.className = "steady";
-      ss.innerHTML = `steady state — from this week on, every week stays within 1% of this level (peak ~${steadyPeak.toFixed(2)} mg)`;
-      chart.appendChild(ss);
+      ss.innerHTML = `steady state — from this week on, every week stays within 1% of this level (peak ~${steadyPeak.toFixed(2)} mg)`;      chart.appendChild(ss);
     }
   });
   if (steadyDay === -1 || steadyDay >= days) {
