@@ -53,8 +53,11 @@
                     <span style="font-size:12px; color:var(--muted);">from week</span>
                     <input id="stepWeek" type="number" min="2" max="52" value="5" class="numin">
                     <span style="font-size:12px; color:var(--muted);">dose becomes</span>
-                    <input id="stepDose" type="number" min="0.5" max="12" step="0.5" value="8" class="numin">
+                    <input id="stepDose" type="number" min="0.5" max="12" step="0.25" value="8" class="numin">
                     <span style="font-size:12px; color:var(--muted);">mg</span>
+                    <span style="font-size:12px; color:var(--muted);">every</span>
+                    <input id="stepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
+                    <span style="font-size:12px; color:var(--muted);">days (optional)</span>
                     <button id="addStep" type="button">Add step</button>
                 </div>
                 <div id="stepList" style="font-size:12px; color:var(--muted);">none — same dose every jab</div>
@@ -143,19 +146,29 @@ function render() {
   const ke = Math.LN2 / hl;
   const ka = solveKa(ke, tmax);
 
-  const doseAtTime = t => {
+  const schedAtTime = t => {
     const week = Math.floor(t / 7) + 1;
-    let d = D;
-    for (const s of steps) if (week >= s.week) d = s.dose;
-    return d;
+    let d = D, iv = interval;
+    for (const s of steps) if (week >= s.week) { d = s.dose; if (s.interval) iv = s.interval; }
+    return { d, iv };
+  };
+  // jab times are generated, not stepped — the gap can change mid-schedule
+  const buildDoses = until => {
+    const out = [];
+    let t = 0;
+    while (t < until) {
+      const s = schedAtTime(t);
+      out.push({ t, d: s.d });
+      t += s.iv;
+    }
+    return out;
   };
 
   $("doseVal").textContent = D + " mg";
   $("intervalVal").textContent = interval + (interval === 1 ? " day" : " days");
   $("weeksVal").textContent = days/7 + " wks";
 
-  const doses = [];
-  for (let t = 0; t < days; t += interval) doses.push({ t, d: doseAtTime(t) });
+  const doses = buildDoses(days);
 
   // derivative of the level — for finding a day's TRUE peak. with tails from earlier
   // jabs decaying, the real max lands a bit after jab+Tmax, so we solve dL/dt = 0.
@@ -189,7 +202,7 @@ function render() {
     let sum = 0;
     for (let h = 0; h < 24; h++) sum += levelAt(d + h/24, doses, ka, ke);
     const { hi, lo } = dayHiLo(d, doses);
-    const doseToday = doses.find(x => x.t === d);
+    const doseToday = doses.find(x => Math.floor(x.t) === d);
     const isDose = !!doseToday;
     const latestDose = Math.max(...doses.filter(x => x.t <= d).map(x => x.t));
     const earlierDoses = doses.filter(x => x.t < latestDose);
@@ -208,8 +221,7 @@ function render() {
   const weekly = D * 7 / interval;
 
   const SIM_END = 434;
-  const extDoses = [];
-  for (let t = 0; t < SIM_END; t += interval) extDoses.push({ t, d: doseAtTime(t) });
+  const extDoses = buildDoses(SIM_END);
   const dayAvg = d => {
     let sum = 0;
     for (let h = 0; h < 24; h++) sum += levelAt(d + h/24, extDoses, ka, ke);
@@ -222,7 +234,10 @@ function render() {
   }
 
   let steadyDay = -1;
-  for (let d = Math.floor(interval); d < SIM_END - 7; d++) {
+  // plateau hunting starts when the FINAL schedule starts — a higher starting dose can
+  // overshoot the maintenance ceiling and trigger false "steady state" hits early
+  const lastStepDay = steps.length ? (Math.max(...steps.map(s => s.week)) - 1) * 7 : 0;
+  for (let d = Math.max(Math.floor(interval), lastStepDay); d < SIM_END - 7; d++) {
     if (dayAvg(d) >= infAvg * 0.99) { steadyDay = d; break; }
   }
   // quoted peak = the asymptotic ceiling (true daily peaks, derivative-solved)
@@ -247,8 +262,9 @@ function render() {
   }
   $("troughV").textContent = trough.toFixed(2) + " mg";
   $("avgV").textContent = avg.toFixed(2) + " mg";
+  const fmtSeg = (d, iv) => d + " mg/" + iv + "d";
   const weeklyTxt = steps.length
-    ? [D, ...steps.map(s => s.dose)].join(" → ") + " mg"
+    ? [fmtSeg(D, interval), ...steps.map(s => fmtSeg(s.dose, s.interval || interval))].join(" → ")
     : weekly.toFixed(2) + " mg/wk";
   $("weeklyV").textContent = weeklyTxt;
 
@@ -266,7 +282,7 @@ function render() {
     row.className = "day-row";
     const lbl = `Day ${(r.day % 7) + 1}`;
     const pct = (r.avg/scaleMax)*100;
-    const weekDose = doseAtTime(r.day);
+    const weekDose = schedAtTime(r.day).d;
     row.innerHTML = `
       <div class="day-label">${lbl}</div>
       <div class="bar-track">
@@ -322,7 +338,7 @@ function renderStepList() {
   steps.forEach((s, i) => {
     const chip = document.createElement("span");
     chip.className = "stepchip";
-    chip.innerHTML = `week ${s.week}+ → ${s.dose} mg <button type="button" aria-label="remove">✕</button>`;
+    chip.innerHTML = `week ${s.week}+ → ${s.dose} mg${s.interval ? ` · every ${s.interval}d` : ""} <button type="button" aria-label="remove">✕</button>`;
     chip.querySelector("button").addEventListener("click", () => {
       steps.splice(i, 1);
       renderStepList();
@@ -335,9 +351,12 @@ function renderStepList() {
 $("addStep").addEventListener("click", () => {
   const w = parseInt($("stepWeek").value);
   const d = parseFloat($("stepDose").value);
+  const iv = parseFloat($("stepInterval").value);
   if (!w || !d || w < 2) return;
+  const step = { week: w, dose: d };
+  if (iv && iv >= 1 && iv <= 14) step.interval = iv;
   const existing = steps.findIndex(s => s.week === w);
-  if (existing >= 0) steps[existing].dose = d; else steps.push({ week: w, dose: d });
+  if (existing >= 0) steps[existing] = step; else steps.push(step);
   steps.sort((a, b) => a.week - b.week);
   renderStepList();
   persist();
