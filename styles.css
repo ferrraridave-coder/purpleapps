@@ -468,6 +468,59 @@ h1 {
         0 0 0 1px rgba(240, 205, 130, 0.10);
 }
 
+/* Mac window frames (landscape screenshots) */
+.mac-frame {
+    overflow: hidden;
+    background: #050505;
+    border: 6px solid #0c0805;
+    border-radius: 16px;
+    box-shadow:
+        var(--shadow-float),
+        0 0 46px rgba(217, 168, 78, 0.14),
+        inset 0 0 0 1px rgba(240, 205, 130, 0.12),
+        0 0 0 1px rgba(240, 205, 130, 0.08);
+    transition: transform 0.7s var(--ease), box-shadow 0.7s var(--ease);
+}
+.mac-frame img { width: 100%; display: block; }
+.mac-frame:hover {
+    box-shadow:
+        var(--shadow-float),
+        0 0 64px rgba(217, 168, 78, 0.22),
+        inset 0 0 0 1px rgba(240, 205, 130, 0.16),
+        0 0 0 1px rgba(240, 205, 130, 0.10);
+}
+
+/* hero: one wide window with a second overlapping, flow-based so it
+   scales at any width without absolute positioning */
+.product-media-mac { max-width: 100%; }
+.product-media-mac .mac-frame.hero-main { width: 100%; }
+.product-media-mac .mac-frame.hero-over {
+    width: 54%;
+    margin: -16% 5% 0 auto;
+    position: relative;
+    transform: rotate(2deg);
+}
+.product-media-mac .mac-frame.hero-over:hover { transform: rotate(0deg) translateY(-4px); }
+
+.mac-showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(340px, 1.15fr);
+    gap: 56px;
+    align-items: center;
+    margin: clamp(48px, 8vw, 88px) 0;
+}
+.mac-showcase .eyebrow {
+    margin-bottom: 16px;
+    color: var(--accent, var(--purple));
+    background: color-mix(in srgb, var(--accent, var(--purple)) 14%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent, var(--purple)) 28%, transparent);
+}
+.mac-showcase p { color: var(--muted); font-size: 1.05rem; }
+.mac-showcase-media { display: grid; place-items: center; }
+.mac-showcase-media .mac-frame { width: 100%; transform: rotate(1.4deg); }
+.mac-showcase-reverse .mac-showcase-media .mac-frame { transform: rotate(-1.4deg); }
+.mac-showcase-media .mac-frame:hover { transform: rotate(0deg); }
+
 /* --------------------------------------------------------------------------
    9. App grid — asymmetrical bento of double-bezel cards
    -------------------------------------------------------------------------- */
@@ -821,6 +874,7 @@ h1 {
     .app-card:nth-child(1),
     .paper-showcase,
     .velocity-trip-showcase,
+    .mac-showcase,
     .voxium-showcase { grid-template-columns: 1fr; }
     .app-card-media { min-height: 300px; }
     .quick-facts { grid-template-columns: 1fr; }

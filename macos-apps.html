@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>macOS Apps - Purple Apps</title>
+    <meta name="description" content="Eve is a voice companion for your Mac with real long-term memory — natural conversation powered by Grok's realtime voice, and a memory map you can watch grow." />
+    <title>Eve for Mac - Voice Companion with Real Memory | Purple Apps</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body style="--accent:#7fe0bb">
 
 <div class="ember-field" aria-hidden="true">
     <span></span><span></span><span></span><span></span>
@@ -26,18 +27,129 @@
     </div>
 </nav>
 
+<header class="product-hero">
+    <div>
+        <div class="icon-wrap">EVE</div>
+        <span class="eyebrow">Voice companion for your Mac</span>
+        <h1>Eve</h1>
+        <p class="tagline">Talk to your Mac like it's a person. Eve is voice-only, powered by Grok's realtime voice — and she has real long-term memory, recalling what matters mid-conversation and remembering you from one chat to the next.</p>
+        <div class="download-btn">
+            <a href="https://downloads.purpleapps.ai/Eve.dmg" class="btn-primary">Download Eve for Mac</a>
+        </div>
+        <div class="quick-facts">
+            <div><strong>Grok realtime voice</strong><span>Natural conversation with barge-in</span></div>
+            <div><strong>Real long-term memory</strong><span>Recalls mid-chat, remembers forever</span></div>
+            <div><strong>Your xAI account</strong><span>Subscription sign-in or API key</span></div>
+        </div>
+    </div>
+    <div class="product-media product-media-mac" aria-hidden="true">
+        <div class="mac-frame hero-main"><img src="assets/screenshots/Eve Brain Whole.jpg" alt="" /></div>
+        <div class="mac-frame hero-over"><img src="assets/screenshots/Eve Message Thread.png" alt="" /></div>
+    </div>
+</header>
+
 <main class="detail-content">
-    <section class="section-block">
-        <span class="eyebrow">Coming soon</span>
-        <h2>Purple Apps is coming to the Mac.</h2>
-        <p>We're putting the finishing touches on this page. Check back soon.</p>
+    <div class="callout">
+        <h3>She gets to know you — and it shows.</h3>
+        <p>Every conversation with Eve is distilled into facts, people, notes, and topics that she keeps on your Mac. Ask about something you mentioned weeks ago and she just knows. Watch it all grow in her memory map.</p>
+    </div>
+
+    <section class="mac-showcase">
+        <div>
+            <span class="eyebrow">Just talk</span>
+            <h2>A conversation, not a command line.</h2>
+            <p>Click the mic and start talking. Eve listens, thinks, and replies in a natural voice — and you can interrupt her mid-sentence, just like a real conversation. Server-side turn detection knows when you've finished, so there are no awkward pauses or cut-offs.</p>
+            <p>Every exchange lands in a clean transcript with little chips showing when Eve recalled something from her memory to answer you.</p>
+        </div>
+        <div class="mac-showcase-media">
+            <div class="mac-frame"><img src="assets/screenshots/Eve Message Thread.png" alt="Eve conversation transcript with memory recall chips" loading="lazy" /></div>
+        </div>
+    </section>
+
+    <section class="mac-showcase mac-showcase-reverse">
+        <div>
+            <span class="eyebrow">A brain that grows</span>
+            <h2>Watch her memory map fill in.</h2>
+            <p>Eve's long-term memory isn't a black box. Her memory map lays out everything she knows — facts, people and things, emotions, and what works with you — as a living brain you can zoom, filter, and explore.</p>
+            <p>Hover any node to see exactly what she remembers. Memories are written after every turn and recalled on demand, mid-reply, when they'd help.</p>
+        </div>
+        <div class="mac-showcase-media">
+            <div class="mac-frame"><img src="assets/screenshots/Eve Brain Node Hovered.jpg" alt="Eve memory map zoomed in with an entity node highlighted" loading="lazy" /></div>
+        </div>
+    </section>
+
+    <section class="mac-showcase">
+        <div>
+            <span class="eyebrow">Voice-only focus</span>
+            <h2>Nothing between you and the conversation.</h2>
+            <p>No text box, no clutter. Eve's main window is a calm, voice-first space — her face, her name, and a mic. Start a conversation with a click or a keyboard shortcut, and the transcript is there when you want to look back.</p>
+        </div>
+        <div class="mac-showcase-media">
+            <div class="mac-frame"><img src="assets/screenshots/Eve Voice Only UI.png" alt="Eve's voice-only main window with mic button" loading="lazy" /></div>
+        </div>
+    </section>
+
+    <section class="mac-showcase mac-showcase-reverse">
+        <div>
+            <span class="eyebrow">Tuned to your room</span>
+            <h2>Settings that apply instantly.</h2>
+            <p>Mic gain, noise gate, voice activity threshold, and how long a silence lasts before your turn ends — every control applies immediately, even mid-conversation, so you can dial Eve in while you're talking to her.</p>
+            <p>One voice everywhere: pick Eve's voice once and a paired iPhone picks it up within half a minute.</p>
+        </div>
+        <div class="mac-showcase-media">
+            <div class="mac-frame"><img src="assets/screenshots/Eve Settings.png" alt="Eve voice settings with mic gain, noise gate, and turn detection controls" loading="lazy" /></div>
+        </div>
+    </section>
+
+    <section class="feature-list">
+        <span class="eyebrow">Also on iPhone</span>
+        <h2>Eve R — Eve in your pocket.</h2>
+        <p>Eve R brings Eve to your iPhone. Your voice goes straight to xAI from the phone, while her memory stays safely on your paired Mac, reached over your own private Tailscale network. Pair once by scanning a QR code, and she sounds the same everywhere.</p>
+        <p><strong>Please note:</strong> Eve R is a companion to the Mac app and only works if Eve is installed and running on your Mac. If you don't have the Mac app, Eve R can't do anything for you — so grab Eve above first.</p>
+        <div class="download-btn">
+            <a href="eve-r.html" class="btn-secondary">More about Eve R</a>
+            <a href="https://testflight.apple.com/join/EZFEWbCM" class="btn-primary" target="_blank" rel="noopener">Join the Eve R TestFlight</a>
+        </div>
+    </section>
+
+    <section class="feature-list">
+        <span class="eyebrow">Before you download</span>
+        <h2>Two things Eve can't work without.</h2>
+        <p>Eve is free, but she needs two accounts of your own to run. Both are <strong>mandatory</strong> — without them set up, the app won't work:</p>
+        <ul>
+            <li><strong>An xAI account</strong> — either an xAI subscription you can sign in with, or an xAI API key. This powers Eve's voice and conversation.</li>
+            <li><strong>A DeepSeek API key</strong> — this powers Eve's long-term memory, distilling and organising everything she remembers about you.</li>
+        </ul>
+        <p>You'll also need a Mac running macOS Tahoe 26 or later. And if you want to connect Eve R on your iPhone, you'll need <strong>Tailscale</strong> (100% free) installed on both devices so the phone can reach her memory privately.</p>
+    </section>
+
+    <section class="feature-list">
+        <h2>Key features</h2>
+        <ul>
+            <li>Natural, voice-only conversations powered by xAI's Grok realtime voice</li>
+            <li>Barge-in and server-side turn detection — interrupt her like a person</li>
+            <li>Real long-term memory: recalled mid-conversation, written after every turn</li>
+            <li>A living memory map you can zoom, filter, and explore</li>
+            <li>Instant-apply voice and microphone settings</li>
+            <li>One voice across your Mac and a paired iPhone</li>
+            <li>Signs in with your xAI subscription or API key</li>
+            <li>Self-contained: the whole memory engine runs on your Mac, and your memories never leave it</li>
+            <li>Signed and notarised direct download — no App Store required</li>
+            <li>Also available — Eve R for iPhone, now in open TestFlight testing</li>
+        </ul>
+    </section>
+
+    <section class="pricing-card">
+        <h2>Free to download.</h2>
+        <div class="price">Runs on your own accounts</div>
+        <p>Eve herself is free. To use her you'll need an xAI account (subscription sign-in or API key) for voice, and a DeepSeek API key for memory — both are required. The download is a signed, notarised disk image (about 900 MB, because her entire on-device memory engine ships inside the app). Requires macOS Tahoe 26 or later.</p>
     </section>
 
     <a href="index.html" class="back-link">&larr; Back to all apps</a>
 </main>
 
 <footer class="site-footer">
-    <p>Built by David Picknell. All apps available on iOS.</p>
+    <p>Built by David Picknell. Eve is a direct download for macOS.</p>
     <p><a href="mailto:ferrraridave@icloud.com">Contact Support</a></p>
 </footer>
 
