@@ -1124,11 +1124,9 @@ h1 {
     text-align: right;
     -moz-appearance: textfield;
     appearance: textfield;
-    border-bottom: 1px dashed transparent;
 }
 .reta-calc .slider-row .val input:focus {
     outline: none;
-    border-bottom-color: var(--gold-2);
 }
 .reta-calc .slider-row .val input::-webkit-outer-spin-button,
 .reta-calc .slider-row .val input::-webkit-inner-spin-button {
