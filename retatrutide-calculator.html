@@ -41,7 +41,7 @@
         <div class="slider-row">
             <label>Dose per jab</label>
             <input id="dose" type="range" min="0.5" max="12" step="0.25" value="4">
-            <div class="val" id="doseVal"></div>
+            <div class="val"><input id="doseVal" type="number" min="0.5" max="12" step="0.25" inputmode="decimal"><span class="unit">mg</span></div>
         </div>
         <div class="slider-row">
             <label>Days between jabs</label>
@@ -141,7 +141,7 @@ function render() {
   const tmax = 1.5;
   const days = parseInt($("weeks").value) * 7;
 
-  $("doseVal").textContent = D + " mg";
+  if (document.activeElement !== $("doseVal")) $("doseVal").value = Math.round(D * 100) / 100;
   $("intervalVal").textContent = interval + (interval === 1 ? " day" : " days");
   $("weeksVal").textContent = days/7 + " wks";
 
@@ -165,10 +165,6 @@ function render() {
     }
     return out;
   };
-
-  $("doseVal").textContent = D + " mg";
-  $("intervalVal").textContent = interval + (interval === 1 ? " day" : " days");
-  $("weeksVal").textContent = days/7 + " wks";
 
   const doses = buildDoses(days);
 
@@ -366,6 +362,14 @@ $("addStep").addEventListener("click", () => {
 });
 
 ["dose","interval","weeks"].forEach(id => $(id).addEventListener("input", () => { persist(); render(); }));
+$("doseVal").addEventListener("input", () => {
+  const v = parseFloat($("doseVal").value);
+  if (isNaN(v)) return;
+  const sl = $("dose");
+  sl.value = Math.min(parseFloat(sl.max), Math.max(parseFloat(sl.min), v));
+  persist();
+  render();
+});
 renderStepList();
 render();
 </script>
