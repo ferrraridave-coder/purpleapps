@@ -55,7 +55,7 @@
                     <span style="font-size:12px; color:var(--muted);">from week</span>
                     <input id="stepWeek" type="number" min="2" max="52" value="5" class="numin">
                     <span style="font-size:12px; color:var(--muted);">dose becomes</span>
-                    <input id="stepDose" type="number" min="0.5" max="12" step="0.25" value="8" class="numin">
+                    <input id="stepDose" type="number" min="0" max="12" step="0.25" value="8" class="numin">
                     <span style="font-size:12px; color:var(--muted);">mg</span>
                     <span style="font-size:12px; color:var(--muted);">every</span>
                     <input id="stepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
@@ -354,7 +354,7 @@ $("addStep").addEventListener("click", () => {
   const w = parseInt($("stepWeek").value);
   const d = parseFloat($("stepDose").value);
   const iv = parseFloat($("stepInterval").value);
-  if (!w || !d || w < 2) return;
+  if (!w || isNaN(d) || d < 0 || w < 2) return;
   const step = { week: w, dose: d };
   if (iv && iv >= 1 && iv <= 14) step.interval = iv;
   const existing = steps.findIndex(s => s.week === w);
