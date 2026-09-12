@@ -58,9 +58,12 @@
                 <div class="val" id="intervalVal"></div>
             </div>
             <div class="slider-row">
-                <label>Starting day</label>
-                <input id="startDay" type="number" min="1" max="364" step="1" value="1" class="numin">
-                <div class="val" style="flex:0 0 auto; font-size:12px; color:var(--muted);">day 1 = chart start · day 141 = week 21</div>
+                <label>Starts</label>
+                <span style="color:var(--muted); font-size:14px;">week</span>
+                <input id="startWeek" type="number" min="1" max="52" step="1" value="1" class="numin">
+                <span style="color:var(--muted); font-size:14px;">day</span>
+                <input id="startDay" type="number" min="1" max="7" step="1" value="1" class="numin">
+                <div class="val" style="flex:0 0 auto; font-size:12px; color:var(--muted);">week 1 day 1 = chart start</div>
             </div>
             <div class="slider-row" style="align-items:flex-start;">
                 <label>Titration steps</label>
@@ -93,20 +96,18 @@
                 <input id="cDose" type="range" min="0" max="3" step="0.05" value="0.95">
                 <div class="val"><input id="cDoseVal" type="number" min="0" max="3" step="0.05" inputmode="decimal"><span class="unit">mg</span></div>
             </div>
-            <div class="slider-row" id="syncRow">
-                <label>Same jab days as retatrutide</label>
-                <label class="switch"><input id="syncDays" type="checkbox"><span class="knob"></span></label>
-                <div class="val" id="syncVal" style="flex:0 0 auto; font-size:12px;">off</div>
-            </div>
             <div class="slider-row" id="cIntervalRow">
                 <label>Days between jabs</label>
                 <input id="cInterval" type="range" min="0" max="7" step="0.5" value="7">
                 <div class="val" id="cIntervalVal"></div>
             </div>
             <div class="slider-row" id="cStartRow">
-                <label>Starting day</label>
-                <input id="cStartDay" type="number" min="1" max="364" step="1" value="1" class="numin">
-                <div class="val" style="flex:0 0 auto; font-size:12px; color:var(--muted);">day 1 = chart start · day 141 = week 21</div>
+                <label>Starts</label>
+                <span style="color:var(--muted); font-size:14px;">week</span>
+                <input id="cStartWeek" type="number" min="1" max="52" step="1" value="1" class="numin">
+                <span style="color:var(--muted); font-size:14px;">day</span>
+                <input id="cStartDay" type="number" min="1" max="7" step="1" value="1" class="numin">
+                <div class="val" style="flex:0 0 auto; font-size:12px; color:var(--muted);">week 1 day 1 = chart start</div>
             </div>
             <div class="slider-row" style="align-items:flex-start;">
                 <label>Titration steps</label>
@@ -117,7 +118,7 @@
                         <span style="font-size:12px; color:var(--muted);">dose becomes</span>
                         <input id="cStepDose" type="number" min="0" max="3" step="0.05" value="1.9" class="numin">
                         <span style="font-size:12px; color:var(--muted);">mg</span>
-                        <span id="cStepIntervalWrap" style="display:none; align-items:center; gap:8px;">
+                        <span id="cStepIntervalWrap" style="display:inline-flex; align-items:center; gap:8px;">
                             <span style="font-size:12px; color:var(--muted);">every</span>
                             <input id="cStepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
                             <span style="font-size:12px; color:var(--muted);">days (optional)</span>
@@ -127,7 +128,7 @@
                     <div id="cStepList" style="font-size:12px; color:var(--muted);">none — same dose every jab</div>
                 </div>
             </div>
-            <div class="hint">Days between jabs, starting day (and step intervals) follow retatrutide while the sync toggle is on — only the milligrammes differ.</div>
+            <div class="hint">Set the same jab days and start on both cards to run them in lockstep — or don't. Each peptide keeps its own schedule.</div>
         </div>
     </div>
 
@@ -249,10 +250,25 @@ if (saved) {
   if (saved.weeks !== undefined) $("weeks").value = saved.weeks;
   if (saved.cDose !== undefined) $("cDose").value = saved.cDose;
   if (saved.cInterval !== undefined) $("cInterval").value = saved.cInterval;
-  if (saved.startDay !== undefined) $("startDay").value = saved.startDay;
-  if (saved.cStartDay !== undefined) $("cStartDay").value = saved.cStartDay;
+  // week+day pickers; migrate the old single "startDay" (1–364) if that's what's saved
+  const migrate = (wId, dId, oldAbs, svW, svD) => {
+    if (svW !== undefined || svD !== undefined) {
+      if (svW !== undefined) $(wId).value = svW;
+      if (svD !== undefined) $(dId).value = svD;
+    } else if (oldAbs !== undefined) {
+      const a = Math.max(1, parseInt(oldAbs) || 1);
+      $(wId).value = Math.floor((a - 1) / 7) + 1;
+      $(dId).value = ((a - 1) % 7) + 1;
+    }
+  };
+  migrate("startWeek", "startDay", saved.startDay, saved.startWeek, saved.startDayNum);
+  migrate("cStartWeek", "cStartDay", saved.cStartDayAbs, saved.cStartWeek, saved.cStartDay);
+  // note: legacy cStartDay was absolute (1–364) — handled by cStartDayAbs alias below
+  if (saved.cStartDay !== undefined && saved.cStartWeek === undefined) {
+    const a = Math.max(1, parseInt(saved.cStartDay) || 1);
+    if (a > 7) { $("cStartWeek").value = Math.floor((a - 1) / 7) + 1; $("cStartDay").value = ((a - 1) % 7) + 1; }
+  }
 }
-$("syncDays").checked = saved && saved.sync !== undefined ? !!saved.sync : false; // default off; saved choice wins
 const sel = { reta: true, cagri: false };
 if (saved) {
   if (saved.selReta !== undefined) sel.reta = !!saved.selReta;
@@ -266,8 +282,9 @@ function persist() {
     localStorage.setItem("retaCalc", JSON.stringify({
       dose: $("dose").value, interval: $("interval").value, weeks: $("weeks").value, steps,
       cDose: $("cDose").value, cInterval: $("cInterval").value, cSteps,
-      startDay: $("startDay").value, cStartDay: $("cStartDay").value,
-      sync: $("syncDays").checked, selReta: sel.reta, selCagri: sel.cagri
+      startWeek: $("startWeek").value, startDayNum: $("startDay").value,
+      cStartWeek: $("cStartWeek").value, cStartDay: $("cStartDay").value,
+      selReta: sel.reta, selCagri: sel.cagri
     }));
   } catch { /* embedded webviews can refuse storage — carry on without it */ }
 }
@@ -283,7 +300,11 @@ function buildCompound(key) {
     tmax: isReta ? 1.5 : 1,
     D: parseFloat($(isReta ? "dose" : "cDose").value),
     interval: Math.max(1, parseFloat($(isReta ? "interval" : "cInterval").value) || 1), // slider runs 0–7 so 3.5 sits dead-centre; anything under 1 = daily
-    startDay: Math.min(364, Math.max(1, parseInt($(isReta ? "startDay" : "cStartDay").value) || 1)),
+    startDay: (() => {
+      const w = Math.min(52, Math.max(1, parseInt($(isReta ? "startWeek" : "cStartWeek").value) || 1));
+      const d = Math.min(7, Math.max(1, parseInt($(isReta ? "startDay" : "cStartDay").value) || 1));
+      return (w - 1) * 7 + d; // first jab lands on this day; 1 = chart start
+    })(),
     steps: isReta ? steps : cSteps,
     statIds: isReta
       ? { peakK: "peakK", peakV: "peakV", peakS: "peakS", trough: "troughV", avg: "avgV", weekly: "weeklyV" }
@@ -291,7 +312,7 @@ function buildCompound(key) {
   };
 }
 
-function computeCompound(c, days, retaRef, syncOn) {
+function computeCompound(c, days) {
   const ke = Math.LN2 / c.hl;
   const ka = solveKa(ke, c.tmax);
   c.ka = ka; c.ke = ke;
@@ -299,14 +320,9 @@ function computeCompound(c, days, retaRef, syncOn) {
   const schedAtTime = t => {
     const week = Math.floor(t / 7) + 1;
     let d = c.D, iv = c.interval;
-    for (const s of c.steps) if (week >= s.week) { d = s.dose; if (s.interval && (!syncOn || isRetaC(c))) iv = s.interval; }
-    if (syncOn && c.key === "cagri" && retaRef) {
-      iv = retaRef.interval;
-      for (const s of retaRef.steps) if (week >= s.week && s.interval) iv = s.interval;
-    }
+    for (const s of c.steps) if (week >= s.week) { d = s.dose; if (s.interval) iv = s.interval; }
     return { d, iv };
   };
-  function isRetaC(c) { return c.key === "reta"; }
   c.schedAtTime = schedAtTime;
   const buildDoses = until => {
     const out = [];
@@ -414,8 +430,6 @@ function render() {
 
   const retaOn = sel.reta;
   const cagriOn = sel.cagri;
-  const bothOn = retaOn && cagriOn;
-  const sync = bothOn && $("syncDays").checked;
 
   // picker chips + panels + stats + legend visibility
   document.querySelectorAll(".pep-chip").forEach(ch => {
@@ -427,12 +441,6 @@ function render() {
   $("statsCagri").style.display = cagriOn ? "" : "none";
   $("legReta").style.display = retaOn ? "" : "none";
   $("legCagri").style.display = cagriOn ? "" : "none";
-  $("syncRow").style.display = bothOn ? "" : "none";
-  $("cIntervalRow").style.display = (cagriOn && !sync) ? "" : (cagriOn ? "" : "none");
-  $("syncVal").textContent = sync ? "on" : "off";
-  $("cInterval").disabled = sync;
-  $("cIntervalVal").style.opacity = sync ? 0.35 : 1;
-  $("cStepIntervalWrap").style.display = sync ? "none" : "contents";
 
   if (!retaOn && !cagriOn) {
     $("chart").innerHTML = "";
@@ -447,9 +455,8 @@ function render() {
 
   const R = buildCompound("reta");
   const C = buildCompound("cagri");
-  if (sync) { C.interval = R.interval; C.startDay = R.startDay; }
-  if (retaOn) computeCompound(R, days, null, false);
-  if (cagriOn) computeCompound(C, days, retaOn ? R : null, sync);
+  if (retaOn) computeCompound(R, days);
+  if (cagriOn) computeCompound(C, days);
 
   const ivLabel = (raw, floored) => floored + (floored === 1 ? " day" : " days"); // under 1 floors to daily and just reads "1 day"
   if (retaOn) {
@@ -594,7 +601,7 @@ $("cAddStep").addEventListener("click", () => {
   const iv = parseFloat($("cStepInterval").value);
   if (!w || isNaN(d) || d < 0 || w < 2) return;
   const step = { week: w, dose: d };
-  if (!$("syncDays").checked && iv && iv >= 1 && iv <= 14) step.interval = iv;
+  if (iv && iv >= 1 && iv <= 14) step.interval = iv;
   const existing = cSteps.findIndex(s => s.week === w);
   if (existing >= 0) cSteps[existing] = step; else cSteps.push(step);
   cSteps.sort((a, b) => a.week - b.week);
@@ -606,8 +613,7 @@ $("cAddStep").addEventListener("click", () => {
 ["interval","cInterval"].forEach(id => $(id).addEventListener("input", e => {
   if (parseFloat(e.target.value) < 1) e.target.value = 1; // daily is the floor for these two — thumb snaps back, 0–7 track keeps 3.5 centred
 }));
-["dose","interval","weeks","cDose","cInterval","startDay","cStartDay"].forEach(id => $(id).addEventListener("input", () => { persist(); render(); }));
-["syncDays"].forEach(id => $(id).addEventListener("change", () => { persist(); render(); }));
+["dose","interval","weeks","cDose","cInterval","startWeek","startDay","cStartWeek","cStartDay"].forEach(id => $(id).addEventListener("input", () => { persist(); render(); }));
 document.querySelectorAll(".pep-chip").forEach(ch => {
   ch.addEventListener("click", () => {
     sel[ch.dataset.pep] = !sel[ch.dataset.pep];
