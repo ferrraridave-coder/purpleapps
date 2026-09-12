@@ -1222,6 +1222,8 @@ h1 {
 }
 .reta-calc .lane-mg.reta { color: var(--gold-2); }
 .reta-calc .lane-mg.cagri { color: #2dd4bf; }
+.reta-calc .starts-row { flex-wrap: wrap; row-gap: 8px; }
+.reta-calc .starts-row .val { flex: 0 0 auto; }
 /* peptide picker chips */
 .reta-calc .pep-picker {
     display: flex;
@@ -1500,7 +1502,11 @@ h1 {
     .reta-calc .slider-row label { flex: 0 0 auto; font-size: 12px; max-width: 34%; }
     .reta-calc .slider-row input[type=range] { flex: 1; min-width: 0; }
     .reta-calc .slider-row .val { flex: 0 0 64px; font-size: 13px; text-align: left; font-variant-numeric: tabular-nums; }
-    .reta-calc .slider-row .val input { width: 38px; font-size: 13px; }
+    .reta-calc .slider-row .val input { width: 38px; font-size: 16px; } /* 16px+ stops iOS auto-zooming on focus */
+    /* starts row: week + day pickers wrap, hint drops to its own line — nothing overflows */
+    .reta-calc .starts-row { flex-wrap: wrap; row-gap: 8px; }
+    .reta-calc .starts-row .val { flex: 1 0 100%; text-align: left; font-size: 12px; color: var(--muted); font-weight: 400; }
+    .reta-calc .starts-row .numin { width: 56px; }
     .reta-calc .stat { min-width: 44%; padding: 8px 10px; }
     .reta-calc .stat .v { font-size: 16px; }
     .reta-calc .day-label { flex: 0 0 56px; font-size: 11px; }
