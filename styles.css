@@ -1210,7 +1210,7 @@ h1 {
 }
 .reta-calc .switch input:checked + .knob { background: rgba(45, 212, 191, 0.25); box-shadow: inset 0 0 0 1px #2dd4bf; }
 .reta-calc .switch input:checked + .knob:before { transform: translateX(20px); background: #2dd4bf; }
-.reta-calc .bar.lane { border-radius: 4px; position: absolute; left: 0; }
+.reta-calc .bar.lane { border-radius: 4px; position: absolute; left: 0; overflow: hidden; } /* overflow keeps the jab-day diamond inside even a tiny bar */
 .reta-calc .lane-mg {
     position: absolute;
     display: flex;
@@ -1299,14 +1299,16 @@ h1 {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 3px 0;
+    margin: 21px 0;
     cursor: pointer;
 }
 .reta-calc .day-label {
     flex: 0 0 92px;
+    position: relative;
     font-size: 12px;
     color: var(--muted);
-    text-align: right;
+    text-align: left;
+    white-space: nowrap;
     font-variant-numeric: tabular-nums;
 }
 .reta-calc .bar-track {
@@ -1408,7 +1410,7 @@ h1 {
     box-shadow: inset 0 0 0 1px var(--ring);
     font-variant-numeric: tabular-nums;
 }
-.reta-calc #addStep, .reta-calc #cAddStep {
+.reta-calc [id$="AddStep"] {
     padding: 6px 14px;
     font-size: 12px;
     font-weight: 800;
@@ -1503,6 +1505,9 @@ h1 {
     .reta-calc .slider-row input[type=range] { flex: 1; min-width: 0; }
     .reta-calc .slider-row .val { flex: 0 0 64px; font-size: 13px; text-align: left; font-variant-numeric: tabular-nums; }
     .reta-calc .slider-row .val input { width: 38px; font-size: 16px; } /* 16px+ stops iOS auto-zooming on focus */
+    /* picker: two-by-two, centred, on small screens */
+    .reta-calc .pep-picker { justify-content: center; }
+    .reta-calc .pep-chip { flex: 0 0 calc(50% - 8px); text-align: center; padding: 9px 8px; }
     /* starts row: week + day pickers wrap, hint drops to its own line — nothing overflows */
     .reta-calc .starts-row { flex-wrap: wrap; row-gap: 8px; }
     .reta-calc .starts-row .val { flex: 1 0 100%; text-align: left; font-size: 12px; color: var(--muted); font-weight: 400; }
