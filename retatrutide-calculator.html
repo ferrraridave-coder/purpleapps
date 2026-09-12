@@ -491,21 +491,25 @@ function render() {
     const lbl = `Day ${(d % 7) + 1}`;
     let bars = "", marks = "";
     let refR = "", refC = "";
-    const multi = active.length > 1;
-    active.forEach((c, li) => {
+    // only render lanes for compounds that have started by this day — a peptide
+    // starting week 10 shows no empty 0.0mg lane for weeks 1–9
+    const dayLanes = active.filter(c => d >= c.startDay - 1);
+    // lanes are always the same thin height — a day row simply grows taller per
+    // active peptide, so numbers never shrink no matter how many compounds join
+    dayLanes.forEach((c, li) => {
       const r = c.rows[d];
       const pct = (r.avg / scaleMax) * 100;
-      const top = multi ? li * 12 + 1 : 0;
-      const h = multi ? 9 : 22;
+      const top = li * 12 + 1;
+      const h = 9;
       bars += `<div class="bar lane ${c.key === "reta" ? "reta" : "cag"}" style="top:${top}px; height:${h}px; width:${pct}%"></div>`;
       bars += `<span class="lane-mg ${c.key}" style="top:${top}px; height:${h}px; left:calc(${pct}% + 6px)">${r.avg.toFixed(1)}</span>`;
       if (r.isDose) marks += `<span class="diamond ${c.key}">◆</span>`;
     });
-    if (retaOn) refR = `<div class="refline" style="left:${(R.schedAtTime(d).d/scaleMax)*100}%"></div>`;
-    if (cagriOn) refC = `<div class="refline cagri" style="left:${(C.schedAtTime(d).d/scaleMax)*100}%"></div>`;
+    if (retaOn && dayLanes.includes(R)) refR = `<div class="refline" style="left:${(R.schedAtTime(d).d/scaleMax)*100}%"></div>`;
+    if (cagriOn && dayLanes.includes(C)) refC = `<div class="refline cagri" style="left:${(C.schedAtTime(d).d/scaleMax)*100}%"></div>`;
     row.innerHTML = `
       <div class="day-label">${marks}<span>${lbl}</span></div>
-      <div class="bar-track">
+      <div class="bar-track" style="height:${Math.max(1, dayLanes.length) * 12 - 2}px">
         ${refR}${refC}
         ${bars}
       </div>`;
