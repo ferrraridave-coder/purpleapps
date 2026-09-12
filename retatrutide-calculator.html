@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Educational retatrutide level calculator. Not medical advice." />
-    <title>Retatrutide Calculator - Purple Apps</title>
+    <meta name="description" content="Educational peptide level calculator — retatrutide, cagrilintide. Not medical advice." />
+    <title>Peptide Levels Calculator - Purple Apps</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -29,76 +29,157 @@
 
 <main class="reta-wrap reta-calc">
     <span class="eyebrow">Educational tool</span>
-    <h1>Retatrutide Level Calculator</h1>
+    <h1>Peptide Levels Calculator</h1>
     <noscript>
         <div class="js-off">
             <strong>This calculator needs JavaScript.</strong> Open this page in a full browser (Safari or Chrome) instead.
         </div>
     </noscript>
-    <p class="sub">Estimated mg active in the body per day. Model: first-order absorption (slow depot release, peaks ~12–72h post-jab) + exponential elimination. Half-life ~6 days (Lilly trial data).</p>
+    <p class="sub">Estimated mg active in the body per day. Pick the peptides you're running, set your dose and jab spacing, tap any day for the detail. Model: first-order absorption (slow depot release, peaks ~12–72h post-jab) + exponential elimination, from published trial half-life data.</p>
+
+    <div class="pep-picker" id="pepPicker">
+        <button type="button" class="pep-chip reta active" data-pep="reta">Retatrutide</button>
+        <button type="button" class="pep-chip cagri" data-pep="cagri">Cagrilintide</button>
+    </div>
+
+    <div class="panel" id="panelReta">
+        <div class="panel-head">
+            <div class="panel-title" style="color:var(--gold-2);">Retatrutide</div>
+        </div>
+        <div class="panel-body" id="bodyReta">
+            <div class="slider-row">
+                <label>Dose per jab</label>
+                <input id="dose" type="range" min="0" max="12" step="0.25" value="4">
+                <div class="val"><input id="doseVal" type="number" min="0" max="12" step="0.25" inputmode="decimal"><span class="unit">mg</span></div>
+            </div>
+            <div class="slider-row">
+                <label>Days between jabs</label>
+                <input id="interval" type="range" min="0" max="7" step="0.5" value="7">
+                <div class="val" id="intervalVal"></div>
+            </div>
+            <div class="slider-row">
+                <label>Starting day</label>
+                <input id="startDay" type="number" min="1" max="364" step="1" value="1" class="numin">
+                <div class="val" style="flex:0 0 auto; font-size:12px; color:var(--muted);">day 1 = chart start · day 141 = week 21</div>
+            </div>
+            <div class="slider-row" style="align-items:flex-start;">
+                <label>Titration steps</label>
+                <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <span style="font-size:12px; color:var(--muted);">from week</span>
+                        <input id="stepWeek" type="number" min="2" max="52" value="5" class="numin">
+                        <span style="font-size:12px; color:var(--muted);">dose becomes</span>
+                        <input id="stepDose" type="number" min="0" max="12" step="0.25" value="8" class="numin">
+                        <span style="font-size:12px; color:var(--muted);">mg</span>
+                        <span style="font-size:12px; color:var(--muted);">every</span>
+                        <input id="stepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
+                        <span style="font-size:12px; color:var(--muted);">days (optional)</span>
+                        <button id="addStep" type="button">Add step</button>
+                    </div>
+                    <div id="stepList" style="font-size:12px; color:var(--muted);">none — same dose every jab</div>
+                </div>
+            </div>
+            <div class="hint">Tap the dose number to type an exact value (e.g. 4.75 mg) — the slider still works as before.</div>
+        </div>
+    </div>
+
+    <div class="panel" id="panelCagri" style="display:none;">
+        <div class="panel-head">
+            <div class="panel-title cagri-title">Cagrilintide</div>
+        </div>
+        <div class="panel-body" id="bodyCagri">
+            <div class="slider-row">
+                <label>Dose per jab</label>
+                <input id="cDose" type="range" min="0" max="3" step="0.05" value="0.95">
+                <div class="val"><input id="cDoseVal" type="number" min="0" max="3" step="0.05" inputmode="decimal"><span class="unit">mg</span></div>
+            </div>
+            <div class="slider-row" id="syncRow">
+                <label>Same jab days as retatrutide</label>
+                <label class="switch"><input id="syncDays" type="checkbox"><span class="knob"></span></label>
+                <div class="val" id="syncVal" style="flex:0 0 auto; font-size:12px;">off</div>
+            </div>
+            <div class="slider-row" id="cIntervalRow">
+                <label>Days between jabs</label>
+                <input id="cInterval" type="range" min="0" max="7" step="0.5" value="7">
+                <div class="val" id="cIntervalVal"></div>
+            </div>
+            <div class="slider-row" id="cStartRow">
+                <label>Starting day</label>
+                <input id="cStartDay" type="number" min="1" max="364" step="1" value="1" class="numin">
+                <div class="val" style="flex:0 0 auto; font-size:12px; color:var(--muted);">day 1 = chart start · day 141 = week 21</div>
+            </div>
+            <div class="slider-row" style="align-items:flex-start;">
+                <label>Titration steps</label>
+                <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <span style="font-size:12px; color:var(--muted);">from week</span>
+                        <input id="cStepWeek" type="number" min="2" max="52" value="5" class="numin">
+                        <span style="font-size:12px; color:var(--muted);">dose becomes</span>
+                        <input id="cStepDose" type="number" min="0" max="3" step="0.05" value="1.9" class="numin">
+                        <span style="font-size:12px; color:var(--muted);">mg</span>
+                        <span id="cStepIntervalWrap" style="display:none; align-items:center; gap:8px;">
+                            <span style="font-size:12px; color:var(--muted);">every</span>
+                            <input id="cStepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
+                            <span style="font-size:12px; color:var(--muted);">days (optional)</span>
+                        </span>
+                        <button id="cAddStep" type="button">Add step</button>
+                    </div>
+                    <div id="cStepList" style="font-size:12px; color:var(--muted);">none — same dose every jab</div>
+                </div>
+            </div>
+            <div class="hint">Days between jabs, starting day (and step intervals) follow retatrutide while the sync toggle is on — only the milligrammes differ.</div>
+        </div>
+    </div>
 
     <div class="panel">
-        <div class="slider-row">
-            <label>Dose per jab</label>
-            <input id="dose" type="range" min="0.5" max="12" step="0.25" value="4">
-            <div class="val"><input id="doseVal" type="number" min="0.5" max="12" step="0.25" inputmode="decimal"><span class="unit">mg</span></div>
-        </div>
-        <div class="slider-row">
-            <label>Days between jabs</label>
-            <input id="interval" type="range" min="2" max="7" step="0.5" value="7">
-            <div class="val" id="intervalVal"></div>
-        </div>
-        <div class="slider-row" style="align-items:flex-start;">
-            <label>Titration steps</label>
-            <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
-                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                    <span style="font-size:12px; color:var(--muted);">from week</span>
-                    <input id="stepWeek" type="number" min="2" max="52" value="5" class="numin">
-                    <span style="font-size:12px; color:var(--muted);">dose becomes</span>
-                    <input id="stepDose" type="number" min="0" max="12" step="0.25" value="8" class="numin">
-                    <span style="font-size:12px; color:var(--muted);">mg</span>
-                    <span style="font-size:12px; color:var(--muted);">every</span>
-                    <input id="stepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
-                    <span style="font-size:12px; color:var(--muted);">days (optional)</span>
-                    <button id="addStep" type="button">Add step</button>
-                </div>
-                <div id="stepList" style="font-size:12px; color:var(--muted);">none — same dose every jab</div>
-            </div>
-        </div>
         <div class="slider-row">
             <label>Show weeks</label>
             <input id="weeks" type="range" min="1" max="52" step="1" value="5">
             <div class="val" id="weeksVal"></div>
         </div>
-        <div class="hint">Tap the dose number to type an exact value (e.g. 4.75 mg) — the slider still works as before.</div>
     </div>
 
-    <div class="stats">
-        <div class="stat"><div class="k" id="peakK">Peak level</div><div class="v" id="peakV"></div><div class="s" id="peakS"></div></div>
-        <div class="stat"><div class="k">Lowest level</div><div class="v" id="troughV"></div></div>
-        <div class="stat"><div class="k">Daily average</div><div class="v" id="avgV"></div></div>
-        <div class="stat"><div class="k">Weekly dose</div><div class="v" id="weeklyV"></div></div>
+    <div id="statsReta">
+        <div class="stats-label reta-label">Retatrutide</div>
+        <div class="stats reta-stats">
+            <div class="stat"><div class="k" id="peakK">Peak level</div><div class="v" id="peakV"></div><div class="s" id="peakS"></div></div>
+            <div class="stat"><div class="k">Lowest level</div><div class="v" id="troughV"></div></div>
+            <div class="stat"><div class="k">Daily average</div><div class="v" id="avgV"></div></div>
+            <div class="stat"><div class="k">Weekly dose</div><div class="v" id="weeklyV"></div></div>
+        </div>
     </div>
 
-    <div class="legend">
-        <span><span class="dot" style="background:linear-gradient(90deg, var(--ember), var(--gold))"></span>Jab day</span>
-        <span><span class="dot" style="background:var(--purple-2)"></span>No jab</span>
+    <div id="statsCagri" style="display:none;">
+        <div class="stats-label cagri-label">Cagrilintide</div>
+        <div class="stats cagri-stats">
+            <div class="stat"><div class="k" id="cPeakK">Peak level</div><div class="v" id="cPeakV"></div><div class="s" id="cPeakS"></div></div>
+            <div class="stat"><div class="k">Lowest level</div><div class="v" id="cTroughV"></div></div>
+            <div class="stat"><div class="k">Daily average</div><div class="v" id="cAvgV"></div></div>
+            <div class="stat"><div class="k">Weekly dose</div><div class="v" id="cWeeklyV"></div></div>
+        </div>
+    </div>
+
+    <div class="legend" id="legend">
+        <span id="legReta"><span class="dot" style="background:linear-gradient(90deg, var(--ember), var(--gold))"></span>Reta level</span>
+        <span id="legCagri" style="display:none;"><span class="dot" style="background:#2dd4bf"></span>Cagri level</span>
+        <span>◆ = jab day (colour = which one)</span>
         <span style="border-left:2px dashed rgba(240, 205, 130, 0.45); padding-left:8px;">dashed line = that week's dose</span>
     </div>
 
     <div id="chart"></div>
+    <div id="emptyState" class="note" style="display:none; text-align:center; padding:18px;">Both peptides are switched off — toggle one on above to see its levels.</div>
 
     <div class="note">
-        Bars show the average level over each day; <strong>tap or click any day</strong> for that day's high/low and how much is still active from earlier jabs.
-        The model assumes each jab absorbs slowly from the injection site (peaking 12–72 hours post-injection) then decays with an approximately 6-day half-life, based on published clinical trial data.
+        Bars show the average level over each day. When you're stacking, they stack — gold for retatrutide, teal for cagrilintide, with the combined total at the end. <strong>Tap or click any day</strong> for that day's breakdown.
+        The model assumes each jab absorbs slowly from the injection site (peaking 12–72 hours post-injection) then decays exponentially — retatrutide at an approximately 6-day half-life, cagrilintide at approximately 7 days, based on published clinical trial data.
     </div>
 
     <div class="panel" style="margin-top:22px">
         <div style="font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px; color:var(--gold-2);">Disclaimer</div>
         <div class="note" style="margin-top:0">
             <p>This is an educational estimation tool only. It is <strong>not medical advice</strong>, and it is not a dosing guide, a prescription, or a recommendation to use any substance.</p>
-            <p>Retatrutide is an <strong>investigational drug</strong>. It has not been approved by the MHRA, the FDA, or any other regulatory body, and it is <strong>not legally available</strong>. Its safety and effectiveness have not been fully established, and figures shown here are estimates derived from early published trial data — real-world behaviour varies from person to person.</p>
-            <p>If and when retatrutide becomes legally available, it will be a <strong>prescription-only medicine</strong>. Always consult your doctor or a qualified healthcare professional before starting, changing, or stopping any medication. Never make decisions about your health based on a chart on the internet — including this one.</p>
+            <p>Retatrutide and cagrilintide are <strong>investigational drugs</strong>. They have not been approved by the MHRA, the FDA, or any other regulatory body, and are <strong>not legally available</strong>. Their safety and effectiveness have not been fully established, and figures shown here are estimates derived from early published trial data — real-world behaviour varies from person to person.</p>
+            <p>If and when these drugs become legally available, they will be <strong>prescription-only medicines</strong>. Always consult your doctor or a qualified healthcare professional before starting, changing, or stopping any medication. Never make decisions about your health based on a chart on the internet — including this one.</p>
             <p>No liability is accepted for any use of this tool or reliance on its output. If you are experiencing a medical issue, contact your GP or call NHS 111.</p>
         </div>
     </div>
@@ -135,89 +216,130 @@ function levelAt(t, doses, ka, ke) {
   return sum;
 }
 
-function render() {
-  const D = parseFloat($("dose").value);
-  const interval = parseFloat($("interval").value);
-  const hl = 6;
-  const tmax = 1.5;
-  const days = parseInt($("weeks").value) * 7;
+function dLevel(t, ds, ka, ke) {
+  let s = 0;
+  for (const x of ds) {
+    const dt = t - x.t;
+    if (dt <= 0) continue;
+    s += x.d * (ka/(ka-ke)) * (-ke*Math.exp(-ke*dt) + ka*Math.exp(-ka*dt));
+  }
+  return s;
+}
+function dayHiLo(d, ds, ka, ke) {
+  let hi = Math.max(levelAt(d, ds, ka, ke), levelAt(d + 23.99/24, ds, ka, ke));
+  let lo = Math.min(levelAt(d, ds, ka, ke), levelAt(d + 23.99/24, ds, ka, ke));
+  for (const x of ds) {
+    let lo_ = Math.max(d, x.t + 0.1), hi_ = Math.min(d + 1, x.t + 4);
+    if (lo_ >= hi_) continue;
+    if (dLevel(lo_, ds, ka, ke) <= 0 || dLevel(hi_, ds, ka, ke) >= 0) continue;
+    for (let i = 0; i < 50; i++) {
+      const mid = (lo_ + hi_) / 2;
+      if (dLevel(mid, ds, ka, ke) > 0) lo_ = mid; else hi_ = mid;
+    }
+    const v = levelAt((lo_ + hi_) / 2, ds, ka, ke);
+    if (v > hi) hi = v;
+  }
+  return { hi, lo };
+}
 
-  if (document.activeElement !== $("doseVal")) $("doseVal").value = Math.round(D * 100) / 100;
-  $("intervalVal").textContent = interval + (interval === 1 ? " day" : " days");
-  $("weeksVal").textContent = days/7 + " wks";
+const saved = (() => { try { return JSON.parse(localStorage.getItem("retaCalc") || "null"); } catch { return null; } })();
+if (saved) {
+  if (saved.dose !== undefined) $("dose").value = saved.dose;
+  if (saved.interval !== undefined) $("interval").value = saved.interval;
+  if (saved.weeks !== undefined) $("weeks").value = saved.weeks;
+  if (saved.cDose !== undefined) $("cDose").value = saved.cDose;
+  if (saved.cInterval !== undefined) $("cInterval").value = saved.cInterval;
+  if (saved.startDay !== undefined) $("startDay").value = saved.startDay;
+  if (saved.cStartDay !== undefined) $("cStartDay").value = saved.cStartDay;
+}
+$("syncDays").checked = saved && saved.sync !== undefined ? !!saved.sync : false; // default off; saved choice wins
+const sel = { reta: true, cagri: false };
+if (saved) {
+  if (saved.selReta !== undefined) sel.reta = !!saved.selReta;
+  if (saved.selCagri !== undefined) sel.cagri = !!saved.selCagri;
+}
+const steps = saved && Array.isArray(saved.steps) ? saved.steps : [];
+const cSteps = saved && Array.isArray(saved.cSteps) ? saved.cSteps : [];
 
-  const ke = Math.LN2 / hl;
-  const ka = solveKa(ke, tmax);
+function persist() {
+  try {
+    localStorage.setItem("retaCalc", JSON.stringify({
+      dose: $("dose").value, interval: $("interval").value, weeks: $("weeks").value, steps,
+      cDose: $("cDose").value, cInterval: $("cInterval").value, cSteps,
+      startDay: $("startDay").value, cStartDay: $("cStartDay").value,
+      sync: $("syncDays").checked, selReta: sel.reta, selCagri: sel.cagri
+    }));
+  } catch { /* embedded webviews can refuse storage — carry on without it */ }
+}
+
+// compound config — add a future peptide as one more entry. only same-family
+// (metabolic, mg-dosed, shared jab rhythm) compounds may share the stacked bar;
+// unrelated peptides (BPC-157, GLOW, etc.) must get their own chart, never combined figures.
+function buildCompound(key) {
+  const isReta = key === "reta";
+  return {
+    key,
+    hl: isReta ? 6 : 7,
+    tmax: isReta ? 1.5 : 1,
+    D: parseFloat($(isReta ? "dose" : "cDose").value),
+    interval: Math.max(1, parseFloat($(isReta ? "interval" : "cInterval").value) || 1), // slider runs 0–7 so 3.5 sits dead-centre; anything under 1 = daily
+    startDay: Math.min(364, Math.max(1, parseInt($(isReta ? "startDay" : "cStartDay").value) || 1)),
+    steps: isReta ? steps : cSteps,
+    statIds: isReta
+      ? { peakK: "peakK", peakV: "peakV", peakS: "peakS", trough: "troughV", avg: "avgV", weekly: "weeklyV" }
+      : { peakK: "cPeakK", peakV: "cPeakV", peakS: "cPeakS", trough: "cTroughV", avg: "cAvgV", weekly: "cWeeklyV" }
+  };
+}
+
+function computeCompound(c, days, retaRef, syncOn) {
+  const ke = Math.LN2 / c.hl;
+  const ka = solveKa(ke, c.tmax);
+  c.ka = ka; c.ke = ke;
 
   const schedAtTime = t => {
     const week = Math.floor(t / 7) + 1;
-    let d = D, iv = interval;
-    for (const s of steps) if (week >= s.week) { d = s.dose; if (s.interval) iv = s.interval; }
+    let d = c.D, iv = c.interval;
+    for (const s of c.steps) if (week >= s.week) { d = s.dose; if (s.interval && (!syncOn || isRetaC(c))) iv = s.interval; }
+    if (syncOn && c.key === "cagri" && retaRef) {
+      iv = retaRef.interval;
+      for (const s of retaRef.steps) if (week >= s.week && s.interval) iv = s.interval;
+    }
     return { d, iv };
   };
-  // jab times are generated, not stepped — the gap can change mid-schedule
+  function isRetaC(c) { return c.key === "reta"; }
+  c.schedAtTime = schedAtTime;
   const buildDoses = until => {
     const out = [];
-    let t = 0;
+    let t = c.startDay - 1; // starting day: 1 = chart start, 4 = first jab lands on day 4
     while (t < until) {
       const s = schedAtTime(t);
-      out.push({ t, d: s.d });
+      if (s.d > 0) out.push({ t, d: s.d });
       t += s.iv;
     }
     return out;
   };
+  c.doses = buildDoses(days);
 
-  const doses = buildDoses(days);
+  if (c.D === 0) {
+    c.rows = [];
+    for (let d = 0; d < days; d++) c.rows.push({ day: d, avg: 0, hi: 0, lo: 0, isDose: false, resid: 0, jabbed: 0 });
+    c.steadyDay = -1; c.steadyPeak = 0; c.windowPeak = 0; c.steadyWeek = null;
+    return;
+  }
 
-  // derivative of the level — for finding a day's TRUE peak. with tails from earlier
-  // jabs decaying, the real max lands a bit after jab+Tmax, so we solve dL/dt = 0.
-  const dLevel = (t, ds) => {
-    let s = 0;
-    for (const x of ds) {
-      const dt = t - x.t;
-      if (dt <= 0) continue;
-      s += x.d * (ka/(ka-ke)) * (-ke*Math.exp(-ke*dt) + ka*Math.exp(-ka*dt));
-    }
-    return s;
-  };
-  const dayHiLo = (d, ds) => {
-    let hi = Math.max(levelAt(d, ds, ka, ke), levelAt(d + 23.99/24, ds, ka, ke));
-    let lo = Math.min(levelAt(d, ds, ka, ke), levelAt(d + 23.99/24, ds, ka, ke));
-    for (const x of ds) {
-      let lo_ = Math.max(d, x.t + 0.1), hi_ = Math.min(d + 1, x.t + 4);
-      if (lo_ >= hi_) continue;
-      if (dLevel(lo_, ds) <= 0 || dLevel(hi_, ds) >= 0) continue; // no interior peak today
-      for (let i = 0; i < 50; i++) {
-        const mid = (lo_ + hi_) / 2;
-        if (dLevel(mid, ds) > 0) lo_ = mid; else hi_ = mid;
-      }
-      const v = levelAt((lo_ + hi_) / 2, ds, ka, ke);
-      if (v > hi) hi = v;
-    }
-    return { hi, lo };
-  };
   const rows = [];
   for (let d = 0; d < days; d++) {
     let sum = 0;
-    for (let h = 0; h < 24; h++) sum += levelAt(d + h/24, doses, ka, ke);
-    const { hi, lo } = dayHiLo(d, doses);
-    const doseToday = doses.find(x => Math.floor(x.t) === d);
-    const isDose = !!doseToday;
-    const latestDose = Math.max(...doses.filter(x => x.t <= d).map(x => x.t));
-    const earlierDoses = doses.filter(x => x.t < latestDose);
+    for (let h = 0; h < 24; h++) sum += levelAt(d + h/24, c.doses, ka, ke);
+    const { hi, lo } = dayHiLo(d, c.doses, ka, ke);
+    const doseToday = c.doses.find(x => Math.floor(x.t) === d);
+    const latestDose = Math.max(...c.doses.filter(x => x.t <= d).map(x => x.t));
+    const earlierDoses = c.doses.filter(x => x.t < latestDose);
     let residSum = 0;
-    for (let h = 0; h < 24; h++) {
-      residSum += levelAt(d + h/24, earlierDoses, ka, ke);
-    }
-    rows.push({ day: d, avg: sum/24, hi, lo, isDose, resid: residSum/24, jabbed: doseToday ? doseToday.d : 0 });
+    for (let h = 0; h < 24; h++) residSum += levelAt(d + h/24, earlierDoses, ka, ke);
+    rows.push({ day: d, avg: sum/24, hi, lo, isDose: !!doseToday, resid: residSum/24, jabbed: doseToday ? doseToday.d : 0 });
   }
-
-  const maxAvg = Math.max(...rows.map(r => r.avg));
-  const windowPeak = Math.max(...rows.map(r => r.hi));
-  const troughRows = rows.filter(r => r.day >= interval);
-  const trough = Math.min(...(troughRows.length ? troughRows : rows).map(r => r.lo));
-  const avg = rows.reduce((s,r) => s + r.avg, 0) / rows.length;
-  const weekly = D * 7 / interval;
+  c.rows = rows;
 
   const SIM_END = 434;
   const extDoses = buildDoses(SIM_END);
@@ -227,73 +349,159 @@ function render() {
     return sum / 24;
   };
   let infAvg = 0;
-  for (let d = SIM_END - 7; d < SIM_END; d++) {
-    const a = dayAvg(d);
-    if (a > infAvg) infAvg = a;
-  }
-
+  for (let d = SIM_END - 7; d < SIM_END; d++) { const a = dayAvg(d); if (a > infAvg) infAvg = a; }
+  const lastStepDay = c.steps.length ? (Math.max(...c.steps.map(s => s.week)) - 1) * 7 : 0;
   let steadyDay = -1;
-  // plateau hunting starts when the FINAL schedule starts — a higher starting dose can
-  // overshoot the maintenance ceiling and trigger false "steady state" hits early
-  const lastStepDay = steps.length ? (Math.max(...steps.map(s => s.week)) - 1) * 7 : 0;
-  for (let d = Math.max(Math.floor(interval), lastStepDay); d < SIM_END - 7; d++) {
+  for (let d = Math.max(Math.floor(c.interval), lastStepDay); d < SIM_END - 7; d++) {
     if (dayAvg(d) >= infAvg * 0.99) { steadyDay = d; break; }
   }
-  // quoted peak = the asymptotic ceiling (true daily peaks, derivative-solved)
   let steadyPeak = 0;
   for (let d = SIM_END - 7; d < SIM_END; d++) {
-    const { hi } = dayHiLo(d, extDoses);
+    const { hi } = dayHiLo(d, extDoses, ka, ke);
     if (hi > steadyPeak) steadyPeak = hi;
   }
+  c.steadyDay = steadyDay; c.steadyPeak = steadyPeak;
+  c.windowPeak = Math.max(...rows.map(r => r.hi));
+  c.steadyWeek = steadyDay >= 0 ? Math.floor(steadyDay/7) + 1 : null;
+}
 
-  const steadyWeek = steadyDay >= 0 ? Math.floor(steadyDay/7) + 1 : null;
-  const reachedInWindow = steadyDay >= 0 && steadyDay < days;
-  if (reachedInWindow) {
-    $("peakK").textContent = "Peak level";
-    $("peakV").textContent = steadyPeak.toFixed(2) + " mg";
-    $("peakS").textContent = "steady state — from week " + steadyWeek + " every week stays within 1% of this";
-  } else {
-    $("peakK").textContent = "Peak in first " + (days/7) + " wk" + (days > 7 ? "s" : "");
-    $("peakV").textContent = windowPeak.toFixed(2) + " mg";
-    $("peakS").textContent = steadyWeek
-      ? "steady state " + steadyPeak.toFixed(2) + " mg — not reached until week " + steadyWeek
-      : "";
+function renderStats(c, days) {
+  const ids = c.statIds;
+  if (c.D === 0) {
+    $(ids.peakK).textContent = "Peak level";
+    $(ids.peakV).textContent = "off";
+    $(ids.peakS).textContent = "dose is 0 mg — slide it up to include " + (c.key === "reta" ? "retatrutide" : "cagrilintide");
+    $(ids.trough).textContent = "—";
+    $(ids.avg).textContent = "—";
+    $(ids.weekly).textContent = "0 mg/wk";
+    return;
   }
-  $("troughV").textContent = trough.toFixed(2) + " mg";
-  $("avgV").textContent = avg.toFixed(2) + " mg";
+  const troughRows = c.rows.filter(r => r.day >= c.interval);
+  const trough = Math.min(...(troughRows.length ? troughRows : c.rows).map(r => r.lo));
+  const avg = c.rows.reduce((s,r) => s + r.avg, 0) / c.rows.length;
+  const weekly = c.D * 7 / c.interval;
+  const reachedInWindow = c.steadyDay >= 0 && c.steadyDay < days;
+  if (reachedInWindow) {
+    $(ids.peakK).textContent = "Peak level";
+    $(ids.peakV).textContent = c.steadyPeak.toFixed(2) + " mg";
+    $(ids.peakS).textContent = "steady state — from week " + c.steadyWeek + " every week stays within 1% of this";
+  } else {
+    $(ids.peakK).textContent = "Peak in first " + (days/7) + " wk" + (days > 7 ? "s" : "");
+    $(ids.peakV).textContent = c.windowPeak.toFixed(2) + " mg";
+    $(ids.peakS).textContent = c.steadyWeek ? "steady state " + c.steadyPeak.toFixed(2) + " mg — not reached until week " + c.steadyWeek : "";
+  }
+  $(ids.trough).textContent = trough.toFixed(2) + " mg";
+  $(ids.avg).textContent = avg.toFixed(2) + " mg";
   const fmtSeg = (d, iv) => d + " mg/" + iv + "d";
-  const weeklyTxt = steps.length
-    ? [fmtSeg(D, interval), ...steps.map(s => fmtSeg(s.dose, s.interval || interval))].join(" → ")
+  $(ids.weekly).textContent = c.steps.length
+    ? [fmtSeg(c.D, c.interval), ...c.steps.map(s => fmtSeg(s.dose, s.interval || c.interval))].join(" → ")
     : weekly.toFixed(2) + " mg/wk";
-  $("weeklyV").textContent = weeklyTxt;
+}
 
-  const scaleMax = Math.max(maxAvg, D, steadyPeak, windowPeak) * 1.14; // headroom: numbers sit past the bar end
+function render() {
+  const days = parseInt($("weeks").value) * 7;
+  $("weeksVal").textContent = days/7 + " wks";
+
+  const retaOn = sel.reta;
+  const cagriOn = sel.cagri;
+  const bothOn = retaOn && cagriOn;
+  const sync = bothOn && $("syncDays").checked;
+
+  // picker chips + panels + stats + legend visibility
+  document.querySelectorAll(".pep-chip").forEach(ch => {
+    ch.classList.toggle("active", sel[ch.dataset.pep]);
+  });
+  $("panelReta").style.display = retaOn ? "" : "none";
+  $("panelCagri").style.display = cagriOn ? "" : "none";
+  $("statsReta").style.display = retaOn ? "" : "none";
+  $("statsCagri").style.display = cagriOn ? "" : "none";
+  $("legReta").style.display = retaOn ? "" : "none";
+  $("legCagri").style.display = cagriOn ? "" : "none";
+  $("syncRow").style.display = bothOn ? "" : "none";
+  $("cIntervalRow").style.display = (cagriOn && !sync) ? "" : (cagriOn ? "" : "none");
+  $("syncVal").textContent = sync ? "on" : "off";
+  $("cInterval").disabled = sync;
+  $("cIntervalVal").style.opacity = sync ? 0.35 : 1;
+  $("cStepIntervalWrap").style.display = sync ? "none" : "contents";
+
+  if (!retaOn && !cagriOn) {
+    $("chart").innerHTML = "";
+    $("chart").style.display = "none";
+    $("emptyState").style.display = "";
+    $("legend").style.display = "none";
+    return;
+  }
+  $("chart").style.display = "";
+  $("emptyState").style.display = "none";
+  $("legend").style.display = "";
+
+  const R = buildCompound("reta");
+  const C = buildCompound("cagri");
+  if (sync) { C.interval = R.interval; C.startDay = R.startDay; }
+  if (retaOn) computeCompound(R, days, null, false);
+  if (cagriOn) computeCompound(C, days, retaOn ? R : null, sync);
+
+  const ivLabel = (raw, floored) => floored + (floored === 1 ? " day" : " days"); // under 1 floors to daily and just reads "1 day"
+  if (retaOn) {
+    if (document.activeElement !== $("doseVal")) $("doseVal").value = Math.round(R.D * 100) / 100;
+    $("intervalVal").textContent = ivLabel(parseFloat($("interval").value), R.interval);
+    renderStats(R, days);
+  }
+  if (cagriOn) {
+    if (document.activeElement !== $("cDoseVal")) $("cDoseVal").value = Math.round(C.D * 100) / 100;
+    $("cIntervalVal").textContent = ivLabel(parseFloat($("cInterval").value), C.interval);
+    renderStats(C, days);
+  }
+
+  // chart
+  const active = [];
+  if (retaOn) active.push(R);
+  if (cagriOn) active.push(C);
+  const maxAvg = Math.max(...Array.from({length: days}, (_, i) => active.reduce((s, c) => s + c.rows[i].avg, 0)));
+  const scaleMax = Math.max(maxAvg, ...active.flatMap(c => [c.D, c.steadyPeak, c.windowPeak]), 0.01) * 1.14;
+
   const chart = $("chart");
   chart.innerHTML = "";
-  rows.forEach(r => {
-    if (r.day % 7 === 0) {
+  for (let d = 0; d < days; d++) {
+    if (d % 7 === 0) {
       const wh = document.createElement("div");
       wh.className = "week-head";
-      wh.textContent = "Week " + (r.day / 7 + 1);
+      wh.textContent = "Week " + (d / 7 + 1);
       chart.appendChild(wh);
     }
     const row = document.createElement("div");
     row.className = "day-row";
-    const lbl = `Day ${(r.day % 7) + 1}`;
-    const pct = (r.avg/scaleMax)*100;
-    const weekDose = schedAtTime(r.day).d;
+    const lbl = `Day ${(d % 7) + 1}`;
+    let bars = "", marks = "";
+    let refR = "", refC = "";
+    const multi = active.length > 1;
+    active.forEach((c, li) => {
+      const r = c.rows[d];
+      const pct = (r.avg / scaleMax) * 100;
+      const top = multi ? li * 12 + 1 : 0;
+      const h = multi ? 9 : 22;
+      bars += `<div class="bar lane ${c.key === "reta" ? "reta" : "cag"}" style="top:${top}px; height:${h}px; width:${pct}%"></div>`;
+      bars += `<span class="lane-mg ${c.key}" style="top:${top}px; height:${h}px; left:calc(${pct}% + 6px)">${r.avg.toFixed(1)}</span>`;
+      if (r.isDose) marks += `<span class="diamond ${c.key}">◆</span>`;
+    });
+    if (retaOn) refR = `<div class="refline" style="left:${(R.schedAtTime(d).d/scaleMax)*100}%"></div>`;
+    if (cagriOn) refC = `<div class="refline cagri" style="left:${(C.schedAtTime(d).d/scaleMax)*100}%"></div>`;
     row.innerHTML = `
-      <div class="day-label">${lbl}</div>
+      <div class="day-label">${marks}<span>${lbl}</span></div>
       <div class="bar-track">
-        <div class="refline" style="left:${(weekDose/scaleMax)*100}%"></div>
-        <div class="bar ${r.isDose ? "dose" : ""}" style="width:${pct}%">
-          <span class="mg">${r.avg.toFixed(1)}</span>
-        </div>
+        ${refR}${refC}
+        ${bars}
       </div>`;
     const info = document.createElement("div");
     info.className = "day-info";
     info.style.display = "none";
-    info.innerHTML = `<strong>Week ${Math.floor(r.day / 7) + 1}, Day ${(r.day % 7) + 1}</strong> — average ${r.avg.toFixed(2)} mg · high ${r.hi.toFixed(2)} · low ${r.lo.toFixed(2)} · ${r.resid > 0.05 ? `${r.resid.toFixed(2)} mg still active from earlier jabs` : "all of this is from the latest jab"}${r.isDose ? ` · <strong>jabbed ${r.jabbed} mg today</strong>` : ""}`;
+    let infoHtml = `<strong>Week ${Math.floor(d / 7) + 1}, Day ${(d % 7) + 1}</strong>`;
+    for (const c of active) {
+      const r = c.rows[d];
+      const name = c.key === "reta" ? "reta" : "cagri";
+      infoHtml += `<br><span class="diamond ${c.key}">◆</span> ${name} avg ${r.avg.toFixed(2)} mg · high ${r.hi.toFixed(2)} · low ${r.lo.toFixed(2)}${r.isDose ? ` · <strong>jabbed ${r.jabbed} mg today</strong>` : ""} · ${r.resid > 0.05 ? `${r.resid.toFixed(2)} mg still active from earlier ${name} jabs` : `all from the latest ${name} jab`}`;
+    }
+    info.innerHTML = infoHtml;
     row.addEventListener("click", () => {
       const open = info.style.display !== "none";
       chart.querySelectorAll(".day-info").forEach(el => el.style.display = "none");
@@ -302,34 +510,25 @@ function render() {
     });
     chart.appendChild(row);
     chart.appendChild(info);
-    if (steadyDay === r.day) {
-      const ss = document.createElement("div");
-      ss.className = "steady";
-      ss.innerHTML = `steady state — from this week on, every week stays within 1% of this level (peak ~${steadyPeak.toFixed(2)} mg)`;      chart.appendChild(ss);
+    for (const c of active) {
+      if (c.steadyDay === d) {
+        const ss = document.createElement("div");
+        ss.className = "steady" + (c.key === "cagri" ? " cagri" : "");
+        ss.innerHTML = `${c.key} steady state — from this week on, every week stays within 1% of this level (peak ~${c.steadyPeak.toFixed(2)} mg)`;
+        chart.appendChild(ss);
+      }
     }
-  });
-  if (steadyDay === -1 || steadyDay >= days) {
-    const ss = document.createElement("div");
-    ss.className = "steady";
-    ss.innerHTML = `steady state (peak ~${steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown — extend "show weeks" to see the plateau`;
-    chart.appendChild(ss);
+  }
+  for (const c of active) {
+    if (c.steadyDay === -1 || c.steadyDay >= days) {
+      const ss = document.createElement("div");
+      ss.className = "steady" + (c.key === "cagri" ? " cagri" : "");
+      ss.innerHTML = `${c.key} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown — extend "show weeks" to see the plateau`;
+      chart.appendChild(ss);
+    }
   }
 }
 
-const saved = (() => { try { return JSON.parse(localStorage.getItem("retaCalc") || "null"); } catch { return null; } })();
-if (saved) {
-  if (saved.dose) $("dose").value = saved.dose;
-  if (saved.interval) $("interval").value = saved.interval;
-  if (saved.weeks) $("weeks").value = saved.weeks;
-}
-const steps = saved && Array.isArray(saved.steps) ? saved.steps : [];
-function persist() {
-  try {
-    localStorage.setItem("retaCalc", JSON.stringify({
-      dose: $("dose").value, interval: $("interval").value, weeks: $("weeks").value, steps
-    }));
-  } catch { /* embedded webviews can refuse storage — carry on without it */ }
-}
 function renderStepList() {
   const el = $("stepList");
   if (!steps.length) { el.textContent = "none — same dose every jab"; return; }
@@ -347,6 +546,24 @@ function renderStepList() {
     el.appendChild(chip);
   });
 }
+function renderCStepList() {
+  const el = $("cStepList");
+  if (!cSteps.length) { el.textContent = "none — same dose every jab"; return; }
+  el.innerHTML = "";
+  cSteps.forEach((s, i) => {
+    const chip = document.createElement("span");
+    chip.className = "stepchip cagri";
+    chip.innerHTML = `week ${s.week}+ → ${s.dose} mg${s.interval ? ` · every ${s.interval}d` : ""} <button type="button" aria-label="remove">✕</button>`;
+    chip.querySelector("button").addEventListener("click", () => {
+      cSteps.splice(i, 1);
+      renderCStepList();
+      persist();
+      render();
+    });
+    el.appendChild(chip);
+  });
+}
+
 $("addStep").addEventListener("click", () => {
   const w = parseInt($("stepWeek").value);
   const d = parseFloat($("stepDose").value);
@@ -361,8 +578,33 @@ $("addStep").addEventListener("click", () => {
   persist();
   render();
 });
+$("cAddStep").addEventListener("click", () => {
+  const w = parseInt($("cStepWeek").value);
+  const d = parseFloat($("cStepDose").value);
+  const iv = parseFloat($("cStepInterval").value);
+  if (!w || isNaN(d) || d < 0 || w < 2) return;
+  const step = { week: w, dose: d };
+  if (!$("syncDays").checked && iv && iv >= 1 && iv <= 14) step.interval = iv;
+  const existing = cSteps.findIndex(s => s.week === w);
+  if (existing >= 0) cSteps[existing] = step; else cSteps.push(step);
+  cSteps.sort((a, b) => a.week - b.week);
+  renderCStepList();
+  persist();
+  render();
+});
 
-["dose","interval","weeks"].forEach(id => $(id).addEventListener("input", () => { persist(); render(); }));
+["interval","cInterval"].forEach(id => $(id).addEventListener("input", e => {
+  if (parseFloat(e.target.value) < 1) e.target.value = 1; // daily is the floor for these two — thumb snaps back, 0–7 track keeps 3.5 centred
+}));
+["dose","interval","weeks","cDose","cInterval","startDay","cStartDay"].forEach(id => $(id).addEventListener("input", () => { persist(); render(); }));
+["syncDays"].forEach(id => $(id).addEventListener("change", () => { persist(); render(); }));
+document.querySelectorAll(".pep-chip").forEach(ch => {
+  ch.addEventListener("click", () => {
+    sel[ch.dataset.pep] = !sel[ch.dataset.pep];
+    persist();
+    render();
+  });
+});
 $("doseVal").addEventListener("input", () => {
   const v = parseFloat($("doseVal").value);
   if (isNaN(v)) return;
@@ -371,7 +613,16 @@ $("doseVal").addEventListener("input", () => {
   persist();
   render();
 });
+$("cDoseVal").addEventListener("input", () => {
+  const v = parseFloat($("cDoseVal").value);
+  if (isNaN(v)) return;
+  const sl = $("cDose");
+  sl.value = Math.min(parseFloat(sl.max), Math.max(parseFloat(sl.min), v));
+  persist();
+  render();
+});
 renderStepList();
+renderCStepList();
 render();
 </script>
 </body>

@@ -1144,6 +1144,120 @@ h1 {
     text-align: center;
 }
 
+/* stacked two-compound chart + panel bits */
+.reta-calc .panel-title {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .6px;
+    margin-bottom: 4px;
+}
+.reta-calc .cagri-title { color: #2dd4bf; }
+.reta-calc .stats-label {
+    margin: 18px 0 8px 0;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .6px;
+}
+.reta-calc .reta-label { color: var(--gold-2); }
+.reta-calc .cagri-label { color: #2dd4bf; }
+.reta-calc .reta-stats .stat { border-top: 2px solid var(--gold); }
+.reta-calc .cagri-stats .stat { border-top: 2px solid #2dd4bf; }
+.reta-calc .bar.reta {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    border-radius: 5px 0 0 5px;
+    background: linear-gradient(90deg, var(--ember), var(--gold));
+}
+.reta-calc .bar.cag {
+    position: absolute; top: 0; bottom: 0;
+    border-radius: 0 5px 5px 0;
+    background: linear-gradient(90deg, #0d9488, #2dd4bf);
+}
+.reta-calc .bar.cag:first-of-type { border-radius: 5px; }
+.reta-calc .bar-track .mg {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cream);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    white-space: nowrap;
+}
+.reta-calc .diamond { font-size: 10px; margin-right: 3px; }
+.reta-calc .diamond.reta { color: var(--gold); }
+.reta-calc .diamond.cagri { color: #2dd4bf; }
+.reta-calc .day-label { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
+.reta-calc .refline.cagri { border-left-color: rgba(45, 212, 191, 0.45); }
+.reta-calc .steady.cagri {
+    color: #7de8d8;
+    background: rgba(45, 212, 191, 0.10);
+}
+.reta-calc .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+.reta-calc .slider-row label.switch { flex: 0 0 44px; max-width: none; align-self: center; }
+.reta-calc .switch input { opacity: 0; width: 0; height: 0; }
+.reta-calc .switch .knob {
+    position: absolute; inset: 0; cursor: pointer;
+    background: var(--bg);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    border-radius: 999px;
+    transition: background .15s;
+}
+.reta-calc .switch .knob:before {
+    content: ""; position: absolute; left: 3px; top: 3px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--muted);
+    transition: transform .15s, background .15s;
+}
+.reta-calc .switch input:checked + .knob { background: rgba(45, 212, 191, 0.25); box-shadow: inset 0 0 0 1px #2dd4bf; }
+.reta-calc .switch input:checked + .knob:before { transform: translateX(20px); background: #2dd4bf; }
+.reta-calc .bar.lane { border-radius: 4px; position: absolute; left: 0; }
+.reta-calc .lane-mg {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.reta-calc .lane-mg.reta { color: var(--gold-2); }
+.reta-calc .lane-mg.cagri { color: #2dd4bf; }
+/* peptide picker chips */
+.reta-calc .pep-picker {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 4px 0 16px 0;
+}
+.reta-calc .pep-chip {
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    background: var(--panel);
+    color: var(--muted);
+    box-shadow: inset 0 0 0 1px var(--ring);
+}
+.reta-calc .pep-chip.reta.active {
+    background: linear-gradient(150deg, var(--gold-2), var(--gold));
+    color: #231603;
+    box-shadow: none;
+}
+.reta-calc .pep-chip.cagri.active {
+    background: linear-gradient(150deg, #5eead4, #2dd4bf);
+    color: #04251f;
+    box-shadow: none;
+}
+.reta-calc .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+.reta-calc .stepchip.cagri { box-shadow: inset 0 0 0 1px rgba(45, 212, 191, 0.5); }
+
 .reta-calc .stats {
     display: flex;
     gap: 12px;
@@ -1292,7 +1406,7 @@ h1 {
     box-shadow: inset 0 0 0 1px var(--ring);
     font-variant-numeric: tabular-nums;
 }
-.reta-calc #addStep {
+.reta-calc #addStep, .reta-calc #cAddStep {
     padding: 6px 14px;
     font-size: 12px;
     font-weight: 800;
