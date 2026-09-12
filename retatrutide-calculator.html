@@ -49,8 +49,8 @@
         <div class="panel-body" id="bodyReta">
             <div class="slider-row">
                 <label>Dose per jab</label>
-                <input id="dose" type="range" min="0" max="12" step="0.25" value="4">
-                <div class="val"><input id="doseVal" type="number" min="0" max="12" step="0.25" inputmode="decimal"><span class="unit">mg</span></div>
+                <input id="dose" type="range" min="0" max="12" step="0.05" value="4">
+                <div class="val"><input id="doseVal" type="number" min="0" max="12" step="0.05" inputmode="decimal"><span class="unit">mg</span></div>
             </div>
             <div class="slider-row">
                 <label>Days between jabs</label>
@@ -72,7 +72,7 @@
                         <span style="font-size:12px; color:var(--muted);">from week</span>
                         <input id="stepWeek" type="number" min="2" max="52" value="5" class="numin">
                         <span style="font-size:12px; color:var(--muted);">dose becomes</span>
-                        <input id="stepDose" type="number" min="0" max="12" step="0.25" value="8" class="numin">
+                        <input id="stepDose" type="number" min="0" max="12" step="0.05" value="8" class="numin">
                         <span style="font-size:12px; color:var(--muted);">mg</span>
                         <span style="font-size:12px; color:var(--muted);">every</span>
                         <input id="stepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
@@ -82,7 +82,7 @@
                     <div id="stepList" style="font-size:12px; color:var(--muted);">none — same dose every jab</div>
                 </div>
             </div>
-            <div class="hint">Tap the dose number to type an exact value (e.g. 4.75 mg) — or use the slider for rounded 0.25 mg values.</div>
+            <div class="hint">Tap the dose number to type an exact value (e.g. 4.75 mg) — or use the slider for rounded 0.05 mg values.</div>
         </div>
     </div>
 
