@@ -625,6 +625,9 @@ h1 {
 }
 .app-card-link:hover { color: var(--gold-2); }
 .app-card-link + .app-card-link { margin-left: 16px; }
+
+/* cards without a media column get the full width for their content */
+.app-card-no-media { grid-template-columns: minmax(0, 1fr); min-height: 0; }
 .app-card-link .arrow {
     display: grid;
     place-items: center;
