@@ -624,6 +624,7 @@ h1 {
     transition: gap 0.4s var(--ease), color 0.4s var(--ease);
 }
 .app-card-link:hover { color: var(--gold-2); }
+.app-card-link + .app-card-link { margin-left: 16px; }
 .app-card-link .arrow {
     display: grid;
     place-items: center;
