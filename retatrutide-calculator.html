@@ -514,7 +514,7 @@ function render() {
         ss.style.color = c.txt;
         ss.style.background = c.txt + "1f";
         ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
-        ss.innerHTML = `${c.short} steady state — from this week on, every week stays within 1% of this level (peak ~${c.steadyPeak.toFixed(2)} mg)`;
+        ss.innerHTML = `${c.name} steady state — from this week on, every week stays within 1% of this level (peak ~${c.steadyPeak.toFixed(2)} mg)`;
         chart.appendChild(ss);
       }
     }
@@ -526,7 +526,7 @@ function render() {
       ss.style.color = c.txt;
       ss.style.background = c.txt + "1f";
       ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
-      ss.innerHTML = `${c.short} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown — extend "show weeks" to see the plateau`;
+        ss.innerHTML = `${c.name} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown — extend "show weeks" to see the plateau`;
       chart.appendChild(ss);
     }
   }
