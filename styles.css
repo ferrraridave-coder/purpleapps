@@ -979,8 +979,8 @@ h1 {
 
     .app-card { min-height: 580px; padding: 24px; }
     .app-card-no-media { min-height: 0; }
-    .app-card-link { font-size: 0.92rem; gap: 6px; }
-    .app-card-link + .app-card-link { margin-left: 10px; }
+    .app-card-link { font-size: 0.87rem; gap: 5px; }
+    .app-card-link + .app-card-link { margin-left: 8px; }
     .app-card:nth-child(1) .app-card-media .phone-frame:first-child,
     .app-card-media .phone-frame { width: 154px; height: 334px; right: 130px; bottom: -44px; }
     .app-card:nth-child(1) .app-card-media .phone-frame:last-child { width: 168px; height: 364px; right: 0; bottom: -48px; }
