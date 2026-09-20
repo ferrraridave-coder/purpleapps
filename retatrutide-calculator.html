@@ -165,29 +165,29 @@ function cardHtml(p) {
             </div>
             <div class="slider-row starts-row">
                 <label>Starts</label>
-                <span style="color:var(--muted); font-size:14px;">week</span>
+                <span style="color:var(--muted); font-size:14px;">Week</span>
                 <input id="${p.key}StartWeek" type="number" min="1" max="52" step="1" value="1" class="numin">
-                <span style="color:var(--muted); font-size:14px;">day</span>
+                <span style="color:var(--muted); font-size:14px;">Day</span>
                 <input id="${p.key}StartDay" type="number" min="1" max="7" step="1" value="1" class="numin">
-                <div class="val" style="font-size:12px; color:var(--muted);">week 1 day 1 = chart start</div>
+                <div class="val" style="font-size:12px; color:var(--muted);">Week 1 day 1 = chart start</div>
             </div>
             <div class="slider-row" style="align-items:flex-start;">
                 <label>Titration steps</label>
                 <div style="flex:1; min-width:0;">
                     <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
-                        <span style="font-size:12px; color:var(--muted);">from week</span>
+                        <span style="font-size:12px; color:var(--muted);">From week</span>
                         <input id="${p.key}StepWeek" type="number" min="2" max="52" step="1" value="5" class="numin">
-                        <span style="font-size:12px; color:var(--muted);">dose becomes</span>
+                        <span style="font-size:12px; color:var(--muted);">Dose becomes</span>
                         <input id="${p.key}StepDose" type="number" min="0" max="${p.max}" step="0.05" value="${p.defStep}" class="numin">
                         <span style="font-size:12px; color:var(--muted);">mg</span>
                         <span style="display:inline-flex; align-items:center; gap:8px;">
-                            <span style="font-size:12px; color:var(--muted);">every</span>
+                            <span style="font-size:12px; color:var(--muted);">Every</span>
                             <input id="${p.key}StepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
-                            <span style="font-size:12px; color:var(--muted);">days (optional)</span>
+                            <span style="font-size:12px; color:var(--muted);">Days (optional)</span>
                         </span>
                         <button id="${p.key}AddStep" type="button">Add step</button>
                     </div>
-                    <div id="${p.key}StepList" style="font-size:12px; color:var(--muted); margin-top:8px;">none — same dose every jab</div>
+                    <div id="${p.key}StepList" style="font-size:12px; color:var(--muted); margin-top:8px;">None — same dose every jab</div>
                 </div>
             </div>
             <div class="hint">Tap the dose number to type an exact value (e.g. 0.99 mg) — or use the slider for rounded 0.05 mg values.</div>
@@ -376,7 +376,7 @@ function renderStats(c, days) {
   if (c.D === 0) {
     $(c.key + "PeakK").textContent = "Peak level";
     $(c.key + "PeakV").textContent = "off";
-    $(c.key + "PeakS").textContent = "dose is 0 mg — slide it up to include " + c.name.toLowerCase();
+    $(c.key + "PeakS").textContent = "Dose is 0 mg — slide it up to include " + c.name.toLowerCase();
     $(c.key + "TroughV").textContent = "—";
     $(c.key + "AvgV").textContent = "—";
     $(c.key + "WeeklyV").textContent = "0 mg/wk";
@@ -390,11 +390,11 @@ function renderStats(c, days) {
   if (reachedInWindow) {
     $(c.key + "PeakK").textContent = "Peak level";
     $(c.key + "PeakV").textContent = c.steadyPeak.toFixed(2) + " mg";
-    $(c.key + "PeakS").textContent = "steady state — from week " + c.steadyWeek + " every week stays within 1% of this";
+    $(c.key + "PeakS").textContent = "Steady state — from week " + c.steadyWeek + " every week stays within 1% of this";
   } else {
     $(c.key + "PeakK").textContent = "Peak in first " + (days/7) + " wk" + (days > 7 ? "s" : "");
     $(c.key + "PeakV").textContent = c.windowPeak.toFixed(2) + " mg";
-    $(c.key + "PeakS").textContent = "steady state " + c.steadyPeak.toFixed(2) + " mg — not reached until week " + c.steadyWeek;
+    $(c.key + "PeakS").textContent = "Steady state " + c.steadyPeak.toFixed(2) + " mg — not reached until week " + c.steadyWeek;
   }
   $(c.key + "TroughV").textContent = trough.toFixed(2) + " mg";
   $(c.key + "AvgV").textContent = avg.toFixed(2) + " mg";
@@ -434,7 +434,7 @@ function render() {
     `<span><span class="dot" style="background:linear-gradient(90deg, ${c.bar[0]}, ${c.bar[1]})"></span>${c.name} level</span>`
   ).join("");
   $("legend").innerHTML = leg +
-    `<span>◆ = jab day (after the day's figure, in that peptide's colour)</span>`;
+    `<span>◆ = Jab day (after the day's figure, in that peptide's colour)</span>`;
 
   if (!active.length) {
     $("chart").innerHTML = "";
@@ -526,7 +526,7 @@ function render() {
       ss.style.color = c.txt;
       ss.style.background = c.txt + "1f";
       ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
-        ss.innerHTML = `${c.name} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown — extend "show weeks" to see the plateau`;
+        ss.innerHTML = `${c.name} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown — extend "Show weeks" to see the plateau`;
       chart.appendChild(ss);
     }
   }
@@ -536,13 +536,13 @@ function render() {
 function renderStepList(p) {
   const el = $(p.key + "StepList");
   const steps = state[p.key].steps;
-  if (!steps.length) { el.textContent = "none — same dose every jab"; return; }
+  if (!steps.length) { el.textContent = "None — same dose every jab"; return; }
   el.innerHTML = "";
   steps.forEach((s, i) => {
     const chip = document.createElement("span");
     chip.className = "stepchip";
     chip.style.boxShadow = `inset 0 0 0 1px ${p.txt}`;
-    chip.innerHTML = `week ${s.week}+ → ${s.dose} mg${s.interval ? ` · every ${s.interval}d` : ""} <button type="button" aria-label="remove">✕</button>`;
+    chip.innerHTML = `Week ${s.week}+ → ${s.dose} mg${s.interval ? ` · every ${s.interval}d` : ""} <button type="button" aria-label="remove">✕</button>`;
     chip.querySelector("button").addEventListener("click", () => {
       steps.splice(i, 1);
       renderStepList(p);
