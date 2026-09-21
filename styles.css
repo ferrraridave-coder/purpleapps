@@ -1172,7 +1172,9 @@ h1 {
    arrows the older .val rules suppressed. */
 .reta-calc .slider-row:has(> input[type=range]) .val input {
     width: 76px;
-    text-align: right;
+    /* Left-aligned like every other field on the page. Right-aligning put a
+       single-digit figure up against the spinner arrows (Dave, 21 Sep). */
+    text-align: left;
     appearance: auto;
     -webkit-appearance: auto;
 }
