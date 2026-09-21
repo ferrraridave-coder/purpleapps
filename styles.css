@@ -1144,6 +1144,56 @@ h1 {
     color: inherit;
     font-weight: 700;
 }
+
+/* Slider rows: label + value box on one line, slider full width beneath — the
+   shape the Pep Calc iOS app uses. The old label|slider|value flex row crushed
+   the number once the text got bigger (Dave's screenshot, 21 Sep 2026).
+   Scoped with :has() so the Starts and Titration rows — which are not slider
+   rows — keep the layout above. */
+.reta-calc .slider-row:has(> input[type=range]) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 8px 12px;
+    margin: 14px 0;
+}
+/* Explicit row/column placement, not auto-flow: the DOM order is
+   label → slider → value, and auto-placement never backfills an earlier row, so
+   the value box landed on a line of its own. */
+.reta-calc .slider-row:has(> input[type=range]) > label {
+    grid-area: 1 / 1;
+}
+.reta-calc .slider-row:has(> input[type=range]) > .val {
+    grid-area: 1 / 2;
+    align-items: center;
+    gap: 6px;
+}
+.reta-calc .slider-row:has(> input[type=range]) > input[type=range] {
+    grid-area: 2 / 1 / 3 / 3;
+    width: 100%;
+    accent-color: var(--gold);
+}
+/* The value is a real input, visible and a fixed width, like the app's box. */
+.reta-calc .slider-row:has(> input[type=range]) .val input {
+    width: 76px;
+    border: 1px solid var(--ring);
+    border-radius: 8px;
+    padding: 6px 8px;
+    background: rgba(0, 0, 0, .28);
+    color: var(--gold-2);
+    font: inherit;
+    font-variant-numeric: inherit;
+    text-align: right;
+}
+.reta-calc .slider-row:has(> input[type=range]) .val input:focus {
+    outline: none;
+    border-color: var(--gold);
+}
+.reta-calc .slider-row:has(> input[type=range]) .val .unit {
+    display: inline-block;
+    min-width: 34px;
+    text-align: left;
+}
 .reta-calc .hint {
     margin-top: 10px;
     font-size: 12px;
