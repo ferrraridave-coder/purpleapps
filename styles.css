@@ -1120,26 +1120,10 @@ h1 {
     justify-content: flex-end;
     gap: 3px;
 }
-.reta-calc .slider-row .val input {
-    width: 56px;
-    border: 0;
-    padding: 0;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    font-variant-numeric: inherit;
-    text-align: right;
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-.reta-calc .slider-row .val input:focus {
-    outline: none;
-}
-.reta-calc .slider-row .val input::-webkit-outer-spin-button,
-.reta-calc .slider-row .val input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+/* (The old .val input rule lived here: an invisible 56px box with the prose
+   font and the spinner suppressed. It outranked .numin on specificity, so the
+   slider value boxes could never simply BE a .numin field. Removed — they now
+   carry class="numin" like every other input on the page.) */
 .reta-calc .slider-row .val .unit {
     color: inherit;
     font-weight: 700;
@@ -1167,6 +1151,10 @@ h1 {
     grid-area: 1 / 2;
     align-items: center;
     gap: 6px;
+    /* Read-only values ("7 days") read like the units, not like a figure. */
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 400;
 }
 .reta-calc .slider-row:has(> input[type=range]) > input[type=range] {
     grid-area: 2 / 1 / 3 / 3;
@@ -1177,27 +1165,23 @@ h1 {
     margin: 0;
     accent-color: var(--gold);
 }
-/* The value is a real input, visible and a fixed width, like the app's box. */
+/* The value box IS a .numin field (same class as Week/Day and the titration
+   rows), so its height, fill, radius, colour and font are identical by
+   construction rather than by matching numbers by hand. Only what .numin must
+   not decide is set here: a wider box, right-aligned figures, and the spinner
+   arrows the older .val rules suppressed. */
 .reta-calc .slider-row:has(> input[type=range]) .val input {
     width: 76px;
-    border: 1px solid var(--ring);
-    border-radius: 8px;
-    padding: 6px 8px;
-    background: rgba(0, 0, 0, .28);
-    color: var(--gold-2);
-    font: inherit;
-    font-variant-numeric: inherit;
     text-align: right;
-    /* 17px minimum: Safari zooms the whole page when a focused field's text is
-       too small, which threw the card off-screen. .numin carried a 16px guard
-       for that reason; on iOS 27 the 16px guard no longer stops the zoom, so
-       both are 17px now. */
-    font-size: 17px;
+    appearance: auto;
+    -webkit-appearance: auto;
 }
-.reta-calc .slider-row:has(> input[type=range]) .val input:focus {
-    outline: none;
-    border-color: var(--gold);
+.reta-calc .slider-row:has(> input[type=range]) .val input::-webkit-outer-spin-button,
+.reta-calc .slider-row:has(> input[type=range]) .val input::-webkit-inner-spin-button {
+    -webkit-appearance: auto;
+    margin: 0;
 }
+
 .reta-calc .slider-row:has(> input[type=range]) .val .unit {
     display: inline-block;
     min-width: 34px;
@@ -1205,6 +1189,10 @@ h1 {
        is a fixed width, so a left-aligned "mg" left a gap the slider did not
        have (Dave, 21 Sep). */
     text-align: right;
+    /* Same as the captions after every other input: muted, small, NOT bold. */
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 400;
 }
 .reta-calc .hint {
     margin-top: 10px;
@@ -1468,9 +1456,11 @@ h1 {
     border-radius: 8px;
 }
 .reta-calc .numin {
-    width: 66px;
+    /* Every numeric box is the dose box's width, so all fields in a card match
+       (Dave, 21 Sep). */
+    width: 76px;
     padding: 5px 8px;
-    font-size: 16px;
+    font-size: 17px;  /* 17px everywhere: consistent, and above the iOS auto-zoom threshold */
     font-weight: 700;
     border: 0;
     border-radius: 8px;

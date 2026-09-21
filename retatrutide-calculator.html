@@ -156,7 +156,7 @@ function cardHtml(p) {
             <div class="slider-row">
                 <label>Dose per jab</label>
                 <input id="${p.key}Dose" type="range" min="0" max="${p.max}" step="0.05" value="${p.def}">
-                <div class="val"><input id="${p.key}DoseVal" type="number" min="0" max="${p.max}" step="0.05" inputmode="decimal"><span class="unit">mg</span></div>
+                <div class="val"><input class="numin" id="${p.key}DoseVal" type="number" min="0" max="${p.max}" step="0.05" inputmode="decimal"><span class="unit">mg</span></div>
             </div>
             <div class="slider-row">
                 <label>Days between jabs</label>
