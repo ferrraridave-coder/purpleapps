@@ -1591,3 +1591,57 @@ h1 {
     .reta-calc .week-head { margin-left: 66px; }
     .reta-calc .steady { margin: 10px 0; }
 }
+
+/* ── Peptide-levels card rows, matched to the Pep Calc app ──────────────────
+   The app lays these out as a label column with every box the same width as
+   the dose box, the Day box landing on the dose box's right edge, and the
+   titration fields stacked under their own heading. On the web this row was a
+   wrapped flex line, so nothing lined up with the box above it. */
+
+/* Starts: Week + Day boxes on the label's line. The trailing column is the
+   value box's unit column (34px) plus its gap (6px) = 40px, MINUS this grid's
+   own 10px column gap — the same measurement the app needs (there it was
+   54 − 16). Get it wrong and the Day box misses the dose box's right edge by
+   exactly the gap. */
+.reta-calc .starts-row {
+    display: grid;
+    grid-template-columns: 1fr auto 30px;
+    align-items: center;
+    gap: 8px 10px;
+    margin: 14px 0 4px;
+}
+.reta-calc .starts-row > label {
+    grid-column: 1;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--cream);
+}
+.reta-calc .starts-row .start-fields {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.reta-calc .starts-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 0 14px;
+}
+.reta-calc .mini { font-size: 12px; color: var(--muted); }
+
+/* Titration: heading on its own line, then one labelled row per field, with
+   every box the same width as the dose box and sharing one left edge. */
+.reta-calc .titr-block { display: grid; gap: 8px; margin: 14px 0; }
+.reta-calc .titr-head { font-size: 12px; font-weight: 600; color: var(--muted); }
+.reta-calc .titr-row {
+    display: grid;
+    grid-template-columns: 140px 76px auto;
+    align-items: center;
+    gap: 8px 10px;
+}
+.reta-calc .titr-label { font-size: 12px; color: var(--muted); }
+.reta-calc .step-list { font-size: 12px; color: var(--muted); }
+
+/* Every numeric box in these cards is the same width as the dose box. */
+.reta-calc .starts-row .numin,
+.reta-calc .titr-row .numin { width: 76px; }
