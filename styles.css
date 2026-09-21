@@ -1171,6 +1171,10 @@ h1 {
 .reta-calc .slider-row:has(> input[type=range]) > input[type=range] {
     grid-area: 2 / 1 / 3 / 3;
     width: 100%;
+    /* Kill the UA's default range margin (2px each side): with it the track sat
+       inset from the label on the left and short of the unit on the right, so
+       neither edge lined up (Dave, 21 Sep). */
+    margin: 0;
     accent-color: var(--gold);
 }
 /* The value is a real input, visible and a fixed width, like the app's box. */
@@ -1184,6 +1188,11 @@ h1 {
     font: inherit;
     font-variant-numeric: inherit;
     text-align: right;
+    /* 17px minimum: Safari zooms the whole page when a focused field's text is
+       too small, which threw the card off-screen. .numin carried a 16px guard
+       for that reason; on iOS 27 the 16px guard no longer stops the zoom, so
+       both are 17px now. */
+    font-size: 17px;
 }
 .reta-calc .slider-row:has(> input[type=range]) .val input:focus {
     outline: none;
@@ -1192,7 +1201,10 @@ h1 {
 .reta-calc .slider-row:has(> input[type=range]) .val .unit {
     display: inline-block;
     min-width: 34px;
-    text-align: left;
+    /* Right-aligned so the unit ends exactly where the slider does: the column
+       is a fixed width, so a left-aligned "mg" left a gap the slider did not
+       have (Dave, 21 Sep). */
+    text-align: right;
 }
 .reta-calc .hint {
     margin-top: 10px;
@@ -1561,7 +1573,7 @@ h1 {
     .reta-calc .slider-row label { flex: 0 0 auto; font-size: 12px; max-width: 34%; }
     .reta-calc .slider-row input[type=range] { flex: 1; min-width: 0; }
     .reta-calc .slider-row .val { flex: 0 0 64px; font-size: 13px; text-align: left; font-variant-numeric: tabular-nums; }
-    .reta-calc .slider-row .val input { width: 38px; font-size: 16px; } /* 16px+ stops iOS auto-zooming on focus */
+    .reta-calc .slider-row .val input { width: 38px; font-size: 17px; } /* 17px: the 16px guard stopped iOS auto-zooming until iOS 27 — Dave still sees a slight zoom (21 Sep) */
     /* picker: two-by-two, centred, on small screens */
     .reta-calc .pep-picker { justify-content: center; }
     .reta-calc .pep-chip { flex: 0 0 calc(50% - 8px); text-align: center; padding: 9px 8px; }
