@@ -1129,6 +1129,34 @@ h1 {
     font-weight: 700;
 }
 
+/* Peptide name: the iOS app's free-text field, for the user's own reference —
+   a name to photograph alongside a calculation. It feeds no maths. The label is
+   styled like the field labels above and both it and the typed text are centred;
+   the box is a .numin so its text colour, fill, radius and 17px zoom guard are
+   identical to every other input on the page by construction. */
+.reta-calc .name-field {
+    display: flex;
+    flex-direction: column;
+    /* No align-items: centre — on a column that shrink-wraps the children, which
+       collapsed the full-width input. Centring is done with text-align below. */
+    gap: 6px;
+    margin: 18px 0 4px;
+}
+.reta-calc .name-field label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--cream);
+    text-align: center;
+}
+.reta-calc .name-field .numin {
+    /* Full width, unlike the numeric boxes' 76px, and filled with the cards' base
+       colour rather than the page background, so it reads as part of the card
+       family above it. */
+    width: 100%;
+    text-align: center;
+    background: var(--panel);
+}
+
 /* Slider rows: label + value box on one line, slider full width beneath — the
    shape the Pep Calc iOS app uses. The old label|slider|value flex row crushed
    the number once the text got bigger (Dave's screenshot, 21 Sep 2026).
@@ -1625,12 +1653,19 @@ h1 {
    every box the same width as the dose box and sharing one left edge. */
 .reta-calc .titr-block { display: grid; gap: 8px; margin: 14px 0; }
 .reta-calc .titr-head { font-size: 12px; font-weight: 600; color: var(--muted); }
+/* Titration rows: the caption and its box sit on the right, the box landing
+   under the Day box above, with the caption to the left of the box (the app's
+   layout). The starts row's grid ends 30px before the edge plus its own 10px
+   column gap, so the matching figure here is 40 — a row's gap adds to whatever
+   follows it, the same trap as the app's trailing spacer. */
 .reta-calc .titr-row {
-    display: grid;
-    grid-template-columns: 140px 76px auto;
+    display: flex;
     align-items: center;
-    gap: 8px 10px;
+    gap: 10px;
 }
+.reta-calc .titr-row .titr-label { flex: 0 0 140px; }
+.reta-calc .titr-row .mini { margin-left: auto; }
+.reta-calc .titr-row .numin { margin-right: 40px; }
 .reta-calc .titr-label { font-size: 12px; color: var(--muted); }
 .reta-calc .step-list { font-size: 12px; color: var(--muted); }
 

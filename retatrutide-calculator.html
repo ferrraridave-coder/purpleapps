@@ -164,7 +164,7 @@ function cardHtml(p) {
                 <div class="val" id="${p.key}IntervalVal"></div>
             </div>
             <div class="starts-row">
-                <label>Starts</label>
+                <label>Starting Dose from</label>
                 <div class="start-fields">
                     <span class="mini">Week</span>
                     <input id="${p.key}StartWeek" type="number" min="1" max="52" step="1" value="1" class="numin">
@@ -174,23 +174,30 @@ function cardHtml(p) {
             </div>
             <div class="starts-hint">Week 1 day 1 = chart start</div>
             <div class="titr-block">
-                <div class="titr-head">Titration steps</div>
-                <div class="titr-row">
-                    <span class="titr-label">From week</span>
-                    <input id="${p.key}StepWeek" type="number" min="2" max="52" step="1" value="5" class="numin">
+                <!-- The same two-line shape as Starting Dose above — heading, then
+                     the Week + Day pair beneath — so the heading's type and the
+                     boxes' alignment match by construction, not by eye. -->
+                <div class="starts-row">
+                    <label>Titration Dose from</label>
+                    <div class="start-fields">
+                        <span class="mini">Week</span>
+                        <input id="${p.key}StepWeek" type="number" min="2" max="52" step="1" value="5" class="numin">
+                        <span class="mini">Day</span>
+                        <input id="${p.key}StepDay" type="number" min="1" max="7" step="1" value="1" class="numin">
+                    </div>
                 </div>
                 <div class="titr-row">
                     <span class="titr-label">Dose becomes</span>
-                    <input id="${p.key}StepDose" type="number" min="0" max="${p.max}" step="0.05" value="${p.defStep}" class="numin">
                     <span class="mini">mg</span>
+                    <input id="${p.key}StepDose" type="number" min="0" max="${p.max}" step="0.05" value="${p.defStep}" class="numin">
                 </div>
                 <div class="titr-row">
                     <span class="titr-label">Every (optional)</span>
+                    <span class="mini">Days</span>
                     <input id="${p.key}StepInterval" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
-                    <span class="mini">days</span>
                 </div>
                 <div class="titr-actions">
-                    <button id="${p.key}AddStep" type="button">Add step</button>
+                    <button id="${p.key}AddStep" type="button">Add Titration Dose</button>
                 </div>
                 <div id="${p.key}StepList" class="step-list">None — same dose every jab</div>
             </div>
@@ -308,10 +315,16 @@ function computeCompound(c, days) {
   const ka = solveKa(ke, c.tmax);
   c.ka = ka; c.ke = ke;
 
+  // A step takes effect from a DAY now that one can be set, matching the app.
+  // `day` defaults to 1, which is exactly the old week-boundary rule, so saved
+  // steps written before days existed keep their meaning.
+  const stepStartDay = s =>
+    (Math.min(52, Math.max(1, s.week)) - 1) * 7 + Math.min(7, Math.max(1, s.day ?? 1));
+
   const schedAtTime = t => {
-    const week = Math.floor(t / 7) + 1;
+    const day = Math.floor(t) + 1;
     let d = c.D, iv = c.interval;
-    for (const s of c.steps) if (week >= s.week) { d = s.dose; if (s.interval) iv = s.interval; }
+    for (const s of c.steps) if (day >= stepStartDay(s)) { d = s.dose; if (s.interval) iv = s.interval; }
     return { d, iv };
   };
   c.schedAtTime = schedAtTime;
@@ -546,7 +559,7 @@ function renderStepList(p) {
     const chip = document.createElement("span");
     chip.className = "stepchip";
     chip.style.boxShadow = `inset 0 0 0 1px ${p.txt}`;
-    chip.innerHTML = `Week ${s.week}+ → ${s.dose} mg${s.interval ? ` · every ${s.interval}d` : ""} <button type="button" aria-label="remove">✕</button>`;
+    chip.innerHTML = `${(s.day ?? 1) === 1 ? `Week ${s.week}+` : `Week ${s.week} day ${s.day}+`} → ${s.dose} mg${s.interval ? ` · every ${s.interval}d` : ""} <button type="button" aria-label="remove">✕</button>`;
     chip.querySelector("button").addEventListener("click", () => {
       steps.splice(i, 1);
       renderStepList(p);
@@ -561,15 +574,17 @@ function renderStepList(p) {
 for (const p of PEPTIDES) {
   $(p.key + "AddStep").addEventListener("click", () => {
     const w = parseInt($(p.key + "StepWeek").value);
+    const day = Math.min(7, Math.max(1, parseInt($(p.key + "StepDay").value) || 1));
     const d = parseFloat($(p.key + "StepDose").value);
     const iv = parseFloat($(p.key + "StepInterval").value);
     if (!w || isNaN(d) || d < 0 || w < 2) return;
-    const step = { week: w, dose: d };
+    const step = { week: w, day, dose: d };
     if (iv && iv >= 1 && iv <= 14) step.interval = iv;
     const steps = state[p.key].steps;
-    const existing = steps.findIndex(s => s.week === w);
+    // Keyed on week AND day: two steps in one week are now two steps.
+    const existing = steps.findIndex(s => s.week === w && (s.day ?? 1) === day);
     if (existing >= 0) steps[existing] = step; else steps.push(step);
-    steps.sort((a, b) => a.week - b.week);
+    steps.sort((a, b) => a.week - b.week || (a.day ?? 1) - (b.day ?? 1));
     renderStepList(p);
     persist();
     render();
