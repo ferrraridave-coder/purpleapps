@@ -43,17 +43,17 @@
     <div class="panel">
         <div class="slider-row">
             <label>Vial strength</label>
-            <input id="vial" type="range" min="1" max="60" step="0.25" value="12">
+            <input id="vial" type="range" min="0" max="60" step="0.25" value="12">
             <div class="val"><input class="numin" id="vialVal" type="number" min="0" step="0.01" inputmode="decimal"><span class="unit">mg</span></div>
         </div>
         <div class="slider-row">
             <label>Water to add</label>
-            <input id="water" type="range" min="0.2" max="3" step="0.05" value="1">
+            <input id="water" type="range" min="0" max="3" step="0.05" value="1">
             <div class="val"><input class="numin" id="waterVal" type="number" min="0" step="0.01" inputmode="decimal"><span class="unit">ml</span></div>
         </div>
         <div class="slider-row">
             <label>Dose wanted</label>
-            <input id="dose" type="range" min="0.25" max="12" step="0.05" value="6">
+            <input id="dose" type="range" min="0" max="12" step="0.05" value="6">
             <div class="val"><input class="numin" id="doseVal" type="number" min="0" step="0.01" inputmode="decimal"><span class="unit">mg</span></div>
         </div>
         <div class="slider-row">
@@ -166,8 +166,9 @@ function syncBoxes() {
   // One full syringe caps the dose, and the dose slider's top end follows it.
   const ceiling = doseCeiling();
   if (ceiling > 0) {
-    // Never let the slider's top end fall below its 0.25 floor.
-    $("dose").max = Math.max(ceiling, 0.25);
+    // The range must have some width: with water at 0 the ceiling is 0, so the
+// top end floors at one step. (A range's value floor is 0, matching the boxes.)
+    $("dose").max = Math.max(ceiling, 0.05);
     if (state.dose > ceiling) state.dose = ceiling;
   }
   for (const k in fields) {
