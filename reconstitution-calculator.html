@@ -128,11 +128,33 @@ function render() {
   const ceiling = doseCeiling();
   if (ceiling > 0 && state.dose > ceiling) state.dose = ceiling;
   const dose = state.dose;
-  if (!(vial > 0) || !(water > 0) || !(dose > 0)) return;
 
-  const conc = vial / water;                    // mg per ml
+  const conc = concentration();                 // mg per ml; 0 until water is set
+  const units = conc > 0 ? (dose / conc) * 100 : 0;
+
+  // The units row is a second view of the dose, so it is kept in step whatever
+  // the inputs are: sliding it down to 0 has to read 0, rather than freezing on
+  // the last usable figure while the other readouts go stale.
+  const uBox = $("unitsVal");
+  if (document.activeElement !== uBox) uBox.value = Math.round(units * 10) / 10;
+  $("units").value = Math.min(Math.max(units, 0), 100);
+
+  if (!(vial > 0) || !(water > 0) || !(dose > 0)) {
+    // Nothing to work out yet — say so instead of leaving the last figures up.
+    $("unitsV").textContent = "—";
+    $("unitsS").textContent = "";
+    $("concV").textContent = "—";
+    $("countV").textContent = "—";
+    $("countS").textContent = "";
+    $("leftV").textContent = "—";
+    $("leftS").textContent = "";
+    $("syringe").innerHTML =
+      `<div class="syr-track"></div>
+      <div class="syr-cap">Enter a vial strength, a water volume and a dose above 0 to see the numbers.</div>`;
+    return;
+  }
+
   const drawMl = dose / conc;                   // ml to draw
-  const units = drawMl * 100;                   // U-100 units
   const doses = vial / dose;                    // jabs per vial
   const whole = Math.floor(doses + 1e-9);
   const leftover = vial - whole * dose;         // mg left after whole doses
@@ -144,11 +166,6 @@ function render() {
   $("countS").textContent = whole === 1 ? "Full dose per vial" : "Full doses per vial";
   $("leftV").textContent = leftover > 0.005 ? leftover.toFixed(2) + " mg" : "0 mg";
   $("leftS").textContent = leftover > 0.005 ? "Left after full doses" : "Nothing wasted";
-
-  // the derived units readout, kept in step with the dose
-  const uBox = $("unitsVal");
-  if (document.activeElement !== uBox) uBox.value = Math.round(units * 10) / 10;
-  $("units").value = Math.min(units, 100);
 
   // syringe: 0–100 units, gold fill to the draw point (the dose ceiling means
   // the draw can never exceed one full syringe now)
