@@ -38,15 +38,32 @@
     </noscript>
     <p class="sub">Estimated mg active in the body per day. Pick the peptides you're running, set your dose and jab spacing, tap any day for the detail. Model: first-order absorption (slow depot release, peaks ~8–72h post-jab) + exponential elimination, from published trial half-life data.</p>
 
-    <div class="pep-picker" id="pepPicker"></div>
+    <!-- One door in: the peptide chips live in a sheet now, so the list can grow
+         without crowding the screen. The button never reflects the selection —
+         only the cards below do, once Done is pressed. -->
+    <button type="button" class="pep-select" id="pepSelect">Select Peptides</button>
+
+    <div class="pep-sheet-backdrop" id="pepSheet" hidden>
+        <div class="pep-sheet" role="dialog" aria-modal="true" aria-labelledby="pepSheetTitle">
+            <div class="pep-sheet-bar">
+                <button type="button" class="pep-sheet-btn" id="pepCancel">Cancel</button>
+                <div class="pep-sheet-title" id="pepSheetTitle">Select Peptides</div>
+                <button type="button" class="pep-sheet-btn pep-sheet-done" id="pepDone">Done</button>
+            </div>
+            <div class="pep-picker" id="pepSheetBody"></div>
+        </div>
+    </div>
 
     <div id="panels"></div>
 
     <div class="panel">
         <div class="slider-row">
-            <label>Show weeks</label>
-            <input id="weeks" type="range" min="1" max="52" step="1" value="5">
-            <div class="val" id="weeksVal"></div>
+            <!-- One handle: it picks where the chart starts. The chart always
+                 runs to the last week — later weeks are reached by scrolling, so
+                 there is nothing to trim. -->
+            <label>Weeks shown from</label>
+            <input id="startWeek" type="range" min="1" max="103" step="1" value="1">
+            <div class="val" id="startWeekVal"></div>
         </div>
     </div>
 
@@ -55,7 +72,7 @@
     <div class="legend" id="legend"></div>
 
     <div id="chart"></div>
-    <div id="emptyState" class="note" style="display:none; text-align:center; padding:18px;">All peptides are switched off — pick one above to see its levels.</div>
+    <div id="emptyState" class="note" style="display:none; text-align:center; padding:18px;">All peptides are switched off — tap Select Peptides to choose one.</div>
 
     <div class="note">
         Bars show the average level over each day — one lane per active peptide, each with its own figure, growing into place from the week you start it. <strong>Tap or click any day</strong> for that day's breakdown.
@@ -68,7 +85,7 @@
             <p>This is an educational estimation tool only. It is <strong>not medical advice</strong>, and it is not a dosing guide, a prescription, or a recommendation to use any substance.</p>
             <p>Retatrutide and cagrilintide are <strong>investigational drugs</strong> — not approved by the MHRA, the FDA, or any other regulatory body, and not legally available. Tirzepatide and semaglutide are <strong>approved prescription-only medicines</strong>, available only under medical supervision. Figures shown here are estimates derived from published trial data — real-world behaviour varies from person to person.</p>
             <p>Always consult your doctor or a qualified healthcare professional before starting, changing, or stopping any medication. Never make decisions about your health based on a chart on the internet — including this one.</p>
-            <p>No liability is accepted for any use of this tool or reliance on its output. If you are experiencing a medical issue, contact your GP or call NHS 111.</p>
+            <p>No liability is accepted for any use of this tool or reliance on its output. If you are experiencing a medical issue, contact your doctor or healthcare professional.</p>
         </div>
     </div>
 
@@ -211,15 +228,15 @@ function statsHtml(p) {
     <div id="stats-${p.key}" style="display:none;">
         <div class="stats-label" style="color:${p.txt};">${p.name}</div>
         <div class="stats">
-            <div class="stat" style="border-top:2px solid ${p.bar[1]};"><div class="k" id="${p.key}PeakK">Peak level</div><div class="v" id="${p.key}PeakV"></div><div class="s" id="${p.key}PeakS"></div></div>
-            <div class="stat" style="border-top:2px solid ${p.bar[1]};"><div class="k">Lowest level</div><div class="v" id="${p.key}TroughV"></div></div>
-            <div class="stat" style="border-top:2px solid ${p.bar[1]};"><div class="k">Daily average</div><div class="v" id="${p.key}AvgV"></div></div>
-            <div class="stat" style="border-top:2px solid ${p.bar[1]};"><div class="k">Weekly dose</div><div class="v" id="${p.key}WeeklyV"></div></div>
+            <div class="stat" style="border-top:2px solid ${p.bar[1]};"><div class="k">Highest in a day<div class="k2" id="${p.key}PeakK2"></div></div><div class="v" id="${p.key}PeakV"></div></div>
+            <div class="stat" style="border-top:2px solid ${p.bar[1]};"><div class="k">Lowest in a day<div class="k2" id="${p.key}TroughK2"></div></div><div class="v" id="${p.key}TroughV"></div></div>
+            <div class="stat" style="border-top:2px solid ${p.bar[1]};"><div class="k">Daily average<div class="k2" id="${p.key}AvgK2"></div></div><div class="v" id="${p.key}AvgV"></div></div>
+            <div class="stat" style="border-top:2px solid ${p.bar[1]};"><div class="k">Weekly dose<div class="k2" id="${p.key}WeeklyK2"></div></div><div class="v" id="${p.key}WeeklyV"></div></div>
         </div>
     </div>`;
 }
 
-$("pepPicker").innerHTML = PEPTIDES.map(p =>
+$("pepSheetBody").innerHTML = PEPTIDES.map(p =>
   `<button type="button" class="pep-chip" data-pep="${p.key}">${p.name}</button>`).join("");
 $("panels").innerHTML = PEPTIDES.map(cardHtml).join("");
 $("statsArea").innerHTML = PEPTIDES.map(statsHtml).join("");
@@ -233,7 +250,9 @@ for (const p of PEPTIDES) {
 }
 
 if (saved) {
-  if (saved.weeks !== undefined) $("weeks").value = saved.weeks;
+  // The chart always ends at the last week now, so a saved length from the old
+// "Show weeks" control has nothing to restore to — the start defaults to week 1.
+  if (saved.startWeek !== undefined) $("startWeek").value = saved.startWeek;
   for (const p of PEPTIDES) {
     const c = saved.comp && saved.comp[p.key];
     if (c) {
@@ -280,6 +299,51 @@ if (saved) {
   }
 }
 
+// ── the picker sheet ────────────────────────────────────────────────────────
+// The chips live in a sheet now, and it holds a draft: the current selection is
+// copied in when it opens and written back only on Done, so Cancel — and Esc, or
+// clicking away — really cancels. The Select Peptides button never changes.
+const draft = {};
+let sheetOpen = false;
+
+function paintChips() {
+  document.querySelectorAll(".pep-chip").forEach(ch => {
+    const p = PEPTIDES.find(x => x.key === ch.dataset.pep);
+    const on = !!draft[p.key];
+    ch.classList.toggle("active", on);
+    ch.style.background = on ? `linear-gradient(150deg, ${p.bar[1]}, ${p.bar[0]})` : "";
+    ch.style.color = on ? "#1a1206" : "";
+    ch.style.boxShadow = on ? "none" : "";
+  });
+}
+
+function openSheet() {
+  for (const p of PEPTIDES) draft[p.key] = !!sel[p.key];
+  sheetOpen = true;
+  $("pepSheet").hidden = false;
+  $("pepSelect").setAttribute("aria-expanded", "true");
+  paintChips();
+  $("pepDone").focus?.();
+}
+
+function closeSheet() {
+  sheetOpen = false;
+  $("pepSheet").hidden = true;
+  $("pepSelect").setAttribute("aria-expanded", "false");
+  $("pepSelect").focus?.();
+}
+
+$("pepSelect").addEventListener("click", openSheet);
+$("pepCancel").addEventListener("click", closeSheet);
+$("pepDone").addEventListener("click", () => {
+  for (const p of PEPTIDES) sel[p.key] = !!draft[p.key];
+  closeSheet();
+  persist();
+  render();
+});
+$("pepSheet").addEventListener("click", e => { if (e.target === $("pepSheet")) closeSheet(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && sheetOpen) closeSheet(); });
+
 function persist() {
   try {
     const comp = {};
@@ -293,7 +357,7 @@ function persist() {
         on: sel[p.key],
       };
     }
-    localStorage.setItem("retaCalc", JSON.stringify({ weeks: $("weeks").value, comp }));
+    localStorage.setItem("retaCalc", JSON.stringify({ startWeek: $("startWeek").value, comp }));
   } catch { /* embedded webviews can refuse storage — carry on without it */ }
 }
 
@@ -379,62 +443,78 @@ function computeCompound(c, days) {
     if (Math.abs(weekPeakAvg[w] - finalPeak) > finalPeak * 0.01) { steadyWeekIdx = w + 1; break; }
   }
   let steadyDay = steadyWeekIdx * 7;
-  let steadyPeak = 0;
+  // The settled final week yields all three steady-state figures — the highest
+  // point within a day, the lowest, and the mean of the daily averages. The cards
+  // show these rather than the ramping early weeks, so all three describe the
+  // same period (and match the app's engine).
+  let steadyPeak = 0, steadyTrough = Infinity, steadyAvgSum = 0;
   for (let d = SIM_END - 7; d < SIM_END; d++) {
-    const { hi } = dayHiLo(d, extDoses, ka, ke);
+    const { hi, lo } = dayHiLo(d, extDoses, ka, ke);
     if (hi > steadyPeak) steadyPeak = hi;
+    if (lo < steadyTrough) steadyTrough = lo;
+    steadyAvgSum += dayAvg(d);
   }
+  if (!isFinite(steadyTrough)) steadyTrough = 0;
   c.steadyDay = steadyDay; c.steadyPeak = steadyPeak;
+  c.steadyTrough = steadyTrough;
+  c.steadyAverage = steadyAvgSum / 7;
   c.windowPeak = Math.max(...rows.map(r => r.hi));
   c.steadyWeek = Math.floor(steadyDay/7) + 1;
 }
 
 function renderStats(c, days) {
+  const mg = v => v.toFixed(2) + " mg";
   if (c.D === 0) {
-    $(c.key + "PeakK").textContent = "Peak level";
     $(c.key + "PeakV").textContent = "off";
-    $(c.key + "PeakS").textContent = "Dose is 0 mg — slide it up to include " + c.name.toLowerCase();
+    $(c.key + "PeakK2").textContent = "";
     $(c.key + "TroughV").textContent = "—";
+    $(c.key + "TroughK2").textContent = "";
     $(c.key + "AvgV").textContent = "—";
+    $(c.key + "AvgK2").textContent = "";
     $(c.key + "WeeklyV").textContent = "0 mg/wk";
+    $(c.key + "WeeklyK2").textContent = "(current dose)";
     return;
   }
+  // Highest, lowest and daily average are all steady-state figures taken from the
+  // same settled week, so the three describe one period and cannot be read
+  // against the ramping weeks at the top of the chart. If the weeks shown never
+  // reach steady state they fall back to those weeks and say so.
+  const reached = c.steadyDay < days;
+  const steadySub = reached ? "(steady state)"
+                            : "(first " + (days / 7) + " wk" + (days > 7 ? "s" : "") + ")";
   const troughRows = c.rows.filter(r => r.day >= c.interval);
-  const trough = Math.min(...(troughRows.length ? troughRows : c.rows).map(r => r.lo));
-  const avg = c.rows.reduce((s,r) => s + r.avg, 0) / c.rows.length;
+  const windowTrough = Math.min(...(troughRows.length ? troughRows : c.rows).map(r => r.lo));
+  const windowAvg = c.rows.reduce((s, r) => s + r.avg, 0) / c.rows.length;
+
+  $(c.key + "PeakV").textContent    = mg(reached ? c.steadyPeak : c.windowPeak);
+  $(c.key + "TroughV").textContent  = mg(reached ? c.steadyTrough : windowTrough);
+  $(c.key + "AvgV").textContent     = mg(reached ? c.steadyAverage : windowAvg);
+  $(c.key + "PeakK2").textContent   = steadySub;
+  $(c.key + "TroughK2").textContent = steadySub;
+  $(c.key + "AvgK2").textContent    = steadySub;
+
   const weekly = c.D * 7 / c.interval;
-  const reachedInWindow = c.steadyDay < days;
-  if (reachedInWindow) {
-    $(c.key + "PeakK").textContent = "Peak level";
-    $(c.key + "PeakV").textContent = c.steadyPeak.toFixed(2) + " mg";
-    $(c.key + "PeakS").textContent = "Steady state — from week " + c.steadyWeek + " every week stays within 1% of this";
-  } else {
-    $(c.key + "PeakK").textContent = "Peak in first " + (days/7) + " wk" + (days > 7 ? "s" : "");
-    $(c.key + "PeakV").textContent = c.windowPeak.toFixed(2) + " mg";
-    $(c.key + "PeakS").textContent = "Steady state " + c.steadyPeak.toFixed(2) + " mg — not reached until week " + c.steadyWeek;
-  }
-  $(c.key + "TroughV").textContent = trough.toFixed(2) + " mg";
-  $(c.key + "AvgV").textContent = avg.toFixed(2) + " mg";
   const fmtSeg = (d, iv) => d + " mg/" + iv + "d";
   $(c.key + "WeeklyV").textContent = c.steps.length
     ? [fmtSeg(c.D, c.interval), ...c.steps.map(s => fmtSeg(s.dose, s.interval || c.interval))].join(" → ")
     : weekly.toFixed(2) + " mg/wk";
+  $(c.key + "WeeklyK2").textContent = c.steps.length ? "(dose schedule)" : "(current dose)";
 }
 
 // ── render ──────────────────────────────────────────────────────────────────
-function render() {
-  const days = parseInt($("weeks").value) * 7;
-  $("weeksVal").textContent = days/7 + " wks";
+// The chart always runs to this week; the start-week slider only chooses where
+// it begins, so the ramping early weeks can be skipped. The app draws the same
+// 104 weeks of daily rows.
+const WEEKS_MAX = 104;
 
-  // picker chips + panels + stats visibility
-  document.querySelectorAll(".pep-chip").forEach(ch => {
-    const p = PEPTIDES.find(x => x.key === ch.dataset.pep);
-    const on = sel[p.key];
-    ch.classList.toggle("active", on);
-    ch.style.background = on ? `linear-gradient(150deg, ${p.bar[1]}, ${p.bar[0]})` : "";
-    ch.style.color = on ? "#1a1206" : "";
-    ch.style.boxShadow = on ? "none" : "";
-  });
+function render() {
+  const days = WEEKS_MAX * 7;
+  const startWeek = Math.min(WEEKS_MAX - 1, Math.max(1, parseInt($("startWeek").value) || 1));
+  const firstDay = (startWeek - 1) * 7;
+  $("startWeekVal").textContent = "Week " + startWeek;
+
+  // The chips live in the sheet and are painted from its draft when it opens —
+  // not from `sel` here, or they would fight the draft mid-edit.
   const active = [];
   for (const p of PEPTIDES) {
     $("panel-" + p.key).style.display = sel[p.key] ? "" : "none";
@@ -448,7 +528,7 @@ function render() {
 
   // legend
   const leg = active.map(c =>
-    `<span><span class="dot" style="background:linear-gradient(90deg, ${c.bar[0]}, ${c.bar[1]})"></span>${c.name} level</span>`
+    `<span><span class="dot" style="background:linear-gradient(90deg, ${c.bar[0]}, ${c.bar[1]})"></span>${c.name} average level</span>`
   ).join("");
   $("legend").innerHTML = leg +
     `<span>◆ = Jab day (after the day's figure, in that peptide's colour)</span>`;
@@ -472,12 +552,30 @@ function render() {
   }
 
   // chart
-  const maxAvg = Math.max(...Array.from({length: days}, (_, i) => active.reduce((s, c) => s + c.rows[i].avg, 0)));
+  const maxAvg = Math.max(...Array.from({length: days - firstDay}, (_, i) => {
+    const d = firstDay + i;
+    return active.reduce((s, c) => s + c.rows[d].avg, 0);
+  }));
   const scaleMax = Math.max(maxAvg, ...active.flatMap(c => [c.D, c.steadyPeak, c.windowPeak]), 0.01) * 1.14;
 
   const chart = $("chart");
   chart.innerHTML = "";
-  for (let d = 0; d < days; d++) {
+
+  // A peptide already settled before the first week on screen keeps a note — the
+  // inline marker below would never appear for it.
+  for (const c of active) {
+    if (c.steadyDay < firstDay) {
+      const ss = document.createElement("div");
+      ss.className = "steady";
+      ss.style.color = c.txt;
+      ss.style.background = c.txt + "1f";
+      ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
+      ss.innerHTML = `${c.name} was already at steady state before week ${startWeek} — reached at week ${c.steadyWeek}, and every week here stays within 1% of a peak ~${c.steadyPeak.toFixed(2)} mg`;
+      chart.appendChild(ss);
+    }
+  }
+
+  for (let d = firstDay; d < days; d++) {
     if (d % 7 === 0) {
       const wh = document.createElement("div");
       wh.className = "week-head";
@@ -543,7 +641,7 @@ function render() {
       ss.style.color = c.txt;
       ss.style.background = c.txt + "1f";
       ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
-        ss.innerHTML = `${c.name} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown — extend "Show weeks" to see the plateau`;
+        ss.innerHTML = `${c.name} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown`;
       chart.appendChild(ss);
     }
   }
@@ -604,12 +702,12 @@ for (const p of PEPTIDES) {
     $(p.key + f).addEventListener("input", () => { persist(); render(); }));
   renderStepList(p);
 }
-$("weeks").addEventListener("input", () => { persist(); render(); });
+$("startWeek").addEventListener("input", () => { persist(); render(); });
+// A chip toggles the sheet's draft; nothing is committed until Done.
 document.querySelectorAll(".pep-chip").forEach(ch => {
   ch.addEventListener("click", () => {
-    sel[ch.dataset.pep] = !sel[ch.dataset.pep];
-    persist();
-    render();
+    draft[ch.dataset.pep] = !draft[ch.dataset.pep];
+    paintChips();
   });
 });
 

@@ -31,13 +31,25 @@
 <main class="reta-wrap reta-calc">
     <span class="eyebrow">Educational tool</span>
     <h1>Reconstitution Calculator</h1>
-    <p class="sub">Vial strength, water in, dose wanted — get exactly what to draw on a U-100 insulin syringe. 1 ml = 100 units.</p>
+    <p class="sub">Vial strength, water in, dose wanted — get exactly what to draw on a 0.3 ml, 0.5 ml or 1 ml syringe. Units are the same on all three: 1 unit = 0.01 ml.</p>
 
     <!-- Free-text note for the user's own reference (e.g. photographing a
          calculation). Like the iOS app's field, it feeds no maths. -->
     <div class="name-field">
         <label for="peptideName">Peptide name (optional)</label>
         <input class="numin" id="peptideName" type="text" autocomplete="off" spellcheck="false">
+    </div>
+
+    <!-- Barrel choice. It sits above the numbers because it decides the dose
+         ceiling — one full barrel: 100 units on 1 ml, 50 on 0.5 ml, 30 on
+         0.3 ml. The app has the same control in the same place. -->
+    <div class="panel syr-panel">
+        <div class="syr-name">Syringe Size</div>
+        <div class="syr-seg" role="group" aria-label="Syringe Size">
+            <button type="button" id="syr1"  class="syr-seg-btn is-on" data-syringe="1"   aria-pressed="true">1 ml</button>
+            <button type="button" id="syr05" class="syr-seg-btn"       data-syringe="0.5" aria-pressed="false">0.5 ml</button>
+            <button type="button" id="syr03" class="syr-seg-btn"       data-syringe="0.3" aria-pressed="false">0.3 ml</button>
+        </div>
     </div>
 
     <div class="panel">
@@ -74,7 +86,7 @@
     <div class="legend">
         <span><span class="dot" style="background:linear-gradient(90deg, var(--ember), var(--gold))"></span>Your dose</span>
         <span><span class="dot" style="background:var(--panel); box-shadow: inset 0 0 0 1px var(--ring);"></span>Rest of the syringe</span>
-        <span>a U-100 syringe holds 100 units = 1 ml</span>
+        <span id="legendBarrel">1 ml = 100 units</span>
     </div>
 
     <div id="syringe"></div>
@@ -89,7 +101,7 @@
         <div class="note" style="margin-top:0">
             <p>This is an educational arithmetic tool only. It is <strong>not medical advice</strong>, and it is not a dosing guide or a recommendation to use any substance.</p>
             <p>Always double-check measurements before drawing or injecting anything. If in doubt, have a second person verify your maths. Consult a qualified healthcare professional before using any medication.</p>
-            <p>No liability is accepted for any use of this tool or reliance on its output. If you are experiencing a medical issue, contact your GP or call NHS 111.</p>
+            <p>No liability is accepted for any use of this tool or reliance on its output. If you are experiencing a medical issue, contact your doctor or healthcare professional.</p>
         </div>
     </div>
 
@@ -106,21 +118,27 @@
 const $ = id => document.getElementById(id);
 
 // editable value boxes + sliders stay in sync; maths always uses the typed value
-const state = { vial: 12, water: 1, dose: 6 };
+const state = { vial: 12, water: 1, dose: 6, syringe: "1" };
 const fields = {
   vial:  { slider: "vial",  box: "vialVal",  dec: 2 },
   water: { slider: "water", box: "waterVal", dec: 2 },
   dose:  { slider: "dose",  box: "doseVal",  dec: 2 }
 };
 
-// A U-100 syringe holds 100 units = 1 ml, so one full syringe is the most a
-// single dose can draw. The dose ceiling is the concentration in mg
-// (vial / water); the units figure is derived from the dose and can never pass
-// 100. Units drawn and Dose wanted are two views of the same value — moving
-// either one moves the other.
+// A unit is the same size on every barrel — 1 unit = 0.01 ml — so the barrel
+// only changes the capacity, and with it where one full syringe ends: 100 units
+// on 1 ml, 50 on 0.5 ml, 30 on 0.3 ml. That capacity is the dose ceiling, and
+// the units figure can never pass it. Units drawn and Dose wanted are two views
+// of the same value — moving either one moves the other.
+const BARRELS = {
+  "1":   { ml: "1 ml",   units: 100, step: 10 },
+  "0.5": { ml: "0.5 ml", units: 50,  step: 5 },
+  "0.3": { ml: "0.3 ml", units: 30,  step: 5 }
+};
+const capacity = () => BARRELS[state.syringe].units;
 const concentration = () => (state.water > 0 ? state.vial / state.water : 0);
-const doseCeiling = () => concentration();
-const doseForUnits = u => Math.min(u, 100) * concentration() / 100;
+const doseCeiling = () => (capacity() / 100) * concentration();   // one full barrel
+const doseForUnits = u => Math.min(u, capacity()) * concentration() / 100;
 
 function render() {
   const vial = state.vial, water = state.water;
@@ -135,9 +153,10 @@ function render() {
   // The units row is a second view of the dose, so it is kept in step whatever
   // the inputs are: sliding it down to 0 has to read 0, rather than freezing on
   // the last usable figure while the other readouts go stale.
+  const cap = capacity();
   const uBox = $("unitsVal");
   if (document.activeElement !== uBox) uBox.value = Math.round(units * 10) / 10;
-  $("units").value = Math.min(Math.max(units, 0), 100);
+  $("units").value = Math.min(Math.max(units, 0), cap);
 
   if (!(vial > 0) || !(water > 0) || !(dose > 0)) {
     // Nothing to work out yet — say so instead of leaving the last figures up.
@@ -167,25 +186,37 @@ function render() {
   $("leftV").textContent = leftover > 0.005 ? leftover.toFixed(2) + " mg" : "0 mg";
   $("leftS").textContent = leftover > 0.005 ? "Left after full doses" : "Nothing wasted";
 
-  // syringe: 0–100 units, gold fill to the draw point (the dose ceiling means
-  // the draw can never exceed one full syringe now)
-  const pct = Math.min(units, 100);
+  // syringe: the whole barrel, gold fill to the draw point. Ticks and the
+  // caption follow the chosen barrel — every 10 units on 1 ml, every 5 on the
+  // smaller two, where the markings are physically wider anyway.
+  const barrel = BARRELS[state.syringe];
+  const pct = Math.min(units, cap) / cap * 100;
+  const ticks = [];
+  for (let u = 0; u <= cap; u += barrel.step) ticks.push(u);
   $("syringe").innerHTML = `
     <div class="syr-track">
       <div class="syr-fill" style="width:${pct}%"></div>
-      ${[0,10,20,30,40,50,60,70,80,90,100].map(u =>
-        `<div class="syr-tick" style="left:${u}%"><span>${u}</span></div>`).join("")}
+      ${ticks.map(u =>
+        `<div class="syr-tick" style="left:${u / cap * 100}%"><span>${u}</span></div>`).join("")}
     </div>
-    <div class="syr-cap">Units on a U-100 syringe</div>`;
+    <div class="syr-cap">Units on a ${barrel.ml} syringe</div>`;
+  $("legendBarrel").textContent = `${barrel.ml} = ${cap} units`;
 }
 
 function syncBoxes() {
-  // One full syringe caps the dose, and the dose slider's top end follows it.
+  // One full barrel caps the dose, and both slider top ends follow it — the
+  // units row stops at the barrel too.
+  const cap = capacity();
+  $("units").max = cap;
+  $("unitsVal").max = cap;
   const ceiling = doseCeiling();
   if (ceiling > 0) {
     // The range must have some width: with water at 0 the ceiling is 0, so the
-// top end floors at one step. (A range's value floor is 0, matching the boxes.)
-    $("dose").max = Math.max(ceiling, 0.05);
+    // top end floors at one step. (A range's value floor is 0, matching the
+    // boxes.) Rounded to two decimals the boxes already show, so the slider's top
+    // end is a reachable step: 0.3 x 12 is 3.5999999999999996 in binary, and an
+    // unrounded max left the thumb one step short of the barrel's worth.
+    $("dose").max = Math.max(Math.round(ceiling * 100) / 100, 0.05);
     if (state.dose > ceiling) state.dose = ceiling;
   }
   for (const k in fields) {
@@ -234,6 +265,25 @@ for (const id of ["units", "unitsVal"]) {
     syncBoxes();
     render();
   });
+}
+
+// Choosing a smaller barrel lowers the ceiling, so a dose that no longer fits is
+// pulled down with it — exactly as though the water had changed.
+const SYRINGE_BUTTONS = { syr1: "1", syr05: "0.5", syr03: "0.3" };
+
+function setSyringe(key) {
+  state.syringe = key;
+  for (const id in SYRINGE_BUTTONS) {
+    const on = SYRINGE_BUTTONS[id] === key;
+    $(id).classList.toggle("is-on", on);
+    $(id).setAttribute("aria-pressed", on ? "true" : "false");
+  }
+  syncBoxes();
+  render();
+}
+
+for (const id in SYRINGE_BUTTONS) {
+  $(id).addEventListener("click", () => setSyringe(SYRINGE_BUTTONS[id]));
 }
 
 syncBoxes();

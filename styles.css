@@ -1157,6 +1157,49 @@ h1 {
     background: var(--panel);
 }
 
+/* Syringe size: the iOS app's segmented control, web-side. A centred caption
+   over three options on one track; the chosen one takes the gold gradient, the
+   others stay plain — the same reading as the app. */
+.reta-calc .syr-panel {
+    padding: 14px 20px;
+}
+.reta-calc .syr-name {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 10px;
+}
+.reta-calc .syr-seg {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 9px;
+    background: var(--bg);
+    box-shadow: inset 0 0 0 1px var(--ring);
+}
+.reta-calc .syr-seg-btn {
+    flex: 1;
+    appearance: none;
+    border: 0;
+    border-radius: 6px;
+    padding: 9px 6px;
+    background: transparent;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--cream-soft);
+    cursor: pointer;
+}
+.reta-calc .syr-seg-btn.is-on {
+    background: linear-gradient(150deg, var(--gold-2), var(--gold));
+    color: #1a1206;
+}
+.reta-calc .syr-seg-btn:not(.is-on):hover {
+    color: var(--cream);
+}
+
 /* Slider rows: label + value box on one line, slider full width beneath — the
    shape the Pep Calc iOS app uses. The old label|slider|value flex row crushed
    the number once the text got bigger (Dave's screenshot, 21 Sep 2026).
@@ -1338,6 +1381,85 @@ h1 {
     background: linear-gradient(150deg, #5eead4, #2dd4bf);
     color: #04251f;
     box-shadow: none;
+}
+
+/* The picker's single door in. Full width, and deliberately unchanged by what is
+   selected — only the cards below it respond, and only after Done. */
+.reta-calc .pep-select {
+    display: block;
+    width: 100%;
+    margin: 4px 0 16px;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: var(--panel);
+    box-shadow: inset 0 0 0 1px var(--ring), var(--highlight);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold-2);
+    text-align: center;
+    cursor: pointer;
+}
+.reta-calc .pep-select:hover { color: var(--cream); }
+
+/* The sheet: a pop-up over the page with Cancel · title · Done across the top,
+   holding the same chips that used to sit on the main screen. */
+.pep-sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(10, 6, 2, 0.62);
+}
+.pep-sheet-backdrop[hidden] { display: none; }
+.pep-sheet {
+    width: 100%;
+    max-width: 420px;
+    padding: 14px 16px 16px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(160deg, var(--panel-2), var(--panel));
+    box-shadow: var(--shadow-soft), inset 0 0 0 1px var(--ring), var(--highlight);
+}
+.pep-sheet-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.pep-sheet-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--cream);
+}
+.pep-sheet-btn {
+    appearance: none;
+    border: 0;
+    padding: 6px 4px;
+    background: transparent;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--cream-soft);
+    cursor: pointer;
+}
+.pep-sheet-btn.pep-sheet-done { color: var(--gold-2); }
+.pep-sheet .pep-picker { margin: 0; }
+
+/* The reference period under a stat card's label — "(steady state)" and
+   friends. Non-bold and a shade fainter than the label it sits under. */
+.reta-calc .stat .k .k2 {
+    margin-top: 2px;
+    font-weight: 400;
+    letter-spacing: .2px;
+    text-transform: none;
+    color: var(--faint);
 }
 .reta-calc .panel-head {
     display: flex;
