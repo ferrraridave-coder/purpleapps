@@ -161,7 +161,13 @@ h1, h2, h3,
 
 h1 {
     max-width: 14ch;
-    margin-bottom: 22px;
+    /* The gradient is painted with background-clip: text, which only paints
+       inside the element's box. At line-height 1.02 Fraunces' descenders
+       (g, p, y: about 0.25em below the baseline) poke ~0.1em below the box and
+       were drawn transparent (clipped). Extend the box with padding and take
+       the same amount off the margin so nothing below moves. */
+    padding-bottom: 0.18em;
+    margin-bottom: calc(22px - 0.18em);
     font-size: clamp(2.7rem, 6.4vw, 5.6rem);
     font-weight: 500;
     line-height: 1.02;
@@ -358,6 +364,7 @@ h1 {
    it replaced, so none of the big gradient hero h1 treatment applies. */
 .section-heading h1 {
     max-width: none;
+    padding-bottom: 0;
     background: none;
     -webkit-text-fill-color: currentColor;
     animation: none;
@@ -1103,7 +1110,7 @@ h1 {
 .reta-calc h1 {
     max-width: none;
     font-size: clamp(2rem, 4.4vw, 3.2rem);
-    margin-bottom: 10px;
+    margin-bottom: calc(10px - 0.18em); /* 10px gap, net of the descender padding on h1 */
 }
 
 .reta-calc .sub {
