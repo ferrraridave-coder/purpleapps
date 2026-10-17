@@ -23,7 +23,8 @@ function isExternal(value) {
 }
 
 function stripFragment(value) {
-  return value.split('#')[0];
+  // Drop #fragments and ?query strings (e.g. styles.css?v=2) before checking the file exists.
+  return value.split('#')[0].split('?')[0];
 }
 
 function checkRef(file, attr, rawValue) {
