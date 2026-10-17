@@ -1,0 +1,14 @@
+# Files in this repo that Cloudflare should NOT publish as static assets
+# (wrangler.jsonc serves the whole repo directory ".").
+# Before this file existed, https://purpleapps.ai/.git/config,
+# /.codebase-memory/artifact.json, /wrangler.jsonc, /README.md, /docs/...
+# and /scripts/... were all publicly downloadable.
+.git
+.codebase-memory
+.DS_Store
+**/.DS_Store
+.assetsignore
+docs
+scripts
+README.md
+wrangler.jsonc
