@@ -17,3 +17,20 @@
 /retatrutide-calculator.html /retatrutide-calculator 301
 /true-velocity.html /true-velocity 301
 /voxium.html /voxium 301
+
+# Trailing slashes: Cloudflare answers /page/ with a 307 to /page; make it 301.
+# Exact paths only (no wildcards), and no destination matches a source, so no loops.
+/budgextra/ /budgextra 301
+/calculators/ /calculators 301
+/chat-llm/ /chat-llm 301
+/copy-tiles/ /copy-tiles 301
+/embersafe/ /embersafe 301
+/eve-r/ /eve-r 301
+/eve/ /eve 301
+/fuelled-uk/ /fuelled-uk 301
+/macos-apps/ /macos-apps 301
+/mouse-menu/ /mouse-menu 301
+/reconstitution-calculator/ /reconstitution-calculator 301
+/retatrutide-calculator/ /retatrutide-calculator 301
+/true-velocity/ /true-velocity 301
+/voxium/ /voxium 301
