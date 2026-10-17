@@ -326,6 +326,7 @@ h1 {
 
 .section-heading { margin-bottom: 44px; }
 
+.section-heading h1,
 .section-heading h2,
 .section-block h2,
 .feature-list h2 {
@@ -335,6 +336,15 @@ h1 {
     line-height: 1.06;
     letter-spacing: -0.015em;
     color: var(--cream);
+}
+
+/* Page-level h1 on Calculators and macOS Apps: styled like the section h2
+   it replaced, so none of the big gradient hero h1 treatment applies. */
+.section-heading h1 {
+    max-width: none;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    animation: none;
 }
 
 .section-heading p,
@@ -747,6 +757,7 @@ h1 {
 }
 
 .callout { border-left: 3px solid var(--accent, var(--gold)); }
+.callout h2,
 .callout h3,
 .pricing-card h2 { margin-bottom: 10px; font-size: 1.3rem; font-weight: 600; }
 
