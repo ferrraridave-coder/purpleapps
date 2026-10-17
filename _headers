@@ -1,0 +1,10 @@
+# Cloudflare static-asset response headers (Workers static assets, see wrangler.jsonc).
+# Screenshots and share images: cache for a week, then revalidate.
+# If you replace an image, give the new file a new name so visitors get it at once.
+# styles.css and main.js are deliberately left on Cloudflare's default
+# (max-age=0, must-revalidate) because their ?v= versioning is inconsistent.
+/assets/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/favicon.svg
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
