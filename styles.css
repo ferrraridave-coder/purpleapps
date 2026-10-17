@@ -600,6 +600,7 @@ h1 {
     grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
 }
 
+.app-card h2,
 .app-card h3 {
     margin: 16px 0 10px;
     font-size: clamp(1.7rem, 3vw, 2.6rem);
