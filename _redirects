@@ -1,0 +1,19 @@
+# Cloudflare static-asset redirects (Workers static assets, see wrangler.jsonc).
+# Cloudflare already 307-redirects /index.html -> / and /page.html -> /page;
+# these rules make those redirects permanent (301) so search engines
+# consolidate on the canonical URLs.
+/index.html / 301
+/budgextra.html /budgextra 301
+/calculators.html /calculators 301
+/chat-llm.html /chat-llm 301
+/copy-tiles.html /copy-tiles 301
+/embersafe.html /embersafe 301
+/eve-r.html /eve-r 301
+/eve.html /eve 301
+/fuelled-uk.html /fuelled-uk 301
+/macos-apps.html /macos-apps 301
+/mouse-menu.html /mouse-menu 301
+/reconstitution-calculator.html /reconstitution-calculator 301
+/retatrutide-calculator.html /retatrutide-calculator 301
+/true-velocity.html /true-velocity 301
+/voxium.html /voxium 301
