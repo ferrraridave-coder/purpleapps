@@ -27,13 +27,24 @@ function stripFragment(value) {
   return value.split('#')[0].split('?')[0];
 }
 
+// Resolve a local href/src the way Cloudflare's static assets do:
+// "/x" is relative to the site root, "/" and "dir/" serve index.html, and an
+// extensionless path like "/voxium" serves voxium.html.
+function resolveLocal(file, value) {
+  const base = value.startsWith('/') ? join(root, value) : join(dirname(file), value);
+  const candidates = [base];
+  if (value.endsWith('/')) candidates.push(join(base, 'index.html'));
+  else if (!/\.[a-z0-9]+$/i.test(value)) candidates.push(base + '.html', join(base, 'index.html'));
+  return candidates.map(c => normalize(c)).find(c => existsSync(c) && statSync(c).isFile());
+}
+
 function checkRef(file, attr, rawValue) {
   const value = stripFragment(rawValue.trim());
   if (!value || isExternal(value)) return;
-  if (value.startsWith('/')) return;
+  if (value.startsWith('//')) return; // protocol-relative URL: external
 
-  const resolved = normalize(join(dirname(file), value));
-  if (!existsSync(resolved)) {
+  const resolved = resolveLocal(file, value);
+  if (!resolved) {
     problems.push(`${file.replace(root + '/', '')}: missing ${attr}="${rawValue}"`);
   }
 }
