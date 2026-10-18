@@ -623,6 +623,16 @@ h1 {
     grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
 }
 
+/* Even grid (Calculators page): no full-width feature card, so the first card
+   sits in its own column at the normal card size. Desktop only; at 900px and
+   below the shared rules already stack everything into one column. */
+@media (min-width: 901px) {
+    .apps-grid-even .app-card:nth-child(1) {
+        grid-column: auto;
+        grid-template-columns: minmax(0, 1fr) 168px;
+    }
+}
+
 .app-card h2,
 .app-card h3 {
     margin: 16px 0 10px;
