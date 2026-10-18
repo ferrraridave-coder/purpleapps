@@ -1080,6 +1080,9 @@ h1 {
     background: linear-gradient(90deg, var(--ember), var(--gold));
     box-shadow: 0 0 18px rgba(217, 168, 78, 0.35);
 }
+/* Calculators page card: four bars, sized and placed like the reconstitution glyph */
+.app-card-media.reta-preview-compact { justify-content: center; gap: 16px; }
+.reta-preview-compact .reta-preview-bar { height: 18px; border-radius: 7px; }
 
 .app-card-media.recon-preview,
 .recon-preview {
