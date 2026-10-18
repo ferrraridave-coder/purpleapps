@@ -631,6 +631,19 @@ h1 {
         grid-column: auto;
         grid-template-columns: minmax(0, 1fr) 168px;
     }
+    /* Keep the "Open the calculator" links level across the two cards even
+       when the text above them wraps to a different number of lines. */
+    .apps-grid-even .app-card > div:first-child {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    /* Flex items don't collapse margins or sit in a line box, so restate the
+       gaps the cards have in normal flow (pill->text 17px, text->safety line
+       16px, safety line->link at least 34px). */
+    .apps-grid-even .app-card > div:first-child > .pill + .description { margin-top: 17px; }
+    .apps-grid-even .app-card > div:first-child > .highlight { margin-top: 0; margin-bottom: 34px; }
+    .apps-grid-even .app-card > div:first-child > .app-card-link { margin-top: auto; }
 }
 
 .app-card h2,
