@@ -498,9 +498,12 @@ function computeCompound(c, days) {
     steadyDay = steadyWeekIdx * 7;
   } else {
     // Spacing over a week: the same test, but block by block over SS_DAYS-day
-    // cycles counted back from the end, so the comparison follows the jabs
-    // rather than calendar weeks (weekly peaks swing with a long gap).
-    const NB = Math.floor(SIM_END / SS_DAYS), off = SIM_END - NB * SS_DAYS;
+    // cycles lined up with the jabs (each block starts on a jab day), so the
+    // comparison follows the jabs rather than calendar weeks (weekly peaks swing
+    // with a long gap) and the note lands on a jab day, as it does at a week.
+    const lastJab = extDoses.length ? Math.floor(extDoses[extDoses.length - 1].t) : 0;
+    const off = ((lastJab % SS_DAYS) + SS_DAYS) % SS_DAYS;
+    const NB = Math.floor((SIM_END - off) / SS_DAYS);
     const blockPeakAvg = [];
     for (let k = 0; k < NB; k++) {
       let p = 0;
