@@ -14,7 +14,7 @@
 /macos-apps.html /macos-apps 301
 /mouse-menu.html /mouse-menu 301
 /reconstitution-calculator.html /reconstitution-calculator 301
-/retatrutide-calculator.html /retatrutide-calculator 301
+/peptide-calculator.html /peptide-calculator 301
 /true-velocity.html /true-velocity 301
 /voxium.html /voxium 301
 
@@ -31,6 +31,12 @@
 /macos-apps/ /macos-apps 301
 /mouse-menu/ /mouse-menu 301
 /reconstitution-calculator/ /reconstitution-calculator 301
-/retatrutide-calculator/ /retatrutide-calculator 301
+/peptide-calculator/ /peptide-calculator 301
 /true-velocity/ /true-velocity 301
 /voxium/ /voxium 301
+
+# Old Peptide Levels Calculator URL (renamed 19 Oct 2026). All variants go
+# straight to the new page in one hop.
+/retatrutide-calculator /peptide-calculator 301
+/retatrutide-calculator.html /peptide-calculator 301
+/retatrutide-calculator/ /peptide-calculator 301
