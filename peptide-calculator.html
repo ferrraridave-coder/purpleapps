@@ -580,13 +580,12 @@ function renderStats(c, days) {
 const WEEKS_MAX = 104;
 
 // Words for the steady-state note when the final spacing is over a week.
-// DRAFT wording, pending Humanizer.
 const fmtDays = n => String(Math.round(n * 100) / 100);
 function cycleWords(c) {
   const n = fmtDays(c.finalIv);
-  if (c.cycleDays === c.finalIv) return `every ${n}-day cycle between jabs`;
-  if (c.cycleDays === c.finalIv * 2) return `every pair of ${n}-day cycles between jabs`;
-  return `every ${c.cycleDays}-day stretch`;
+  if (c.cycleDays === c.finalIv) return `each ${n}-day gap between jabs`;
+  if (c.cycleDays === c.finalIv * 2) return `each pair of ${n}-day gaps between jabs`;
+  return `each ${c.cycleDays}-day stretch`;
 }
 
 function render() {
@@ -654,7 +653,7 @@ function render() {
       ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
       ss.innerHTML = c.cycleDays === 7
         ? `${c.name} was already at steady state before week ${startWeek} — reached at week ${c.steadyWeek}, and every week here stays within 1% of a peak ~${c.steadyPeak.toFixed(2)} mg`
-        : `${c.name} was already at steady state before week ${startWeek} — reached at week ${c.steadyWeek}, and ${cycleWords(c)} here stays within 1% of a peak ~${c.steadyPeak.toFixed(2)} mg`;
+        : `${c.name} was already at steady state before week ${startWeek} — reached at week ${c.steadyWeek}, and ${cycleWords(c)} here stays within 1% of the same levels (peak ~${c.steadyPeak.toFixed(2)} mg)`;
       chart.appendChild(ss);
     }
   }
@@ -715,7 +714,7 @@ function render() {
         ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
         ss.innerHTML = c.cycleDays === 7
           ? `${c.name} steady state — from this week on, every week stays within 1% of this level (peak ~${c.steadyPeak.toFixed(2)} mg)`
-          : `${c.name} steady state — from here on, ${cycleWords(c)} stays within 1% of this level (peak ~${c.steadyPeak.toFixed(2)} mg)`;
+          : `${c.name} steady state — from here on, ${cycleWords(c)} stays within 1% of this one (peak ~${c.steadyPeak.toFixed(2)} mg)`;
         chart.appendChild(ss);
       }
     }
