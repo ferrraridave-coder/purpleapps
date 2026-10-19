@@ -222,7 +222,7 @@ function cardHtml(p) {
             </div>
             <div class="slider-row">
                 <label>Days between jabs</label>
-                <input id="${p.key}Interval" aria-label="${p.name} days between jabs" aria-describedby="${p.key}IntervalVal" type="range" min="0" max="7" step="0.5" value="7">
+                <input id="${p.key}Interval" aria-label="${p.name} days between jabs" aria-describedby="${p.key}IntervalVal" type="range" min="0" max="28" step="0.5" value="7">
                 <div class="val" id="${p.key}IntervalVal"></div>
             </div>
             <div class="starts-row">
@@ -256,7 +256,7 @@ function cardHtml(p) {
                 <div class="titr-row">
                     <span class="titr-label">Every (optional)</span>
                     <span class="mini">Days</span>
-                    <input id="${p.key}StepInterval" aria-label="${p.name} titration every (days, optional)" type="number" min="1" max="14" step="0.5" placeholder="—" class="numin">
+                    <input id="${p.key}StepInterval" aria-label="${p.name} titration every (days, optional)" type="number" min="1" max="28" step="0.5" placeholder="—" class="numin">
                 </div>
                 <div class="titr-actions">
                     <button id="${p.key}AddStep" type="button">Add Titration Dose</button>
@@ -722,7 +722,7 @@ for (const p of PEPTIDES) {
     const iv = parseFloat($(p.key + "StepInterval").value);
     if (!w || isNaN(d) || d < 0 || w < 2) return;
     const step = { week: w, day, dose: d };
-    if (iv && iv >= 1 && iv <= 14) step.interval = iv;
+    if (iv && iv >= 1 && iv <= 28) step.interval = iv;
     const steps = state[p.key].steps;
     // Keyed on week AND day: two steps in one week are now two steps.
     const existing = steps.findIndex(s => s.week === w && (s.day ?? 1) === day);
