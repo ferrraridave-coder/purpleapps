@@ -582,6 +582,10 @@ function renderStats(c, days) {
 // 104 weeks of daily rows.
 const WEEKS_MAX = 104;
 
+// Extra line under the steady-state note when the final spacing is over a week:
+// levels swing a lot over a long gap, so "steady state" needs explaining.
+const LONG_GAP_LINE = `<span class="steady-longgap" style="display:block;margin-top:4px;font-weight:500;color:var(--muted)">With this much time between jabs, levels rise and fall a lot. They peak after each jab and drop low before the next. Here, "steady state" means each gap repeats the same pattern, not that your levels stay flat.</span>`;
+const longGap = c => c.cycleDays === 7 ? "" : LONG_GAP_LINE;
 // Words for the steady-state note when the final spacing is over a week.
 const fmtDays = n => String(Math.round(n * 100) / 100);
 function cycleWords(c) {
@@ -656,7 +660,7 @@ function render() {
       ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
       ss.innerHTML = c.cycleDays === 7
         ? `${c.name} was already at steady state before week ${startWeek} — reached at week ${c.steadyWeek}, and every week here stays within 1% of a peak ~${c.steadyPeak.toFixed(2)} mg`
-        : `${c.name} was already at steady state before week ${startWeek} — reached at week ${c.steadyWeek}, and ${cycleWords(c)} here stays within 1% of the same levels (peak ~${c.steadyPeak.toFixed(2)} mg)`;
+        : `${c.name} was already at steady state before week ${startWeek} — reached at week ${c.steadyWeek}, and ${cycleWords(c)} here stays within 1% of the same levels (peak ~${c.steadyPeak.toFixed(2)} mg)` + longGap(c);
       chart.appendChild(ss);
     }
   }
@@ -717,7 +721,7 @@ function render() {
         ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
         ss.innerHTML = c.cycleDays === 7
           ? `${c.name} steady state — from this week on, every week stays within 1% of this level (peak ~${c.steadyPeak.toFixed(2)} mg)`
-          : `${c.name} steady state — from here on, ${cycleWords(c)} stays within 1% of this one (peak ~${c.steadyPeak.toFixed(2)} mg)`;
+          : `${c.name} steady state — from here on, ${cycleWords(c)} stays within 1% of this one (peak ~${c.steadyPeak.toFixed(2)} mg)` + longGap(c);
         chart.appendChild(ss);
       }
     }
@@ -729,7 +733,7 @@ function render() {
       ss.style.color = c.txt;
       ss.style.background = c.txt + "1f";
       ss.style.boxShadow = "inset 0 0 0 1px " + c.txt + "40";
-        ss.innerHTML = `${c.name} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown`;
+        ss.innerHTML = `${c.name} steady state (peak ~${c.steadyPeak.toFixed(2)} mg) isn't reached within the weeks shown` + longGap(c);
       chart.appendChild(ss);
     }
   }
