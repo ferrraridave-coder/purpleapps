@@ -492,8 +492,14 @@ function computeCompound(c, days) {
   // point within a day, the lowest, and the mean of the daily averages. The cards
   // show these rather than the ramping early weeks, so all three describe the
   // same period (and match the app's engine).
+  // The window is the final week, or one full dosing cycle when the final
+  // spacing is longer than a week (a 7-day window could then miss the jab and
+  // its peak). Half-day spacings use two cycles so the window is whole days.
+  const finalIv = schedAtTime(SIM_END - 1).iv;
+  const SS_DAYS = finalIv <= 7 ? 7
+    : Number.isInteger(finalIv) ? finalIv : Math.round(finalIv * 2);
   let steadyPeak = 0, steadyTrough = Infinity, steadyAvgSum = 0;
-  for (let d = SIM_END - 7; d < SIM_END; d++) {
+  for (let d = SIM_END - SS_DAYS; d < SIM_END; d++) {
     const { hi, lo } = dayHiLo(d, extDoses, ka, ke);
     if (hi > steadyPeak) steadyPeak = hi;
     if (lo < steadyTrough) steadyTrough = lo;
@@ -502,7 +508,7 @@ function computeCompound(c, days) {
   if (!isFinite(steadyTrough)) steadyTrough = 0;
   c.steadyDay = steadyDay; c.steadyPeak = steadyPeak;
   c.steadyTrough = steadyTrough;
-  c.steadyAverage = steadyAvgSum / 7;
+  c.steadyAverage = steadyAvgSum / SS_DAYS;
   c.windowPeak = Math.max(...rows.map(r => r.hi));
   c.steadyWeek = Math.floor(steadyDay/7) + 1;
 }
