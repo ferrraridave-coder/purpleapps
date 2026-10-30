@@ -12,3 +12,5 @@ docs
 scripts
 README.md
 wrangler.jsonc
+# wrangler's local cache/temp folder (account info, temp worker build)
+.wrangler
