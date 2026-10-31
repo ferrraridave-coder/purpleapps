@@ -1874,3 +1874,30 @@ h1 {
 /* Every numeric box in these cards is the same width as the dose box. */
 .reta-calc .starts-row .numin,
 .reta-calc .titr-row .numin { width: 76px; }
+
+/* --------------------------------------------------------------------------
+   Beta notice: shown in place of a download button while it is unavailable
+   -------------------------------------------------------------------------- */
+p.beta-notice {
+    max-width: 62ch;
+    margin: 28px 0 0;
+    padding: 18px 22px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--accent, var(--gold));
+    background: color-mix(in srgb, var(--accent, var(--gold)) 9%, rgba(43, 32, 17, 0.85));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent, var(--gold)) 26%, transparent);
+    color: var(--cream-soft);
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+}
+p.beta-notice strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--cream);
+    font-weight: 600;
+}
+.download-btn + p.beta-notice { margin-top: 20px; }
+@media (max-width: 520px) {
+    p.beta-notice { padding: 14px 16px; }
+}
