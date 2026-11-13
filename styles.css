@@ -1901,3 +1901,66 @@ p.beta-notice strong {
 @media (max-width: 520px) {
     p.beta-notice { padding: 14px 16px; }
 }
+
+/* --------------------------------------------------------------------------
+   Official App Store badge (Apple artwork, unmodified) and trust row
+   Apple: black badge preferred, min 40px tall on screen, clear space of a
+   quarter of the badge height around it. Don't recolour, crop or animate it.
+   -------------------------------------------------------------------------- */
+.app-store-badge {
+    display: inline-block;
+    line-height: 0;
+    border-radius: 10px;
+}
+.app-store-badge img {
+    display: block;
+    width: auto;
+    height: 54px;
+}
+.app-store-badge:focus-visible {
+    outline: 2px solid var(--gold-2);
+    outline-offset: 4px;
+}
+
+.trust-row {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 18px 0 0;
+    padding: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+.trust-row li { display: flex; align-items: center; gap: 8px; }
+/* Small drawn tick before each fact (not before the links). */
+.trust-row li.trust-fact::before {
+    content: "";
+    flex: none;
+    width: 0.38em;
+    height: 0.7em;
+    margin: 0 0.15em 0.2em 0.1em;
+    border: solid var(--gold-2);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.trust-row a { color: var(--purple); font-weight: 600; text-decoration: none; }
+.trust-row a:hover { text-decoration: underline; color: var(--gold-2); }
+
+.site-footer .legal-credit {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+/* "iPhone & iPad apps" is longer than the old "iOS Apps": tighten the nav
+   pills between the phone menu (<=720px) and wide screens so the bar still
+   fits on one line with large text or high zoom. */
+@media (min-width: 721px) and (max-width: 1000px) {
+    .navbar-links { gap: 0; }
+    .navbar-links a { padding: 9px 10px; }
+}
+@media (min-width: 721px) and (max-width: 820px) {
+    .navbar-links a { padding: 9px 8px; font-size: 0.84rem; }
+}

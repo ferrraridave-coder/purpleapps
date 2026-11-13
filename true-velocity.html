@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="True Velocity is a GPS speedometer for iPhone with three analogue dials, three leather backgrounds and optional trip recording with Apple Maps routes." />
     <title>True Velocity - GPS Speedometer and Trip Recorder</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=e9d934ef8f" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href="https://purpleapps.ai/true-velocity" />
     <meta property="og:type" content="website" />
@@ -38,9 +38,7 @@
         "name": "David Picknell"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Purple Apps",
-        "url": "https://purpleapps.ai/"
+        "@id": "https://purpleapps.ai/#organization"
       },
       "screenshot": [
         "https://purpleapps.ai/assets/screenshots/true-velocity-black-frost.webp",
@@ -49,7 +47,13 @@
         "https://purpleapps.ai/assets/screenshots/true-velocity-trip-screen.webp"
       ],
       "downloadUrl": "https://apps.apple.com/gb/app/true-velocity/id6759056967",
-      "installUrl": "https://apps.apple.com/gb/app/true-velocity/id6759056967"
+      "installUrl": "https://apps.apple.com/gb/app/true-velocity/id6759056967",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "GBP",
+        "url": "https://apps.apple.com/gb/app/true-velocity/id6759056967"
+      }
     }
     </script>
 </head>
@@ -66,7 +70,7 @@
         <a href="/" class="navbar-brand"><span class="brand-dot"></span> Purple Apps</a>
         <button class="nav-toggle" aria-label="Menu">&#9776;</button>
         <div class="navbar-links">
-            <a href="/">iOS Apps</a>
+            <a href="/">iPhone &amp; iPad Apps</a>
             <a href="https://apps.apple.com/gb/developer/david-picknell/id1844054411" target="_blank" rel="noopener">App Store</a>
             <a href="/calculators">Calculators</a>
             <a href="/macos-apps">macOS Apps</a>
@@ -81,8 +85,14 @@
         <h1>True Velocity</h1>
         <p class="tagline">A physically tuned GPS speedometer with three analogue dials and three leather-grain backgrounds you can mix however you like. You can also record trips, with pause and resume, and see your routes in Apple Maps.</p>
         <div class="download-btn">
-            <a href="https://apps.apple.com/gb/app/true-velocity/id6759056967" class="btn-primary" target="_blank" rel="noopener">Download on the App Store</a>
+            <a href="https://apps.apple.com/gb/app/true-velocity/id6759056967" class="app-store-badge" target="_blank" rel="noopener"><img src="assets/badges/download-on-the-app-store-black-en-gb.svg" alt="Download on the App Store" width="162" height="54" /></a>
         </div>
+        <ul class="trust-row" aria-label="Privacy and support">
+            <li class="trust-fact">App Store privacy label: Data Not Collected</li>
+            <li class="trust-fact">No tracking or analytics in the app</li>
+            <li><a href="https://ferrraridave-coder.github.io/truevelocity-support/privacy-policy.html" target="_blank" rel="noopener">Privacy policy</a></li>
+            <li><a href="https://ferrraridave-coder.github.io/truevelocity-support/" target="_blank" rel="noopener">Support</a></li>
+        </ul>
         <div class="quick-facts">
             <div><strong>3 dials</strong><span>Classic, Cerise, Frost</span></div>
             <div><strong>3 leathers</strong><span>Black, Oxblood, Tan</span></div>
@@ -157,8 +167,9 @@
 <footer class="site-footer">
     <p>Built by David Picknell. Apps for iPhone, iPad and Mac.</p>
     <p><a href="mailto:ferrraridave@icloud.com">Contact Support</a></p>
+    <p class="legal-credit">Apple and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc.</p>
 </footer>
 
-<script src="main.js"></script>
+<script src="main.js?v=a70753942f"></script>
 </body>
 </html>

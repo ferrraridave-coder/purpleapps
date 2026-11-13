@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, normalize } from 'node:path';
+import { STAMPED, assetHash } from './stamp-assets.mjs';
 
 const root = process.cwd();
 const htmlFiles = [];
@@ -60,10 +61,22 @@ for (const file of htmlFiles) {
   }
 }
 
+// styles.css and main.js are cached for a year (see _headers), so every
+// reference must carry the current content hash. Fix: node scripts/stamp-assets.mjs
+const hashes = Object.fromEntries(STAMPED.map(f => [f, assetHash(join(root, f))]));
+for (const file of htmlFiles) {
+  const html = readFileSync(file, 'utf8');
+  for (const m of html.matchAll(/\b(?:href|src)="\/?(styles\.css|main\.js)(\?v=[^"]*)?"/g)) {
+    if (m[2] !== `?v=${hashes[m[1]]}`) {
+      problems.push(`${file.replace(root + '/', '')}: ${m[1]} reference "${m[0]}" is not stamped with ?v=${hashes[m[1]]} (run node scripts/stamp-assets.mjs)`);
+    }
+  }
+}
+
 if (problems.length) {
-  console.error(`Found ${problems.length} missing local reference(s):`);
+  console.error(`Found ${problems.length} problem(s):`);
   for (const problem of problems) console.error(`- ${problem}`);
   process.exit(1);
 }
 
-console.log(`Checked ${htmlFiles.length} HTML file(s); all local references exist.`);
+console.log(`Checked ${htmlFiles.length} HTML file(s); all local references exist and styles.css/main.js references carry the current hash.`);
